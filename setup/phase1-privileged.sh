@@ -63,6 +63,24 @@ if ! command -v tailscale >/dev/null; then
 fi
 systemctl enable --now tailscaled
 
+# Join the tainet unattended if a pre-auth key was left in ~/.secrets/tailscale.env
+TS_ENV="/home/${USER_NAME}/.secrets/tailscale.env"
+if tailscale status >/dev/null 2>&1; then
+    echo "  already joined: $(tailscale status --json | grep -o '\"DNSName\":\"[^\"]*' | head -1 | cut -d'\"' -f4)"
+elif [ -r "$TS_ENV" ]; then
+    # shellcheck disable=SC1090
+    . "$TS_ENV"
+    if [ -n "${TAILSCALE_AUTHKEY:-}" ]; then
+        tailscale up --authkey "${TAILSCALE_AUTHKEY}" --hostname lenovo --ssh \
+            && echo "  joined the tailnet" \
+            || echo "  !! tailscale up failed — key may be expired or already used"
+    else
+        echo "  !! ${TS_ENV} has no TAILSCALE_AUTHKEY line"
+    fi
+else
+    echo "  no auth key at ${TS_ENV} — run 'sudo tailscale up' manually later"
+fi
+
 # ------------------------------------------------------------------- 5. ssh keys
 say "SSH hardening (§5.1)"
 KEYS="/home/${USER_NAME}/.ssh/authorized_keys"
@@ -84,7 +102,37 @@ fi
 say "Enabling lingering so user timers run without a login session"
 loginctl enable-linger "${USER_NAME}"
 
-# ----------------------------------------------------------- 7. no reboot at 03
+# ------------------------------------------------------ 7. agent autonomy (opt)
+# Lets coding agents run privileged setup without a human typing a password.
+#
+#   TRADE-OFF, read before enabling: with this file present, ANY process running
+#   as ${USER_NAME} can become root without a password — that includes agent
+#   sessions and anything a scraper pulls in. Appropriate for a dedicated
+#   appliance behind Tailscale with no public exposure. Not appropriate for a
+#   machine holding anything you would mind losing.
+#
+#   Approved by Lukas 2026-07-22: he wants agents to run setup unattended on
+#   this headless box. Accepted because the machine is a replaceable worker —
+#   real data lives in Supabase, and recovery is reinstall + rotate tokens.
+#
+#   On by default. Skip with:  AGENT_SUDO=0 sudo -E bash phase1-privileged.sh
+#   Revert entirely with:      sudo rm /etc/sudoers.d/90-agent-nopasswd
+if [ "${AGENT_SUDO:-1}" = "1" ]; then
+    say "Granting passwordless sudo to ${USER_NAME} (AGENT_SUDO=1)"
+    printf '%s ALL=(ALL) NOPASSWD: ALL\n' "${USER_NAME}" >/etc/sudoers.d/90-agent-nopasswd
+    chmod 440 /etc/sudoers.d/90-agent-nopasswd
+    if visudo -c -q; then
+        echo "  enabled — agents can now run privileged steps unattended"
+    else
+        rm -f /etc/sudoers.d/90-agent-nopasswd
+        echo "  !! sudoers validation failed, change reverted" >&2
+        exit 1
+    fi
+else
+    say "Passwordless sudo NOT enabled (set AGENT_SUDO=1 to allow agent automation)"
+fi
+
+# ----------------------------------------------------------- 8. no reboot at 03
 say "Unattended upgrades: security patches yes, automatic reboots no (§5.6)"
 cat >/etc/apt/apt.conf.d/52workbench-no-reboot <<'EOF'
 // Nightly job window must never be interrupted by an automatic reboot.
