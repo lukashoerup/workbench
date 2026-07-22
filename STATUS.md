@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Wednesday 22 July 2026, 22:13 CEST on `lenovo`._
+_Generated Wednesday 22 July 2026, 22:15 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -11,12 +11,13 @@ _Regenerated automatically every 30 minutes. Everything below is measured, not r
 ## Repositories
 
 ### `workbench`
-Branch `main` — clean, 1 unpushed commit(s).
+Branch `main` — 2 uncommitted file(s).
 
-**Tests: 43 passing.** ✅
+**Tests: 50 passing.** ✅
 
 Recent commits:
 ```
+22 Jul 22:13  Status: 22 Jul 22:13
 22 Jul 22:13  Fix publisher never committing an untracked STATUS.md
 22 Jul 22:12  Status: 22 Jul 22:12
 22 Jul 22:12  Add status page generator and GitHub publisher for phone access
@@ -42,9 +43,9 @@ Recent commits:
 
 ```
 NEXT                          LEFT LAST                               PASSED UNIT                           ACTIVATES
-Wed 2026-07-22 22:27:03 CEST 13min Wed 2026-07-22 22:11:46 CEST 1min 34s ago workbench-watchdog.timer       workbench-watchdog.service
-Wed 2026-07-22 22:43:53 CEST 30min Wed 2026-07-22 22:12:39 CEST      40s ago workbench-status.timer         workbench-status.service
-Thu 2026-07-23 19:43:14 CEST   21h Wed 2026-07-22 19:43:14 CEST 2h 30min ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+Wed 2026-07-22 22:27:03 CEST 11min Wed 2026-07-22 22:11:46 CEST 3min 47s ago workbench-watchdog.timer       workbench-watchdog.service
+Wed 2026-07-22 22:43:53 CEST 28min Wed 2026-07-22 22:12:39 CEST 2min 53s ago workbench-status.timer         workbench-status.service
+Thu 2026-07-23 19:43:14 CEST   21h Wed 2026-07-22 19:43:14 CEST 2h 32min ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
 
 3 timers listed.
 ```
@@ -55,13 +56,13 @@ _No job heartbeats yet — no scrapers are running._
 
 - Disk: 75G free of 98G (21% used)
 - RAM: 13Gi available of 15Gi
-- Uptime: up 2 hours, 35 minutes
+- Uptime: up 2 hours, 37 minutes
 
 Local models:
 ```
 NAME          ID              SIZE      MODIFIED       
-qwen3.5:9b    6488c96fa5fa    6.6 GB    27 minutes ago    
-qwen3:4b      359d7dd4bcda    2.5 GB    31 minutes ago
+qwen3.5:9b    6488c96fa5fa    6.6 GB    30 minutes ago    
+qwen3:4b      359d7dd4bcda    2.5 GB    33 minutes ago
 
 Currently loaded:
 NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
