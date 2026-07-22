@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Wednesday 22 July 2026, 22:15 CEST on `lenovo`._
+_Generated Wednesday 22 July 2026, 22:16 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -11,20 +11,20 @@ _Regenerated automatically every 30 minutes. Everything below is measured, not r
 ## Repositories
 
 ### `workbench`
-Branch `main` — 2 uncommitted file(s).
+Branch `main` — clean.
 
-**Tests: 50 passing.** ✅
+**Tests: 53 passing.** ✅
 
 Recent commits:
 ```
+22 Jul 22:16  Status: 22 Jul 22:16
+22 Jul 22:16  Collapse consecutive status commits instead of one per run
+22 Jul 22:15  Status: 22 Jul 22:15
 22 Jul 22:15  Status: 22 Jul 22:15
 22 Jul 22:13  Status: 22 Jul 22:13
 22 Jul 22:13  Fix publisher never committing an untracked STATUS.md
 22 Jul 22:12  Status: 22 Jul 22:12
 22 Jul 22:12  Add status page generator and GitHub publisher for phone access
-22 Jul 21:58  Add scoped passwordless sudo grant for agent installs
-22 Jul 21:56  Add test suite for workbench tooling and fix five defects it exposed
-22 Jul 21:44  Record Phase 1 privileged setup as applied
 ```
 ### `workbench-context`
 Branch `main` — clean.
@@ -43,9 +43,9 @@ Recent commits:
 
 ```
 NEXT                          LEFT LAST                               PASSED UNIT                           ACTIVATES
-Wed 2026-07-22 22:27:03 CEST 11min Wed 2026-07-22 22:11:46 CEST 3min 50s ago workbench-watchdog.timer       workbench-watchdog.service
-Wed 2026-07-22 22:43:53 CEST 28min Wed 2026-07-22 22:12:39 CEST 2min 56s ago workbench-status.timer         workbench-status.service
-Thu 2026-07-23 19:43:14 CEST   21h Wed 2026-07-22 19:43:14 CEST 2h 32min ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+Wed 2026-07-22 22:27:03 CEST 10min Wed 2026-07-22 22:11:46 CEST     5min ago workbench-watchdog.timer       workbench-watchdog.service
+Wed 2026-07-22 22:43:53 CEST 26min Wed 2026-07-22 22:12:39 CEST 4min 17s ago workbench-status.timer         workbench-status.service
+Thu 2026-07-23 19:43:14 CEST   21h Wed 2026-07-22 19:43:14 CEST 2h 33min ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
 
 3 timers listed.
 ```
@@ -56,13 +56,13 @@ _No job heartbeats yet — no scrapers are running._
 
 - Disk: 75G free of 98G (21% used)
 - RAM: 13Gi available of 15Gi
-- Uptime: up 2 hours, 37 minutes
+- Uptime: up 2 hours, 39 minutes
 
 Local models:
 ```
 NAME          ID              SIZE      MODIFIED       
-qwen3.5:9b    6488c96fa5fa    6.6 GB    30 minutes ago    
-qwen3:4b      359d7dd4bcda    2.5 GB    33 minutes ago
+qwen3.5:9b    6488c96fa5fa    6.6 GB    31 minutes ago    
+qwen3:4b      359d7dd4bcda    2.5 GB    34 minutes ago
 
 Currently loaded:
 NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
