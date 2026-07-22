@@ -23,6 +23,10 @@ python3 "$HOME/bin/workbench-status.py" --write "$STATUS" >/dev/null 2>&1 || {
     exit 1
 }
 
+# An untracked STATUS.md produces no diff at all, so the very first run would
+# exit here and never publish. Intent-to-add makes it visible to git diff.
+git add -N STATUS.md 2>/dev/null
+
 # Nothing changed beyond the timestamp line? Don't create an empty-noise commit.
 if git diff --quiet -- STATUS.md; then
     exit 0
