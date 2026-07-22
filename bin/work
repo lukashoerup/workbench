@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Attach to the persistent workbench tmux session, creating it if needed.
+# Layout (spec §5.4): 1:claude  2:codex  3:shell
+set -euo pipefail
+
+SESSION="main"
+
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+    exec tmux attach -t "$SESSION"
+fi
+
+tmux new-session  -d -s "$SESSION" -n claude -c "$HOME/workbench"
+tmux new-window   -t "$SESSION" -n codex  -c "$HOME/workbench"
+tmux new-window   -t "$SESSION" -n shell  -c "$HOME"
+tmux select-window -t "$SESSION:claude"
+
+exec tmux attach -t "$SESSION"

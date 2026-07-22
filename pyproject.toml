@@ -1,0 +1,16 @@
+[project]
+name = "workbench"
+version = "0.1.0"
+description = "Shared tooling for the home AI workbench: notifications, watchdog, setup."
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-x -q"
+
+[tool.ruff]
+line-length = 100
