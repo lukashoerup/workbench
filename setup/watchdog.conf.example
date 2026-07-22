@@ -1,0 +1,27 @@
+# Workbench watchdog checks. One check per line; blank lines and # ignored.
+#
+#   unit       <systemd-unit>                  system unit must be active
+#   user       <systemd-unit>                  --user unit must be active
+#   heartbeat  <label> <file> <max-age-secs>   file must exist and be fresh
+#   net        <host>                          host must answer ping
+#   disk       <mountpoint> <min-free-pct>     free space floor
+#
+# Units that are not installed yet are reported as MISSING, not FAILED, so this
+# file can list Phase 2+ services before they exist.
+
+net        1.1.1.1
+disk       /            10
+
+# The phone's view of this machine. If this timer dies, STATUS.md silently goes
+# stale and everything looks fine from outside — so watch it explicitly.
+user       workbench-status.timer
+user       workbench-watchdog.timer
+
+# --- Phase 2: installed 2026-07-22 ---
+unit       ollama.service
+unit       tailscaled.service
+
+# --- Phase 4: scraper jobs write their marker file on each successful run ---
+# heartbeat dba-scraper    /home/lukashoerup/.local/state/workbench/heartbeats/dba      7200
+# heartbeat vinted-scraper /home/lukashoerup/.local/state/workbench/heartbeats/vinted   7200
+# heartbeat nightly-triage /home/lukashoerup/.local/state/workbench/heartbeats/triage  100000
