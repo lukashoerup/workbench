@@ -17,6 +17,7 @@ Branch `main` — 2 uncommitted file(s).
 
 Recent commits:
 ```
+22 Jul 22:15  Status: 22 Jul 22:15
 22 Jul 22:13  Status: 22 Jul 22:13
 22 Jul 22:13  Fix publisher never committing an untracked STATUS.md
 22 Jul 22:12  Status: 22 Jul 22:12
@@ -24,7 +25,6 @@ Recent commits:
 22 Jul 21:58  Add scoped passwordless sudo grant for agent installs
 22 Jul 21:56  Add test suite for workbench tooling and fix five defects it exposed
 22 Jul 21:44  Record Phase 1 privileged setup as applied
-22 Jul 18:39  Add setup spec and Phase 1 privileged setup script
 ```
 ### `workbench-context`
 Branch `main` — clean.
@@ -43,8 +43,8 @@ Recent commits:
 
 ```
 NEXT                          LEFT LAST                               PASSED UNIT                           ACTIVATES
-Wed 2026-07-22 22:27:03 CEST 11min Wed 2026-07-22 22:11:46 CEST 3min 47s ago workbench-watchdog.timer       workbench-watchdog.service
-Wed 2026-07-22 22:43:53 CEST 28min Wed 2026-07-22 22:12:39 CEST 2min 53s ago workbench-status.timer         workbench-status.service
+Wed 2026-07-22 22:27:03 CEST 11min Wed 2026-07-22 22:11:46 CEST 3min 50s ago workbench-watchdog.timer       workbench-watchdog.service
+Wed 2026-07-22 22:43:53 CEST 28min Wed 2026-07-22 22:12:39 CEST 2min 56s ago workbench-status.timer         workbench-status.service
 Thu 2026-07-23 19:43:14 CEST   21h Wed 2026-07-22 19:43:14 CEST 2h 32min ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
 
 3 timers listed.
