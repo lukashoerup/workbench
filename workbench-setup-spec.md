@@ -327,7 +327,7 @@ No findings → {"findings": []}. No text outside the JSON.
 | Phase | Deliverable | Acceptance check (deterministic) |
 |---|---|---|
 | 0 | ~~Hardware report + model choice~~ **RESOLVED** — facts in §3 | Done 2026-07-19 (X1 Carbon Gen 10, CPU-only, 4B/9B tier) |
-| 1 | Ubuntu headless, Tailscale, mosh, tmux, power config, watchdog | SSH from Mac via tailnet works; lid closed → still reachable; watchdog test alert received |
+| 1 | ~~Ubuntu headless, Tailscale, mosh, tmux, power config, watchdog~~ **DONE 2026-07-23** | ✅ Key-only SSH from MacBook over tailnet verified; password auth disabled; watchdog test alert received. Phone tailnet peer still optional. |
 | 2 | Ollama + models (incl. 4B vs 9B benchmark), Claude Code, Codex, Codex plugin, Superpowers in both harnesses, GitHub, Telegram bot | Benchmarks logged in STACK.md; both CLIs authenticated; `/write-plan` available in both; test ping received on phone |
 | 3 | workbench-context repo + first project repo with full markdown architecture, hooks, CI | Repo passes a dry-run task through the full workflow (plan → build → cross-review → green) |
 | 4 | Project 1 live: scrapers + scoring + alerts + nightly triage/canary | 48h unattended run; ≥1 real relevant alert; canary and triage reports arrive |
