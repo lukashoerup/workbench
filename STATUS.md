@@ -1,11 +1,11 @@
 # Workbench status
 
-_Generated Thursday 23 July 2026, 20:47 CEST on `lenovo`._
+_Generated Friday 24 July 2026, 11:26 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
 
-- **SSH keys** — no `authorized_keys`, so password auth is still enabled. Run `ssh-copy-id lukashoerup@lenovo.tail8658f1.ts.net` from a Mac.
+Nothing. All clear.
 
 ## Repositories
 
@@ -16,14 +16,14 @@ Branch `main` — clean.
 
 Recent commits:
 ```
-22 Jul 22:17  Status: 23 Jul 20:16
+23 Jul 21:18  Status: 24 Jul 10:55
+23 Jul 21:03  Mark Phase 1 SSH hardening done — key-only auth verified
+22 Jul 22:17  Status: 23 Jul 20:47
 22 Jul 22:17  Add repo index and watch the status timer itself
 22 Jul 22:16  Status: 22 Jul 22:16
 22 Jul 22:16  Collapse consecutive status commits instead of one per run
 22 Jul 22:15  Status: 22 Jul 22:15
 22 Jul 22:15  Status: 22 Jul 22:15
-22 Jul 22:13  Status: 22 Jul 22:13
-22 Jul 22:13  Fix publisher never committing an untracked STATUS.md
 ```
 ### `workbench-context`
 Branch `main` — clean.
@@ -41,10 +41,10 @@ Recent commits:
 ## Scheduled jobs
 
 ```
-NEXT                            LEFT LAST                              PASSED UNIT                           ACTIVATES
-Thu 2026-07-23 20:49:24 CEST 2min 6s Thu 2026-07-23 20:34:14 CEST   13min ago workbench-watchdog.timer       workbench-watchdog.service
-Fri 2026-07-24 19:44:14 CEST     22h Thu 2026-07-23 19:44:14 CEST 1h 3min ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
--                                  - Thu 2026-07-23 20:47:14 CEST      2s ago workbench-status.timer         workbench-status.service
+NEXT                             LEFT LAST                            PASSED UNIT                           ACTIVATES
+Fri 2026-07-24 11:30:08 CEST 3min 51s Fri 2026-07-24 11:14:14 CEST 12min ago workbench-watchdog.timer       workbench-watchdog.service
+Fri 2026-07-24 19:44:14 CEST       8h Thu 2026-07-23 19:44:14 CEST   15h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+-                                   - Fri 2026-07-24 11:26:14 CEST    2s ago workbench-status.timer         workbench-status.service
 
 3 timers listed.
 ```
@@ -53,15 +53,15 @@ _No job heartbeats yet — no scrapers are running._
 
 ## Machine
 
-- Disk: 74G free of 98G (21% used)
-- RAM: 14Gi available of 15Gi
-- Uptime: up 1 day, 1 hour, 9 minutes
+- Disk: 61G free of 98G (36% used)
+- RAM: 12Gi available of 15Gi
+- Uptime: up 1 day, 15 hours, 48 minutes
 
 Local models:
 ```
 NAME          ID              SIZE      MODIFIED     
-qwen3.5:9b    6488c96fa5fa    6.6 GB    23 hours ago    
-qwen3:4b      359d7dd4bcda    2.5 GB    23 hours ago
+qwen3.5:9b    6488c96fa5fa    6.6 GB    38 hours ago    
+qwen3:4b      359d7dd4bcda    2.5 GB    38 hours ago
 
 Currently loaded:
 NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
@@ -76,12 +76,12 @@ _none_
 
 Watchdog:
 ```
-2026-07-23T19:14:16+02:00	run complete: 0 failing
-2026-07-23T19:30:16+02:00	run complete: 0 failing
-2026-07-23T19:46:16+02:00	run complete: 0 failing
-2026-07-23T20:02:16+02:00	run complete: 0 failing
-2026-07-23T20:18:16+02:00	run complete: 0 failing
-2026-07-23T20:34:16+02:00	run complete: 0 failing
+2026-07-24T09:54:16+02:00	run complete: 0 failing
+2026-07-24T10:10:16+02:00	run complete: 0 failing
+2026-07-24T10:26:16+02:00	run complete: 0 failing
+2026-07-24T10:42:16+02:00	run complete: 0 failing
+2026-07-24T10:58:16+02:00	run complete: 0 failing
+2026-07-24T11:14:16+02:00	run complete: 0 failing
 ```
 
 Notifications sent:
