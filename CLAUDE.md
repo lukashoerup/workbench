@@ -44,9 +44,9 @@ publisher is broken — say so rather than reporting its contents as current.
 | The whole system, what runs where | `SYSTEM.md` |
 | What the machine is doing right now | `STATUS.md` |
 | The Claude Project setup (claude.ai) | `docs/claude-project-instructions.md` |
-| Standard choices, model benchmarks | `../workbench-context/STACK.md` |
-| Reusable recipes | `../workbench-context/PATTERNS.md` |
-| Dated gotchas | `../workbench-context/LEARNINGS.md` |
+| Standard choices, model benchmarks | `context/STACK.md` |
+| Reusable recipes | `context/PATTERNS.md` |
+| Dated gotchas | `context/LEARNINGS.md` |
 | Why the setup is shaped this way | `workbench-setup-spec.md` |
 
 ## How Lukas reaches this system
@@ -59,5 +59,5 @@ publisher is broken — say so rather than reporting its contents as current.
 
 ## Docs duty
 Any change that invalidates a docs statement MUST fix it in the same commit.
-New permanent decisions → `../workbench-context/STACK.md`.
-New dated experiences → `../workbench-context/LEARNINGS.md`.
+New permanent decisions → `context/STACK.md`.
+New dated experiences → `context/LEARNINGS.md`.

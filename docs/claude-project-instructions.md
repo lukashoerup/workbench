@@ -2,8 +2,8 @@
 
 Paste the block below into the custom instructions of the "Workbench HQ"
 Claude Project (claude.ai → Projects). Enable the GitHub connector for
-`lukashoerup/workbench`, `lukashoerup/workbench-context` and
-`lukashoerup/erhvervsklubben`. Update this file first if the setup changes —
+`lukashoerup/workbench` and `lukashoerup/erhvervsklubben`. Update this file
+first if the setup changes —
 this file is the versioned original; the Project settings are a copy.
 
 ---
