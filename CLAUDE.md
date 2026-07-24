@@ -41,7 +41,9 @@ publisher is broken — say so rather than reporting its contents as current.
 ## Document routing (read ONLY when needed)
 | Working on... | Read first |
 |---|---|
+| The whole system, what runs where | `SYSTEM.md` |
 | What the machine is doing right now | `STATUS.md` |
+| The Claude Project setup (claude.ai) | `docs/claude-project-instructions.md` |
 | Standard choices, model benchmarks | `../workbench-context/STACK.md` |
 | Reusable recipes | `../workbench-context/PATTERNS.md` |
 | Dated gotchas | `../workbench-context/LEARNINGS.md` |
