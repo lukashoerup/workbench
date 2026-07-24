@@ -50,11 +50,12 @@ publisher is broken — say so rather than reporting its contents as current.
 | Why the setup is shaped this way | `workbench-setup-spec.md` |
 
 ## How Lukas reaches this system
-| From | Path | Can do |
+| From | Path | Role |
 |---|---|---|
-| Phone / anywhere | Claude app → this GitHub repo | Read everything, edit code and docs, run tests in the cloud sandbox. **Cannot** reach `lenovo` itself. |
-| Phone, machine control | SSH over Tailscale → `work` (tmux) | Anything. Needs Tailscale on the phone. |
-| Alerts | Telegram, via `bin/notify.py` | Push. Free, no session needed. |
+| Claude app (phone/desktop), "Workbench HQ" Project | Chat + dispatch cloud sessions on the GitHub repos | **Primary interface.** Decisions get committed to task files. |
+| GitHub app | STATUS.md, docs, diffs, PRs — rendered | Review surface. |
+| Telegram, via `bin/notify.py` | Push: alerts, summaries, blocked questions | The machine's voice. |
+| SSH over Tailscale → `work` (tmux) | Full shell on `lenovo` | Emergency fallback only — day-to-day work never needs it. |
 
 ## Docs duty
 Any change that invalidates a docs statement MUST fix it in the same commit.
