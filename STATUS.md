@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Friday 24 July 2026, 12:30 CEST on `lenovo`._
+_Generated Friday 24 July 2026, 13:01 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -16,14 +16,14 @@ Branch `main` — clean.
 
 Recent commits:
 ```
-24 Jul 11:36  Status: 24 Jul 11:58
+24 Jul 13:00  Merge task/2026-07-24-system-map
+24 Jul 13:00  Add SYSTEM.md map + paste-ready Claude Project instructions
+24 Jul 11:36  Status: 24 Jul 12:30
 24 Jul 11:36  Merge task/2026-07-24-status-erhvervsklubben
 24 Jul 11:36  Watch erhvervsklubben in STATUS.md; Node repos defer tests to CI
 23 Jul 21:18  Status: 24 Jul 11:26
 23 Jul 21:03  Mark Phase 1 SSH hardening done — key-only auth verified
 22 Jul 22:17  Status: 23 Jul 20:47
-22 Jul 22:17  Add repo index and watch the status timer itself
-22 Jul 22:16  Status: 22 Jul 22:16
 ```
 ### `workbench-context`
 Branch `main` — clean.
@@ -55,9 +55,9 @@ Recent commits:
 
 ```
 NEXT                             LEFT LAST                            PASSED UNIT                           ACTIVATES
-Fri 2026-07-24 12:34:09 CEST 3min 52s Fri 2026-07-24 12:18:14 CEST 12min ago workbench-watchdog.timer       workbench-watchdog.service
-Fri 2026-07-24 19:44:14 CEST       7h Thu 2026-07-23 19:44:14 CEST   16h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
--                                   - Fri 2026-07-24 12:30:14 CEST    2s ago workbench-status.timer         workbench-status.service
+Fri 2026-07-24 13:05:57 CEST 4min 40s Fri 2026-07-24 12:50:14 CEST 11min ago workbench-watchdog.timer       workbench-watchdog.service
+Fri 2026-07-24 19:44:14 CEST       6h Thu 2026-07-23 19:44:14 CEST   17h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+-                                   - Fri 2026-07-24 13:01:14 CEST    2s ago workbench-status.timer         workbench-status.service
 
 3 timers listed.
 ```
@@ -68,7 +68,7 @@ _No job heartbeats yet — no scrapers are running._
 
 - Disk: 61G free of 98G (36% used)
 - RAM: 12Gi available of 15Gi
-- Uptime: up 1 day, 16 hours, 52 minutes
+- Uptime: up 1 day, 17 hours, 23 minutes
 
 Local models:
 ```
@@ -85,18 +85,18 @@ NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
 Open:
 - erhvervsklubben/T020-rls-tests.md
 
-Completed: 4
+Completed: 5
 
 ## Recent activity
 
 Watchdog:
 ```
-2026-07-24T10:58:16+02:00	run complete: 0 failing
-2026-07-24T11:14:16+02:00	run complete: 0 failing
 2026-07-24T11:30:16+02:00	run complete: 0 failing
 2026-07-24T11:46:16+02:00	run complete: 0 failing
 2026-07-24T12:02:16+02:00	run complete: 0 failing
 2026-07-24T12:18:16+02:00	run complete: 0 failing
+2026-07-24T12:34:16+02:00	run complete: 0 failing
+2026-07-24T12:50:16+02:00	run complete: 0 failing
 ```
 
 Notifications sent:
