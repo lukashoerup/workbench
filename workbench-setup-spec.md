@@ -1,5 +1,13 @@
 # Home AI Workbench — Setup Specification
 
+> **Historical document** (written 2026-07-19, before cloud-dispatched Claude
+> sessions became the development engine). It explains why the system is shaped
+> this way and is cited as §N elsewhere — but current truth is `SYSTEM.md`
+> (architecture) and `STATUS.md` (live state). Known deviations: lenovo is an
+> ops box, not a dev workspace; the dual-agent/Superpowers workflow (§5b, §7)
+> and the lenovo work-block runner were dropped in favor of cloud dispatch + CI
+> (2026-07-24).
+
 **Audience:** A coding agent (Claude Code or Codex CLI) executing this setup, step by step, with Lukas approving key decisions.
 **Owner:** Lukas (Copenhagen). Hobby projects — the design optimizes for *minimal human time spent on testing and small bugs*, not for maximum autonomy.
 
