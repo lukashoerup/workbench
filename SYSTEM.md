@@ -51,8 +51,7 @@ answers via the Claude app; the answer is committed back to the task file.
 
 | Repo | What |
 |---|---|
-| `workbench` | This repo: machine tooling, STATUS.md, setup scripts. |
-| `workbench-context` | Cross-project STACK / PATTERNS / LEARNINGS. |
+| `workbench` | This repo: machine tooling, STATUS.md, setup scripts, and cross-project knowledge in `context/` (STACK / PATTERNS / LEARNINGS). |
 | `erhvervsklubben` | Active project: members-site rebuild (React + Supabase). |
 
 ## Rules for any Claude reading this

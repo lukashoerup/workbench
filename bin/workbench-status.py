@@ -28,7 +28,6 @@ from pathlib import Path
 HOME = Path.home()
 REPOS = [
     HOME / "workbench",
-    HOME / "workbench-context",
     HOME / "projects" / "erhvervsklubben",
 ]
 LOGS = HOME / "logs"
