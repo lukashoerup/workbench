@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Friday 24 July 2026, 13:01 CEST on `lenovo`._
+_Generated Sunday 26 July 2026, 14:59 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -16,26 +16,14 @@ Branch `main` — clean.
 
 Recent commits:
 ```
-24 Jul 13:00  Merge task/2026-07-24-system-map
-24 Jul 13:00  Add SYSTEM.md map + paste-ready Claude Project instructions
-24 Jul 11:36  Status: 24 Jul 12:30
-24 Jul 11:36  Merge task/2026-07-24-status-erhvervsklubben
-24 Jul 11:36  Watch erhvervsklubben in STATUS.md; Node repos defer tests to CI
-23 Jul 21:18  Status: 24 Jul 11:26
-23 Jul 21:03  Mark Phase 1 SSH hardening done — key-only auth verified
-22 Jul 22:17  Status: 23 Jul 20:47
-```
-### `workbench-context`
-Branch `main` — clean.
-
-_No test suite in this repo._
-
-Recent commits:
-```
-22 Jul 22:00  Benchmark local models: 9B wins, reversing spec §3
-22 Jul 19:24  Record interface decision: GitHub is the single source of truth
-22 Jul 19:10  Record Telegram notifications verified and connector boundary
-22 Jul 18:39  Add cross-project context: STACK, PATTERNS, LEARNINGS
+24 Jul 13:32  Status: 26 Jul 14:27
+24 Jul 13:31  Merge task/2026-07-24-merge-context
+24 Jul 13:31  Merge workbench-context into context/ — repo-qualified references everywhere
+24 Jul 13:12  Merge task/2026-07-24-md-cleanup
+24 Jul 13:12  Docs cleanup: interface table + historical banner on the spec
+24 Jul 13:09  Merge task/2026-07-24-defer-runner
+24 Jul 13:09  Record work-block-runner deferral: cloud dispatch covers it
+24 Jul 13:01  Status: 24 Jul 13:01
 ```
 ### `erhvervsklubben`
 Branch `main` — clean.
@@ -44,20 +32,23 @@ _Tests not run by this box (Node project — CI is the judge)._
 
 Recent commits:
 ```
+24 Jul 13:32  T023: point cross-project references at workbench/context (repo merge)
+24 Jul 13:14  Queue T022: CI pipeline + repo hooks (approved track D)
+24 Jul 13:13  Merge task/T021-docs-realignment
+24 Jul 13:13  T021: docs realignment for the cloud-dispatch model + discovery artifacts
 24 Jul 08:16  Docs: complete the intended §6 structure + mark project status
 23 Jul 22:45  Fix migration fidelity from Fable review (verified against prod)
 23 Jul 22:37  Phase 1: schema migration, seed, and RLS test harness (green)
 23 Jul 22:13  T001: scaffold React+Vite+TS+Tailwind app with green pipeline
-23 Jul 21:59  Erhvervsklubben: discovery, plan, adversarial review, schema snapshot
 ```
 
 ## Scheduled jobs
 
 ```
-NEXT                             LEFT LAST                            PASSED UNIT                           ACTIVATES
-Fri 2026-07-24 13:05:57 CEST 4min 40s Fri 2026-07-24 12:50:14 CEST 11min ago workbench-watchdog.timer       workbench-watchdog.service
-Fri 2026-07-24 19:44:14 CEST       6h Thu 2026-07-23 19:44:14 CEST   17h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
--                                   - Fri 2026-07-24 13:01:14 CEST    2s ago workbench-status.timer         workbench-status.service
+NEXT                             LEFT LAST                              PASSED UNIT                           ACTIVATES
+Sun 2026-07-26 15:13:31 CEST    14min Sun 2026-07-26 14:58:14 CEST 1min 2s ago workbench-watchdog.timer       workbench-watchdog.service
+Sun 2026-07-26 19:46:14 CEST 4h 46min Sat 2026-07-25 19:46:14 CEST     19h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+-                                   - Sun 2026-07-26 14:59:14 CEST      2s ago workbench-status.timer         workbench-status.service
 
 3 timers listed.
 ```
@@ -66,15 +57,15 @@ _No job heartbeats yet — no scrapers are running._
 
 ## Machine
 
-- Disk: 61G free of 98G (36% used)
+- Disk: 60G free of 98G (36% used)
 - RAM: 12Gi available of 15Gi
-- Uptime: up 1 day, 17 hours, 23 minutes
+- Uptime: up 3 days, 19 hours, 21 minutes
 
 Local models:
 ```
-NAME          ID              SIZE      MODIFIED     
-qwen3.5:9b    6488c96fa5fa    6.6 GB    39 hours ago    
-qwen3:4b      359d7dd4bcda    2.5 GB    39 hours ago
+NAME          ID              SIZE      MODIFIED   
+qwen3.5:9b    6488c96fa5fa    6.6 GB    3 days ago    
+qwen3:4b      359d7dd4bcda    2.5 GB    3 days ago
 
 Currently loaded:
 NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
@@ -84,19 +75,20 @@ NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
 
 Open:
 - erhvervsklubben/T020-rls-tests.md
+- erhvervsklubben/T022-ci-and-hooks.md
 
-Completed: 5
+Completed: 9
 
 ## Recent activity
 
 Watchdog:
 ```
-2026-07-24T11:30:16+02:00	run complete: 0 failing
-2026-07-24T11:46:16+02:00	run complete: 0 failing
-2026-07-24T12:02:16+02:00	run complete: 0 failing
-2026-07-24T12:18:16+02:00	run complete: 0 failing
-2026-07-24T12:34:16+02:00	run complete: 0 failing
-2026-07-24T12:50:16+02:00	run complete: 0 failing
+2026-07-26T13:38:16+02:00	run complete: 0 failing
+2026-07-26T13:54:16+02:00	run complete: 0 failing
+2026-07-26T14:10:16+02:00	run complete: 0 failing
+2026-07-26T14:26:16+02:00	run complete: 0 failing
+2026-07-26T14:42:16+02:00	run complete: 0 failing
+2026-07-26T14:58:16+02:00	run complete: 0 failing
 ```
 
 Notifications sent:
