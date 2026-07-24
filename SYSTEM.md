@@ -30,10 +30,10 @@ Owner: Lukas (Copenhagen). Hobby projects, optimized for minimal human time.
 
 1. **Cloud dispatch** — Lukas sends one message from anywhere; the session runs
    in Anthropic's cloud on the GitHub repo; CI judges; Lukas skims the PR.
-2. **Lenovo work blocks** *(being built)* — a timer polls for approved task
-   files, runs Claude Code headlessly through the queue, pushes, sends ONE
-   Telegram summary (done / blocked / questions, batched). Used for long queues
-   and anything needing this box (scrapers, local LLM, secrets).
+2. **Lenovo work blocks** *(deferred 2026-07-24)* — headless queue-grinding on
+   this box. Deferred because cloud dispatch covers the need on the same token
+   budget; revisit only if a real gap shows (local-stack-only work, or wanting
+   one batched summary instead of per-task dispatches).
 3. **Interactive** — Mac desktop app or VS Code Remote-SSH, when Lukas sits down.
 
 ## Autonomy boundary (agreed 2026-07-24)
