@@ -26,7 +26,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 HOME = Path.home()
-REPOS = [HOME / "workbench", HOME / "workbench-context"]
+REPOS = [
+    HOME / "workbench",
+    HOME / "workbench-context",
+    HOME / "projects" / "erhvervsklubben",
+]
 LOGS = HOME / "logs"
 TIMEOUT = 120
 
@@ -54,6 +58,10 @@ def collect_tests(repo: Path) -> dict:
     the exact failure mode the spec warns about."""
     if not (repo / "tests").is_dir():
         return {"state": "none"}
+    if (repo / "package.json").is_file():
+        # Node project: its suite needs npm and Docker services this 30-minute
+        # timer must not own. CI is the judge there — say so, never guess.
+        return {"state": "external"}
     uv = HOME / ".local" / "bin" / "uv"
     out = run([str(uv), "run", "pytest", "tests/", "-q", "-o", "addopts=",
                "-p", "no:cacheprovider"], cwd=repo, timeout=300)
@@ -183,6 +191,8 @@ def build() -> str:
                 out.append(f"```\n{t['tail']}\n```")
             elif t["state"] == "none":
                 out.append("\n_No test suite in this repo._")
+            elif t["state"] == "external":
+                out.append("\n_Tests not run by this box (Node project — CI is the judge)._")
         out.append(f"\nRecent commits:\n```\n{g.get('log','(none)')}\n```")
 
     # ---- jobs
