@@ -66,7 +66,22 @@ wins** — it is the thing that demonstrably works.
 One session with shell on the box. Capture is quick; `install-user.sh` and
 `workbench-apply.sh` are the real work.
 
+## How to run it (2026-07-26)
+Everything is now written and tested. On the Mac, in Claude Code:
+
+    ssh lukashoerup@lenovo.tail8658f1.ts.net \
+      'cd ~/workbench && git pull --ff-only && bash setup/bootstrap-remote-access.sh'
+
+Lukas writes nothing — the agent in that session runs it and reads the output.
+
 ## Working notes (agent fills in)
+- `setup/bootstrap-remote-access.sh`, `setup/install-user.sh`,
+  `bin/workbench-apply.sh` and the apply units were written and tested from a
+  cloud session on 2026-07-26. Only the *running* of them needs the box.
+- `install-user.sh` has 8 tests against a fake HOME; shellcheck clean.
+- Deliberate: the installer refuses to overwrite a real file in `~/bin` rather
+  than clobbering it. That is exactly how `ollama-benchmark.py` came to exist
+  unversioned, and silently replacing it would destroy the only copy.
 - Plan approved by Lukas 2026-07-26. Box autonomy agreed as **pull +
   self-install; task-queue grinding stays opt-in behind a kill switch.**
 - Tailscale is on the phone as of 2026-07-26 (was listed as pending in

@@ -16,6 +16,13 @@ STATE="$HOME/.local/state/workbench/publish-failures"
 mkdir -p "$(dirname "$STATE")"
 cd "$REPO" || exit 1
 
+# Keep this clone tracking the remote. The amend + --force-with-lease below
+# fails permanently once main moves ahead of us, and the failure looks like a
+# network problem rather than a divergence — so a push from anywhere else would
+# silently freeze the phone's view. workbench-apply.sh does the real
+# reconciliation every 10 min; this is the cheap guard for the gap between.
+git fetch -q origin main 2>/dev/null && git merge -q --ff-only origin/main 2>/dev/null
+
 # No --quick here: the whole point of the page is measured test counts, and a
 # suite slow enough to delay a 30-minute timer is itself worth noticing.
 python3 "$HOME/bin/workbench-status.py" --write "$STATUS" >/dev/null 2>&1 || {

@@ -1,0 +1,8 @@
+[Unit]
+Description=Pull main from GitHub and apply it to this machine
+Documentation=https://github.com/lukashoerup/workbench/blob/main/SYSTEM.md
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/workbench-apply.sh
