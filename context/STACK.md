@@ -73,10 +73,34 @@ if the 9B's wall-clock becomes a problem at real volume.
 **Hard rule:** local models do bounded structured tasks only. They never do open-ended
 development work, regardless of harness.
 
+## Autonomy model — decided 2026-07-26
+Two layers, because they have different costs and different risks.
+
+**Free layer, runs forever, zero cloud tokens.** CI on every push, the watchdog,
+the status publisher, and the §8 local-model jobs (nightly triage, weekly
+gardener). This is what actually delivers "keeps working without being
+prompted", and it is the only layer allowed to run unattended by default.
+
+**Agent layer, bounded.** Headless Claude work blocks on the box, off by
+default. Spec §1 warns against long autonomous cloud-agent runs because
+5-hour rate-limit windows, not compute, are the bottleneck on Claude Pro — so
+blocks are bounded: one atomic task at a time, wall-clock capped, 3-strike
+circuit breaker, night-scheduled, never merging to `main`.
+
+Corollary that decides everything else: **the box pulls from GitHub; nothing
+pushes into the box.** Cloud sessions cannot reach `lenovo` (no ssh, no keys,
+no Tailscale, HTTPS-only egress) and inbound access is not wanted. GitHub is
+the meeting point, exactly as the 2026-07-24 deferral note put it: "cloud =
+Claude working, lenovo = scripts working, GitHub = meeting point."
+
 ## Scheduled jobs
 | Job | Cadence | Heartbeat marker |
 |---|---|---|
-| _none yet_ | | |
+| `workbench-status.timer` | 30 min | _watched as a unit, not a heartbeat_ |
+| `workbench-watchdog.timer` | 15 min | _watched as a unit, not a heartbeat_ |
+
+Planned, not yet installed: `workbench-apply` (pull + self-install),
+`workbench-triage` (nightly 03:15), `workbench-gardener` (Sunday 04:30).
 
 Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check list from
 `~/.config/workbench/watchdog.conf`. Add a `heartbeat` line there for every new job.

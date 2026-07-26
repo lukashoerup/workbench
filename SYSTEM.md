@@ -30,11 +30,24 @@ Owner: Lukas (Copenhagen). Hobby projects, optimized for minimal human time.
 
 1. **Cloud dispatch** — Lukas sends one message from anywhere; the session runs
    in Anthropic's cloud on the GitHub repo; CI judges; Lukas skims the PR.
-2. **Lenovo work blocks** *(deferred 2026-07-24)* — headless queue-grinding on
-   this box. Deferred because cloud dispatch covers the need on the same token
-   budget; revisit only if a real gap shows (local-stack-only work, or wanting
-   one batched summary instead of per-task dispatches).
+2. **Lenovo work blocks** *(un-deferred 2026-07-26, being built)* — headless
+   queue-grinding on this box, ending in ONE batched Telegram summary. Deferred
+   2026-07-24 because cloud dispatch covered the need; un-deferred when Lukas
+   hit the stated revisit trigger — wanting one batched summary instead of
+   prompting per task. Ships **off by default** behind a kill switch, works only
+   task files explicitly marked approved, and never merges to `main`.
 3. **Interactive** — Mac desktop app or VS Code Remote-SSH, when Lukas sits down.
+
+**Which Claude can touch the box.** Only this one. A cloud-dispatched session
+has no `ssh`, no keys, no Tailscale and HTTPS-only egress, so it can never
+reach `lenovo` — it reaches the *repo*. Desktop Claude Code on a Mac can SSH
+over Tailscale and is where on-box work happens.
+
+**So the box pulls, rather than being pushed to** *(agreed 2026-07-26)*:
+`bin/workbench-apply.sh` fetches `main` on a timer and runs the idempotent
+installer, keeping timers, config and scripts in sync with the repo. That is
+what makes remote work possible at all. Running the task queue is deliberately
+*not* part of it — that is session type 2, behind its own switch.
 
 ## Autonomy boundary (agreed 2026-07-24)
 

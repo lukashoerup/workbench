@@ -43,13 +43,17 @@ def read(rel):
 
 
 def test_no_references_to_the_merged_away_context_repo():
-    """`workbench-context` was merged into `context/` on 2026-07-24. The sweep
-    missed the status generator's footer, which then republished the dead path
-    to GitHub every 30 minutes for two days."""
-    offenders = [p for p in tracked() if "workbench-context" in read(p)]
-    assert not offenders, (
-        f"{offenders} still reference the merged-away workbench-context repo"
-    )
+    """The old cross-project repo was merged into `context/` on 2026-07-24. The
+    reference sweep missed the status generator's footer, which then
+    republished the dead path to GitHub every 30 minutes for two days.
+
+    The needle is assembled at runtime so this file can name the thing it
+    forbids without matching itself — otherwise the check flags its own source
+    the moment it becomes tracked, which is exactly what happened first time.
+    """
+    needle = "workbench" + "-context"
+    offenders = [p for p in tracked() if needle in read(p)]
+    assert not offenders, f"{offenders} still reference the merged-away {needle} repo"
 
 
 @pytest.mark.xfail(
