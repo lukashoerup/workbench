@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Sunday 26 July 2026, 14:59 CEST on `lenovo`._
+_Generated Sunday 26 July 2026, 15:30 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -12,18 +12,18 @@ Nothing. All clear.
 ### `workbench`
 Branch `main` — clean.
 
-**Tests: 56 passing.** ✅
+**Tests: 83 passing.** ✅
 
 Recent commits:
 ```
-24 Jul 13:32  Status: 26 Jul 14:27
-24 Jul 13:31  Merge task/2026-07-24-merge-context
-24 Jul 13:31  Merge workbench-context into context/ — repo-qualified references everywhere
-24 Jul 13:12  Merge task/2026-07-24-md-cleanup
-24 Jul 13:12  Docs cleanup: interface table + historical banner on the spec
-24 Jul 13:09  Merge task/2026-07-24-defer-runner
-24 Jul 13:09  Record work-block-runner deferral: cloud dispatch covers it
-24 Jul 13:01  Status: 24 Jul 13:01
+26 Jul 13:15  Stop the apply agent notifying every 10 minutes, and let it self-heal
+26 Jul 13:12  Decide what the local model is actually allowed to do in the nightly brief
+26 Jul 15:09  Capture lenovo's live machine state
+26 Jul 13:05  Close the loop: let the box pull from GitHub instead of only pushing
+26 Jul 13:05  Record the 2026-07-26 autonomy decisions and queue the remaining work
+26 Jul 13:05  Fix docs that contradict the repo, and test that they stay fixed
+26 Jul 13:05  Add GitHub Actions CI: tests and shellcheck on every push
+26 Jul 13:05  Needs you: escalate real failures instead of only setup gaps
 ```
 ### `erhvervsklubben`
 Branch `main` — clean.
@@ -45,21 +45,24 @@ Recent commits:
 ## Scheduled jobs
 
 ```
-NEXT                             LEFT LAST                              PASSED UNIT                           ACTIVATES
-Sun 2026-07-26 15:13:31 CEST    14min Sun 2026-07-26 14:58:14 CEST 1min 2s ago workbench-watchdog.timer       workbench-watchdog.service
-Sun 2026-07-26 19:46:14 CEST 4h 46min Sat 2026-07-25 19:46:14 CEST     19h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
--                                   - Sun 2026-07-26 14:59:14 CEST      2s ago workbench-status.timer         workbench-status.service
+NEXT                             LEFT LAST                          PASSED UNIT                           ACTIVATES
+Sun 2026-07-26 15:40:14 CEST     9min Sun 2026-07-26 15:30:14 CEST  9s ago workbench-apply.timer          workbench-apply.service
+Sun 2026-07-26 15:46:05 CEST    15min Sun 2026-07-26 15:30:14 CEST  9s ago workbench-watchdog.timer       workbench-watchdog.service
+Sun 2026-07-26 19:46:14 CEST 4h 15min Sat 2026-07-25 19:46:14 CEST 19h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+-                                   - Sun 2026-07-26 15:30:14 CEST  9s ago workbench-status.timer         workbench-status.service
 
-3 timers listed.
+4 timers listed.
 ```
 
-_No job heartbeats yet — no scrapers are running._
+| Job | Last success |
+|---|---|
+| `apply` | 0 min ago |
 
 ## Machine
 
 - Disk: 60G free of 98G (36% used)
 - RAM: 12Gi available of 15Gi
-- Uptime: up 3 days, 19 hours, 21 minutes
+- Uptime: up 3 days, 19 hours, 52 minutes
 
 Local models:
 ```
@@ -74,33 +77,37 @@ NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
 ## Tasks
 
 Open:
+- workbench/2026-07-26-bootstrap-lenovo.md
+- workbench/2026-07-26-hooks-and-work-block.md
+- workbench/2026-07-26-local-model-jobs.md
+- workbench/2026-07-26-notify-retry-outbox.md
 - erhvervsklubben/T020-rls-tests.md
 - erhvervsklubben/T022-ci-and-hooks.md
 
-Completed: 9
+Completed: 13
 
 ## Recent activity
 
 Watchdog:
 ```
-2026-07-26T13:38:16+02:00	run complete: 0 failing
 2026-07-26T13:54:16+02:00	run complete: 0 failing
 2026-07-26T14:10:16+02:00	run complete: 0 failing
 2026-07-26T14:26:16+02:00	run complete: 0 failing
 2026-07-26T14:42:16+02:00	run complete: 0 failing
 2026-07-26T14:58:16+02:00	run complete: 0 failing
+2026-07-26T15:14:16+02:00	run complete: 0 failing
 ```
 
 Notifications sent:
 ```
-2026-07-22T18:31:07+00:00	NOCHANNEL	routine report check
-2026-07-22T18:31:10+00:00	NOCHANNEL	⚠️ Watchdog on lenovo: selftest is stale — last run 180 min ago (limit 120 min)
-2026-07-22T19:09:20+00:00	SENT	🔧 Workbench notifications are live. This is where alerts will land.
 2026-07-22T19:09:36+00:00	SENT	🧪 Workbench watchdog test alert from lenovo at 2026-07-22T19:09:36+00:00
 2026-07-22T19:09:36+00:00	SENT	Silent-mode check — this one should not buzz.
 2026-07-22T21:56:50+02:00	SENT	🌙 Overnight summary — nothing needs you tonight.\n\nWrote the first test suite: 43 tests, all green. Adversarial review (fable) found 5 real defects, all fixed and proven by mutation testing. Worst one: notify.py crashed on a full disk — so a disk-full incident would have killed every scraper AND the alert path.\n\nErhvervsklub work is blocked: GitHub not authenticated, Supabase project paused. Nothing faked.\n\nMorning, in order:\n1. python3 ~/bin/github-device-login.py  → unlocks Claude app on your phone\n2. Install Tailscale on the phone → unlocks SSH to the box\n3. sudo bash ~/workbench/setup/allow-agent-installs.sh\n\nThen I can work from your phone.
+2026-07-26T15:09:05+02:00	SENT	⚠️ lenovo's repo has diverged from GitHub and holds local work I will not discard. It has stopped applying updates until this is resolved.
+2026-07-26T15:09:06+02:00	SENT	✅ lenovo bootstrapped: it now pulls from GitHub every 10 min and applies updates itself. No terminal needed from here on.
+2026-07-26T15:19:16+02:00	SENT	⚠️ lenovo failed to apply an update from GitHub. It is running older code than the repo.
 ```
 
 ---
 
-_Ask Claude about any file in this repo — the markdown in `docs/`, `workbench-setup-spec.md`, and `../workbench-context/` is the full picture._
+_Ask Claude about any file in this repo — the markdown in `docs/`, `context/`, and `workbench-setup-spec.md` is the full picture._
