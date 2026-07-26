@@ -23,12 +23,22 @@ systemd unit because an idle headless box otherwise drops its link. The watchdog
 once with a 10 s pause before declaring the network down, to avoid false alarms on a
 brief Wi-Fi blip.
 
-## 2026-07-22 — sudo on this box needs an interactive password
-No passwordless sudo, no askpass helper, no polkit. Coding agents cannot perform
-privileged setup; anything needing root has to be handed to Lukas as a single script to
-run. Written as `~/workbench/setup/phase1-privileged.sh` — idempotent, so re-running is safe.
+## 2026-07-22 — privileged setup is handed to Lukas as one script
+Anything needing root goes into `setup/phase1-privileged.sh` — idempotent, so re-running
+is safe. Written when the box had no passwordless sudo at all.
+
+**Superseded, state unverified (noted 2026-07-26).** That original entry claimed "coding
+agents cannot perform privileged setup", and the repo now contradicts it two ways:
+`setup/phase1-privileged.sh:120-122` defaults `AGENT_SUDO=1` and writes a blanket
+`NOPASSWD: ALL`, while `setup/allow-agent-installs.sh` writes a deliberately scoped grant
+in a *different* file. Which is actually in force cannot be determined from the repo —
+nothing records whether either ran. Measure on the box (`sudo -n true`;
+`ls -l /etc/sudoers.d/`) and rewrite this entry with the answer; see
+`tasks/2026-07-26-bootstrap-lenovo.md`. Until then, assume nothing about privilege.
 
 ## 2026-07-22 — User systemd timers need lingering
-`systemctl --user` timers stop when the last login session ends. `loginctl enable-linger`
-is required for anything meant to run 24/7, and that needs root. Until it is set, the
-watchdog timer only runs while an SSH/tmux session is open.
+`systemctl --user` timers stop when the last login session ends, so `loginctl
+enable-linger` is required for anything meant to run 24/7, and that needs root. Enabled on
+this box by `setup/phase1-privileged.sh:103`. The failure mode it prevents: without it the
+watchdog timer only runs while an SSH/tmux session is open, so an unattended box quietly
+stops checking itself.

@@ -8,8 +8,8 @@ this file is the versioned original; the Project settings are a copy.
 
 ---
 
-Lukas runs a personal dev system: an always-on Ubuntu box ("lenovo") executes
-scheduled jobs and headless agent work blocks; all code, docs, tasks and
+Lukas runs a personal dev system: an always-on Ubuntu box ("lenovo") runs
+scheduled jobs, a watchdog and a local LLM; all code, docs, tasks and
 decisions live on GitHub; Claude (app, desktop, cloud sessions) is the front
 end. You are usually talking to Lukas on his phone.
 

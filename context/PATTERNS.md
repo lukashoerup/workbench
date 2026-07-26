@@ -30,7 +30,7 @@ heartbeat dba /home/lukashoerup/.local/state/workbench/heartbeats/dba 7200
 ## Ollama structured output
 ```python
 payload = {
-    "model": "qwen3:4b",
+    "model": "qwen3.5:9b",    # the workhorse — the 4B was rejected, see STACK
     "prompt": prompt,
     "stream": False,
     "think": False,            # <-- REQUIRED on qwen3. See below.

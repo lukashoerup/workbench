@@ -8,7 +8,7 @@ Owner: Lukas (Copenhagen). Hobby projects, optimized for minimal human time.
 
 | Piece | Role |
 |---|---|
-| `lenovo` (always-on Ubuntu box) | The ops box, **never a workspace**: scheduled jobs, watchdog, STATUS.md publisher, local LLM (Ollama), headless agent work blocks. Nobody logs in day-to-day. |
+| `lenovo` (always-on Ubuntu box) | The ops box, **never a workspace**: scheduled jobs, watchdog, STATUS.md publisher, local LLM (Ollama). Nobody logs in day-to-day. |
 | GitHub (`lukashoerup/*`) | **Single source of truth** for all code, docs, tasks, decisions. The shared memory between every Claude and every device. |
 | Anthropic cloud (dispatched sessions) | Repo work while Lukas's Macs are off: dispatch from phone/desktop, results return as commits/PRs. |
 | Macs (desktop app / VS Code) | Optional interactive dev. Nothing depends on them being on. |
