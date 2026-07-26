@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Sunday 26 July 2026, 16:01 CEST on `lenovo`._
+_Generated Tuesday 04 August 2026, 15:40 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -16,14 +16,14 @@ Branch `main` — clean.
 
 Recent commits:
 ```
+04 Aug 15:09  Status: 04 Aug 15:09
+26 Jul 16:17  Make the plain-language rule permanent
+26 Jul 16:01  Status: 26 Jul 16:01
 26 Jul 15:37  Make the box's own facts trustworthy, and publish them continuously
 26 Jul 15:30  Status: 26 Jul 15:30
 26 Jul 15:15  Stop the apply agent notifying every 10 minutes, and let it self-heal
 26 Jul 15:12  Decide what the local model is actually allowed to do in the nightly brief
 26 Jul 15:09  Capture lenovo's live machine state
-26 Jul 15:05  Close the loop: let the box pull from GitHub instead of only pushing
-26 Jul 15:05  Record the 2026-07-26 autonomy decisions and queue the remaining work
-26 Jul 15:05  Fix docs that contradict the repo, and test that they stay fixed
 ```
 ### `erhvervsklubben`
 Branch `main` — clean.
@@ -45,24 +45,24 @@ Recent commits:
 ## Scheduled jobs
 
 ```
-NEXT                             LEFT LAST                           PASSED UNIT                           ACTIVATES
-Sun 2026-07-26 16:02:14 CEST      50s Sun 2026-07-26 15:52:14 CEST 9min ago workbench-apply.timer          workbench-apply.service
-Sun 2026-07-26 16:16:18 CEST    14min Sun 2026-07-26 16:01:18 CEST   5s ago workbench-watchdog.timer       workbench-watchdog.service
-Sun 2026-07-26 19:46:14 CEST 3h 44min Sat 2026-07-25 19:46:14 CEST  20h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
--                                   - Sun 2026-07-26 16:01:14 CEST   9s ago workbench-status.timer         workbench-status.service
+NEXT                             LEFT LAST                            PASSED UNIT                           ACTIVATES
+Tue 2026-08-04 15:41:03 CEST      39s Tue 2026-08-04 15:25:14 CEST 15min ago workbench-watchdog.timer       workbench-watchdog.service
+Tue 2026-08-04 15:50:14 CEST     9min Tue 2026-08-04 15:40:14 CEST    9s ago workbench-apply.timer          workbench-apply.service
+Tue 2026-08-04 19:54:14 CEST 4h 13min Mon 2026-08-03 19:54:14 CEST   19h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+-                                   - Tue 2026-08-04 15:40:14 CEST    9s ago workbench-status.timer         workbench-status.service
 
 4 timers listed.
 ```
 
 | Job | Last success |
 |---|---|
-| `apply` | 9 min ago |
+| `apply` | 0 min ago |
 
 ## Machine
 
 - Disk: 60G free of 98G (36% used)
-- RAM: 12Gi available of 15Gi
-- Uptime: up 3 days, 20 hours, 23 minutes
+- RAM: 11Gi available of 15Gi
+- Uptime: up 1 week, 5 days, 20 hours, 2 minutes
 
 Toolchain:
 
@@ -78,9 +78,9 @@ Toolchain:
 
 Local models:
 ```
-NAME          ID              SIZE      MODIFIED   
-qwen3.5:9b    6488c96fa5fa    6.6 GB    3 days ago    
-qwen3:4b      359d7dd4bcda    2.5 GB    3 days ago
+NAME          ID              SIZE      MODIFIED    
+qwen3.5:9b    6488c96fa5fa    6.6 GB    12 days ago    
+qwen3:4b      359d7dd4bcda    2.5 GB    12 days ago
 
 Currently loaded:
 NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
@@ -96,18 +96,18 @@ Open:
 - erhvervsklubben/T020-rls-tests.md
 - erhvervsklubben/T022-ci-and-hooks.md
 
-Completed: 14
+Completed: 15
 
 ## Recent activity
 
 Watchdog:
 ```
-2026-07-26T14:26:16+02:00	run complete: 0 failing
-2026-07-26T14:42:16+02:00	run complete: 0 failing
-2026-07-26T14:58:16+02:00	run complete: 0 failing
-2026-07-26T15:14:16+02:00	run complete: 0 failing
-2026-07-26T15:30:16+02:00	run complete: 0 failing
-2026-07-26T15:46:16+02:00	run complete: 0 failing
+2026-08-04T14:07:23+02:00	run complete: 0 failing
+2026-08-04T14:23:16+02:00	run complete: 0 failing
+2026-08-04T14:38:18+02:00	run complete: 0 failing
+2026-08-04T14:54:16+02:00	run complete: 0 failing
+2026-08-04T15:09:18+02:00	run complete: 0 failing
+2026-08-04T15:25:16+02:00	run complete: 0 failing
 ```
 
 Notifications sent:
