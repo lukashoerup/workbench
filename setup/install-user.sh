@@ -31,8 +31,12 @@ for arg in "$@"; do
     esac
 done
 
+# Drift is fixable by re-running. Blocked needs a human, so the caller must not
+# retry it every 10 minutes — workbench-apply.sh keys its alerting on this.
 drift=0
+blocked=0
 note() { echo "$1"; drift=1; }
+halt() { echo "$1"; blocked=1; }
 
 # ------------------------------------------------------------------ ~/bin
 # Symlinks, not copies: a copy silently decouples the box from the repo, so an
@@ -47,12 +51,24 @@ for src in "$REPO"/bin/*; do
     if [ -L "$dest" ] && [ "$(readlink -f "$dest")" = "$(readlink -f "$want")" ]; then
         continue
     fi
-    if [ -e "$dest" ] && [ ! -L "$dest" ] && [ "$FORCE" -eq 0 ]; then
-        # A real file here means someone edited the box directly. Refuse rather
-        # than overwrite: that file may be the only copy of something.
-        # shellcheck disable=SC2088  # display text for a human, not a path to expand
-        note "~/bin/$name is a real file, not a symlink — refusing to replace it (use --force)"
-        continue
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+        if cmp -s "$dest" "$want"; then
+            # Byte-identical to the repo copy, so converting it to a symlink
+            # loses nothing — and it is what makes edits version-controlled
+            # from here on. This is the state the box lands in right after a
+            # bootstrap recovers a previously unversioned script.
+            # shellcheck disable=SC2088  # display text for a human, not a path to expand
+            note "~/bin/$name is a copy of the repo file — converting to a symlink"
+            [ "$CHECK" -eq 1 ] || ln -sfn "$want" "$dest"
+            continue
+        fi
+        if [ "$FORCE" -eq 0 ]; then
+            # Content differs, so this file holds edits that exist nowhere else.
+            # Never overwrite it, and never retry: a human has to reconcile it.
+            # shellcheck disable=SC2088  # display text for a human, not a path to expand
+            halt "~/bin/$name differs from the repo copy — it holds unversioned edits. Reconcile it, or re-run with --force to discard them."
+            continue
+        fi
     fi
     # shellcheck disable=SC2088  # display text for a human, not a path to expand
     note "~/bin/$name needs linking"
@@ -60,10 +76,23 @@ for src in "$REPO"/bin/*; do
 done
 
 # ------------------------------------------------------------- watchdog.conf
+# Add-only. The live file is operational config and may hold checks someone
+# added on the box, so it is never overwritten or pruned — but a check the repo
+# declares must reach the machine, otherwise a new job ships with nothing
+# watching it and its silent death is invisible.
 mkdir -p "$CONF"
-if [ ! -f "$CONF/watchdog.conf" ]; then
+LIVE="$CONF/watchdog.conf"
+if [ ! -f "$LIVE" ]; then
     note "watchdog.conf missing"
-    [ "$CHECK" -eq 1 ] || cp "$REPO/setup/watchdog.conf" "$CONF/watchdog.conf"
+    [ "$CHECK" -eq 1 ] || cp "$REPO/setup/watchdog.conf" "$LIVE"
+else
+    while IFS= read -r line; do
+        case "$line" in ''|\#*) continue ;; esac
+        if ! grep -qxF "$line" "$LIVE"; then
+            note "watchdog check missing: $line"
+            [ "$CHECK" -eq 1 ] || printf '%s\n' "$line" >>"$LIVE"
+        fi
+    done <"$REPO/setup/watchdog.conf"
 fi
 
 # ------------------------------------------------------------------- units
@@ -83,6 +112,8 @@ for src in "$REPO"/setup/systemd/user/*; do
 done
 
 if [ "$CHECK" -eq 1 ]; then
+    # 2 outranks 1: a blocked box needs a human, and the caller must not retry.
+    [ "$blocked" -eq 1 ] && exit 2
     [ "$drift" -eq 0 ] && echo "in sync"
     exit "$drift"
 fi
@@ -101,4 +132,5 @@ for src in "$REPO"/setup/systemd/user/*.timer; do
         || echo "could not enable $(basename "$src")" >&2
 done
 
+[ "$blocked" -eq 1 ] && { echo "installed, with unresolved items above" >&2; exit 2; }
 echo "installed"

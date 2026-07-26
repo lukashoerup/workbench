@@ -66,18 +66,39 @@ if [ "$local_head" != "$remote_head" ]; then
 fi
 
 # Idempotent: a no-op when nothing changed, which is almost every run.
-if ! bash "$REPO/setup/install-user.sh" --check >/dev/null 2>&1; then
-    log "drift detected, installing"
-    if bash "$REPO/setup/install-user.sh" >>"$LOG" 2>&1; then
-        log "install complete"
-        "$NOTIFY" "🔧 lenovo applied an update from GitHub (${remote_head:0:8})." --silent 2>/dev/null \
-            || "$NOTIFY" "🔧 lenovo applied an update from GitHub (${remote_head:0:8})."
-    else
-        log "install FAILED"
-        "$NOTIFY" "⚠️ lenovo failed to apply an update from GitHub. It is running older code than the repo."
-        exit 1
-    fi
-fi
+#
+# A successful update is deliberately NOT announced. This runs every 10 minutes
+# forever, and SYSTEM.md's rule is that the machine interrupts Lukas only when
+# something needs him — an update that worked does not. It is in the log and on
+# the status page. Only failures and human-blocking problems send a message.
+bash "$REPO/setup/install-user.sh" --check >/dev/null 2>&1
+check_status=$?
+case "$check_status" in
+    0) : ;;                       # in sync, nothing to do
+    1)                            # fixable drift
+        log "drift detected, installing"
+        if bash "$REPO/setup/install-user.sh" >>"$LOG" 2>&1; then
+            log "install complete at ${remote_head:0:8}"
+        else
+            log "install FAILED"
+            "$NOTIFY" "⚠️ lenovo failed to apply an update from GitHub. It is running older code than the repo."
+            exit 1
+        fi
+        ;;
+    2)                            # blocked: needs a human, re-running cannot help
+        # Alert once per distinct blockage, not every 10 minutes forever. The
+        # loop this prevents is not hypothetical: four unversioned scripts in
+        # ~/bin did exactly this on 2026-07-26.
+        fingerprint=$(bash "$REPO/setup/install-user.sh" --check 2>&1 | sort | cksum)
+        if [ "$fingerprint" != "$(cat "$STATE/apply-blocked" 2>/dev/null)" ]; then
+            echo "$fingerprint" >"$STATE/apply-blocked"
+            log "BLOCKED: $(bash "$REPO/setup/install-user.sh" --check 2>&1 | tr '\n' '; ')"
+            "$NOTIFY" "⚠️ lenovo cannot finish applying an update — something on the box needs a decision. See the apply log or STATUS.md."
+        fi
+        ;;
+esac
+# Clear the blocked marker once the box is healthy, so a future blockage alerts.
+[ "$check_status" -eq 2 ] || rm -f "$STATE/apply-blocked"
 
 # Last line of a successful run only — never in a trap. A heartbeat written on
 # failure would tell the watchdog everything is fine while nothing works.

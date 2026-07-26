@@ -9,6 +9,16 @@ Two halves of the same contract. The `CLAUDE.md:22-31` guardrails and the spec
 type 2 (`SYSTEM.md:33`) was un-deferred on 2026-07-26: Lukas wants one batched
 summary instead of prompting per task.
 
+## Start from the hook that already exists
+`bin/new-project.sh:160-184` (recovered from the box 2026-07-26) already
+contains a working pre-commit hook: protected paths, a dependency-approval
+marker, and a tests-and-lint gate — including the subtlety that an empty
+`tests/` makes pytest exit 5, which is not a red suite. Adapt that rather than
+writing a new one, and keep the two in step.
+
+Note it uses the marker `DEPENDENCY APPROVED`; this repo's task files were
+written expecting `Dependency approved by Lukas:`. Pick one and use it in both.
+
 ## Acceptance criteria — hooks
 - [ ] `hooks/pre-commit` + `setup/install-hooks.sh`, activated with
       `git config core.hooksPath hooks`

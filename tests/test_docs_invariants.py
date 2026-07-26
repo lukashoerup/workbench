@@ -56,12 +56,6 @@ def test_no_references_to_the_merged_away_context_repo():
     assert not offenders, f"{offenders} still reference the merged-away {needle} repo"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="ollama-benchmark.py and github-device-login.py exist only on lenovo. "
-           "Recovered by tasks/2026-07-26-bootstrap-lenovo.md — when that lands "
-           "this xpasses and the marker must be deleted.",
-)
 def test_every_referenced_bin_script_is_actually_in_the_repo():
     """CLAUDE.md promises "`~/bin` symlinks here, so edits are version-controlled".
     A script referenced in the docs but absent from `bin/` means that promise is

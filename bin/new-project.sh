@@ -46,7 +46,7 @@ ${DESC:-[What it does, who/what consumes it.]}
 | Architecture, dataflow   | docs/ARCHITECTURE.md              |
 | Setup, deploy, secrets   | docs/SETUP.md                     |
 | Known pitfalls           | docs/LEARNINGS.md                 |
-| Cross-project patterns   | ~/workbench-context/PATTERNS.md   |
+| Cross-project patterns   | workbench repo: context/PATTERNS.md |
 
 ## Docs duty
 Any change that invalidates a docs statement MUST fix it in the same commit.
