@@ -1,0 +1,10 @@
+[Unit]
+Description=Regenerate STATUS.md and publish it to GitHub for phone access
+Documentation=file:///home/lukashoerup/workbench/bin/publish-status.sh
+
+[Service]
+Type=oneshot
+ExecStart=/home/lukashoerup/bin/publish-status.sh
+# A failed push is expected on a Wi-Fi box; the script alerts after 3 in a row.
+SuccessExitStatus=0 1
+Nice=15

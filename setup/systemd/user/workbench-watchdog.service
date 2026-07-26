@@ -1,0 +1,10 @@
+[Unit]
+Description=Workbench watchdog — check core services and job heartbeats
+Documentation=file:///home/lukashoerup/workbench/workbench-setup-spec.md
+
+[Service]
+Type=oneshot
+ExecStart=/home/lukashoerup/bin/watchdog-check.sh
+# A failing check is a normal outcome (it alerts); don't mark the unit failed.
+SuccessExitStatus=0 1
+Nice=10
