@@ -140,8 +140,8 @@ def collect_tasks() -> tuple[list[str], list[str]]:
     return open_t, done_t
 
 
-def collect_blockers() -> list[str]:
-    """Things that need Lukas. This is the part worth reading on a phone."""
+def collect_setup_blockers() -> list[str]:
+    """One-time setup gaps. These probe the machine, so they are not pure."""
     b = []
     keys = HOME / ".ssh" / "authorized_keys"
     if not keys.exists() or keys.stat().st_size == 0:
@@ -156,6 +156,84 @@ def collect_blockers() -> list[str]:
     return b
 
 
+def _last_log_entry(tail: str) -> tuple[datetime | None, list[str]]:
+    """Timestamp and tab-separated fields of a log's last real line.
+
+    Both logs are `<iso>\\t<field>...` — watchdog-check.sh:20 and notify.py:68.
+    tail_log() returns a parenthesised placeholder when there is no log, which
+    must read as "nothing to say", never as a failure.
+    """
+    for line in reversed([ln for ln in tail.splitlines() if ln.strip()]):
+        if line.startswith("("):
+            return None, []
+        parts = line.split("\t")
+        try:
+            return datetime.fromisoformat(parts[0]), parts[1:]
+        except ValueError:
+            continue
+    return None, []
+
+
+def collect_blockers(facts: dict) -> list[str]:
+    """Things that need Lukas, derived from what the collectors already measured.
+
+    Pure by design: no subprocess, no filesystem. Everything arrives in `facts`,
+    which is what makes the escalation logic testable without a machine — and
+    this is the part of the page worth reading on a phone, so it is the part
+    that most needs tests.
+
+    Operational failures sort above setup gaps: a red test outranks a missing
+    tailnet peer.
+    """
+    b: list[str] = []
+    now = facts["now"]
+
+    for r in facts["repos"]:
+        name, g, t = r["name"], r["git"], r["tests"]
+        if t and t.get("state") == "fail":
+            b.append(f"**Tests red in `{name}`** — {t['failed']} failing, "
+                     f"{t['passed']} passing. Nothing should be committed on top of this.")
+        if g.get("dirty"):
+            n = len(g["dirty"].splitlines())
+            b.append(f"**{n} uncommitted file(s) in `{name}`** — work that exists only on "
+                     "the box. A rebuild would lose it.")
+        if g.get("unpushed"):
+            n = len(g["unpushed"].splitlines())
+            b.append(f"**{n} unpushed commit(s) in `{name}`** — GitHub cannot see this work, "
+                     "so no other Claude can either.")
+
+    # The watchdog is the box's own alarm. Two ways it fails Lukas: it reports
+    # failures nobody reads, or it stops running and everything looks quiet.
+    wd_time, wd_fields = _last_log_entry(facts["watchdog_tail"])
+    if wd_fields:
+        m = re.search(r"run complete: (\d+) failing", wd_fields[0])
+        if m and int(m.group(1)) > 0:
+            b.append(f"**Watchdog reports {m.group(1)} failing check(s)** — see the watchdog "
+                     "log at the bottom of this page.")
+    if wd_time is not None:
+        silent_min = int((now - wd_time).total_seconds() / 60)
+        if silent_min > 45:
+            b.append(f"**Watchdog has not run in {silent_min} min** — its timer fires every "
+                     "15, so the box's own alarm is off.")
+
+    # A dead notification channel hides every other failure on this machine,
+    # and notify.py degrades silently by design (:90) so nothing else surfaces
+    # it. STATUS.md can, because Lukas pulls this page rather than being pushed.
+    nt_time, nt_fields = _last_log_entry(facts["notify_tail"])
+    if nt_fields and nt_time is not None:
+        status = nt_fields[0]
+        if (status.startswith("FAILED") or status == "NOCHANNEL") \
+                and (now - nt_time).total_seconds() < 3600:
+            b.append(f"**The machine's voice is broken** — last notification attempt was "
+                     f"`{status}`. Alerts are not reaching you; this page is the only channel "
+                     "still working.")
+
+    if facts["quick"]:
+        b.append("_Tests were not measured in this run (`--quick`)._")
+
+    return b + facts["setup"]
+
+
 # ---------------------------------------------------------------------- render
 def build() -> str:
     args = build.args
@@ -167,26 +245,45 @@ def build() -> str:
         "_Regenerated automatically every 30 minutes. Everything below is measured, not remembered._",
     ]
 
+    # ---- measure first, render second: the blocker list is derived from the
+    # same facts the sections below display, so it cannot disagree with them.
+    watchdog_tail = tail_log("watchdog.log", 6)
+    notify_tail = tail_log("notify.log", 6)
+    repo_facts = []
+    for repo in REPOS:
+        if not repo.is_dir():
+            continue
+        repo_facts.append({
+            "name": repo.name,
+            "path": repo,
+            "git": collect_git(repo),
+            "tests": None if args.quick else collect_tests(repo),
+        })
+
     # ---- needs you
-    blockers = collect_blockers()
+    blockers = collect_blockers({
+        "now": now,
+        "quick": args.quick,
+        "repos": repo_facts,
+        "watchdog_tail": watchdog_tail,
+        "notify_tail": notify_tail,
+        "setup": collect_setup_blockers(),
+    })
     out.append(section("Needs you"))
     out.append("\n".join(f"- {b}" for b in blockers) if blockers else "Nothing. All clear.")
 
     # ---- repos
     out.append(section("Repositories"))
-    for repo in REPOS:
-        if not repo.is_dir():
-            continue
-        g = collect_git(repo)
-        out.append(f"### `{repo.name}`")
+    for r in repo_facts:
+        g, t = r["git"], r["tests"]
+        out.append(f"### `{r['name']}`")
         dirty = g.get("dirty", "")
         state = f"{len(dirty.splitlines())} uncommitted file(s)" if dirty else "clean"
         unpushed = g.get("unpushed", "")
         if unpushed:
             state += f", {len(unpushed.splitlines())} unpushed commit(s)"
         out.append(f"Branch `{g.get('branch','?')}` — {state}.")
-        if not args.quick:
-            t = collect_tests(repo)
+        if t is not None:
             if t["state"] == "pass":
                 out.append(f"\n**Tests: {t['passed']} passing.** ✅")
             elif t["state"] == "fail":
@@ -224,8 +321,8 @@ def build() -> str:
 
     # ---- logs
     out.append(section("Recent activity"))
-    out.append(f"Watchdog:\n```\n{tail_log('watchdog.log', 6)}\n```")
-    out.append(f"\nNotifications sent:\n```\n{tail_log('notify.log', 6)}\n```")
+    out.append(f"Watchdog:\n```\n{watchdog_tail}\n```")
+    out.append(f"\nNotifications sent:\n```\n{notify_tail}\n```")
 
     out.append("\n---\n")
     out.append("_Ask Claude about any file in this repo — the markdown in `docs/`, "
