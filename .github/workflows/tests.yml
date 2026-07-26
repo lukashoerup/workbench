@@ -1,0 +1,42 @@
+# Tests are the judge (spec §2.1) — but until this existed the only thing
+# running them was the status timer on `lenovo`, so a push made while the box
+# was off went unjudged. This costs no cloud tokens and runs forever, which is
+# the free half of "keep iterating without being prompted".
+#
+# Deliberately no third-party actions: one would be a dependency under
+# CLAUDE.md's "NEVER add dependencies without explicit approval". pyproject.toml
+# declares dependencies = [], so plain pip covers it.
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: pip install "pytest>=8.0"
+
+      # -o addopts= overrides the "-x -q" in pyproject.toml. Without it the run
+      # stops at the first failure and CI under-reports how much is broken.
+      - name: Run tests
+        run: pytest tests/ -o addopts=""
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # shellcheck ships preinstalled on GitHub's ubuntu runners, so this adds
+      # no dependency. Half this repo's tooling is bash and that is where the
+      # defects have actually been.
+      - name: Lint shell scripts
+        run: shellcheck bin/*.sh setup/*.sh
