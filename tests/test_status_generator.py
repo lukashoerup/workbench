@@ -156,6 +156,41 @@ def test_operational_failures_sort_above_setup_gaps():
     assert "Telegram" in out[-1]
 
 
+# ------------------------------------------------------------- toolchain
+def test_a_tool_outside_path_is_still_found(tmp_path, monkeypatch):
+    """The original bug: an ssh non-login shell and a systemd unit both run
+    without ~/.local/bin on PATH, so `command -v uv` reported uv missing while
+    it was demonstrably running the test suite. The same probe decides whether
+    Claude Code is on the box, so a false negative there is load-bearing."""
+    mod = load_status_mod()
+    hidden = tmp_path / "hidden-bin"
+    hidden.mkdir()
+    tool = hidden / "uv"
+    tool.write_text("#!/bin/sh\n")
+    tool.chmod(0o755)
+
+    monkeypatch.setattr(mod.shutil, "which", lambda n: None)
+    monkeypatch.setattr(mod, "TOOL_DIRS", [hidden])
+    assert mod.find_tool("uv") == str(tool)
+
+
+def test_a_genuinely_absent_tool_reports_absent(tmp_path, monkeypatch):
+    """Absence must mean absence — otherwise the fix trades one wrong answer
+    for another."""
+    mod = load_status_mod()
+    monkeypatch.setattr(mod.shutil, "which", lambda n: None)
+    monkeypatch.setattr(mod, "TOOL_DIRS", [tmp_path])
+    assert mod.find_tool("definitely-not-installed") is None
+
+
+def test_a_non_executable_file_is_not_a_tool(tmp_path, monkeypatch):
+    mod = load_status_mod()
+    (tmp_path / "uv").write_text("not executable\n")
+    monkeypatch.setattr(mod.shutil, "which", lambda n: None)
+    monkeypatch.setattr(mod, "TOOL_DIRS", [tmp_path])
+    assert mod.find_tool("uv") is None
+
+
 def test_commit_dates_show_when_the_commit_landed_not_when_it_was_authored(tmp_path):
     """publish-status.sh collapses status commits with --amend, which keeps the
     author date and moves only the committer date. Reporting the author date
@@ -183,3 +218,32 @@ def test_commit_dates_show_when_the_commit_landed_not_when_it_was_authored(tmp_p
     log = load_status_mod().collect_git(tmp_path)["log"]
     assert "26 Jul 13:55" in log, f"expected the committer date, got: {log}"
     assert "02 Jan" not in log, f"author date leaked into the page: {log}"
+
+
+def test_commits_from_other_timezones_render_in_local_time(tmp_path, monkeypatch):
+    """Plain `--date=format:` renders each commit in its own zone, so commits
+    made in a cloud container (UTC) sat above commits made on the box (CEST)
+    while reading as earlier — the published list looked shuffled."""
+    monkeypatch.setenv("TZ", "UTC")
+    subprocess.run(["git", "init", "-q", "-b", "main", str(tmp_path)], check=True)
+    git(tmp_path, "config", "user.email", "test@example.com")
+    git(tmp_path, "config", "user.name", "Test")
+    (tmp_path / "f.txt").write_text("x\n")
+    git(tmp_path, "add", "-A")
+    subprocess.run(
+        ["git", "commit", "-q", "-m", "Committed far from here"],
+        cwd=tmp_path, check=True,
+        env={
+            "PATH": "/usr/bin:/bin", "HOME": str(tmp_path), "TZ": "UTC",
+            "GIT_AUTHOR_NAME": "Test", "GIT_AUTHOR_EMAIL": "test@example.com",
+            "GIT_COMMITTER_NAME": "Test", "GIT_COMMITTER_EMAIL": "test@example.com",
+            # 18:00 in UTC+09:00 is 09:00 UTC. Rendered in its own zone it
+            # would read 18:00; rendered locally it must read 09:00.
+            "GIT_COMMITTER_DATE": "2026-07-26T18:00:00+09:00",
+            "GIT_AUTHOR_DATE": "2026-07-26T18:00:00+09:00",
+        },
+    )
+
+    log = load_status_mod().collect_git(tmp_path)["log"]
+    assert "09:00" in log, f"expected local time, got: {log}"
+    assert "18:00" not in log, f"rendered in the commit's own timezone: {log}"

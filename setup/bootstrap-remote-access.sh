@@ -116,11 +116,15 @@ say "4. Record what this machine actually looks like"
     echo
     echo "## Toolchain"
     echo
+    echo "_Resolved by \`bin/workbench-status.py\`, which also republishes this"
+    echo "every 30 minutes — so STATUS.md is the current answer, not this file._"
+    echo
     echo '```'
-    for t in claude uv python3 ollama git systemctl tailscale; do
-        p=$(command -v "$t" 2>/dev/null || echo "NOT INSTALLED")
-        echo "$t: $p"
-    done
+    # One implementation, not two. `command -v` alone was the original bug here:
+    # this runs over ssh without ~/.local/bin on PATH, so uv reported missing
+    # while it was demonstrably running the test suite.
+    python3 "$REPO/bin/workbench-status.py" --toolchain 2>/dev/null \
+        || echo "(probe failed)"
     echo '```'
     echo
     echo "## Timers"

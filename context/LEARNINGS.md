@@ -23,18 +23,25 @@ systemd unit because an idle headless box otherwise drops its link. The watchdog
 once with a 10 s pause before declaring the network down, to avoid false alarms on a
 brief Wi-Fi blip.
 
-## 2026-07-22 — privileged setup is handed to Lukas as one script
-Anything needing root goes into `setup/phase1-privileged.sh` — idempotent, so re-running
-is safe. Written when the box had no passwordless sudo at all.
+## 2026-07-26 — agents on this box have unrestricted root (measured)
+`sudo -n true` succeeds. Both grants exist:
 
-**Superseded, state unverified (noted 2026-07-26).** That original entry claimed "coding
-agents cannot perform privileged setup", and the repo now contradicts it two ways:
-`setup/phase1-privileged.sh:120-122` defaults `AGENT_SUDO=1` and writes a blanket
-`NOPASSWD: ALL`, while `setup/allow-agent-installs.sh` writes a deliberately scoped grant
-in a *different* file. Which is actually in force cannot be determined from the repo —
-nothing records whether either ran. Measure on the box (`sudo -n true`;
-`ls -l /etc/sudoers.d/`) and rewrite this entry with the answer; see
-`tasks/2026-07-26-bootstrap-lenovo.md`. Until then, assume nothing about privilege.
+```
+-r--r----- 50-workbench-agent    scoped: apt, systemctl, journalctl, ollama, tailscale
+-r--r----- 90-agent-nopasswd     lukashoerup ALL=(ALL) NOPASSWD: ALL
+```
+
+The blanket grant wins, so **the scoped one is currently decorative** — an agent here can
+do anything root can. Lukas's decision 2026-07-26: leave it. It is a personal box with no
+production data, and the blanket grant is what lets an agent install things unattended,
+which is the point. Revisit if the box ever holds something worth stealing.
+
+This replaces an entry claiming the opposite ("no passwordless sudo, coding agents cannot
+perform privileged setup"), written 2026-07-22 before `phase1-privileged.sh` ran. It was
+false from 2026-07-23 onward, and an agent reading it would wrongly conclude it had to
+hand every privileged step to a human. Privileged setup still *belongs* in
+`setup/phase1-privileged.sh` — idempotent, reviewable, re-runnable — but that is a
+convention now, not a constraint.
 
 ## 2026-07-22 — User systemd timers need lingering
 `systemctl --user` timers stop when the last login session ends, so `loginctl

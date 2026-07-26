@@ -84,7 +84,12 @@ def collect_git(repo: Path) -> dict:
         # with --amend, which preserves the author date and moves only the
         # committer date. With %ad the page showed commits days older than they
         # were — the status line claiming "26 Jul" dated "24 Jul".
-        "log": run(["git", "log", "-8", "--date=format:%d %b %H:%M",
+        #
+        # format-local, not format: plain `format:` renders each commit in its
+        # own timezone, so commits made in a cloud container (UTC) sat above
+        # commits made on this box (CEST) reading as earlier. The list looked
+        # shuffled. Local time puts everything in the box's zone.
+        "log": run(["git", "log", "-8", "--date=format-local:%d %b %H:%M",
                     "--pretty=%cd  %s"], repo),
         "unpushed": run(["git", "log", "--oneline", "@{u}..HEAD"], repo)
         if "no upstream" not in run(["git", "rev-parse", "--abbrev-ref", "@{u}"], repo)
@@ -106,6 +111,51 @@ def collect_heartbeats() -> list[str]:
     for f in sorted(hb_dir.iterdir()):
         age_min = int((now - f.stat().st_mtime) / 60)
         rows.append(f"| `{f.name}` | {age_min} min ago |")
+    return rows
+
+
+# Tools we care about, and where they actually land on this box.
+TOOLS = ["claude", "uv", "python3", "ollama", "git", "node", "npm"]
+TOOL_DIRS = [
+    HOME / ".local" / "bin",
+    HOME / ".npm-global" / "bin",
+    HOME / "bin",
+    Path("/usr/local/bin"),
+    Path("/usr/bin"),
+]
+
+
+def find_tool(name: str) -> str | None:
+    """Resolve a tool by path, not just by PATH.
+
+    `shutil.which` alone lies here: a systemd unit and an ssh non-login shell
+    both run without `~/.local/bin` on PATH, so uv — installed and demonstrably
+    running the test suite — reported as missing. That false negative mattered,
+    because the same probe decides whether Claude Code is on the box.
+    """
+    found = shutil.which(name)
+    if found:
+        return found
+    for d in TOOL_DIRS:
+        candidate = d / name
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return str(candidate)
+    # npm installs global binaries outside PATH more often than not.
+    npm = shutil.which("npm")
+    if npm:
+        prefix = run([npm, "prefix", "-g"], timeout=20)
+        if prefix and not prefix.startswith("("):
+            candidate = Path(prefix.splitlines()[0].strip()) / "bin" / name
+            if candidate.is_file() and os.access(candidate, os.X_OK):
+                return str(candidate)
+    return None
+
+
+def collect_toolchain() -> list[str]:
+    rows = []
+    for t in TOOLS:
+        where = find_tool(t)
+        rows.append(f"| `{t}` | {where or '**not installed**'} |")
     return rows
 
 
@@ -310,6 +360,8 @@ def build() -> str:
     mem = run("free -h | awk 'NR==2{print $7\" available of \"$2}'")
     up = run(["uptime", "-p"])
     out.append(f"- Disk: {disk}\n- RAM: {mem}\n- Uptime: {up}")
+    out.append("\nToolchain:\n\n| Tool | Path |\n|---|---|\n"
+               + "\n".join(collect_toolchain()))
     out.append(f"\nLocal models:\n```\n{collect_models()}\n```")
 
     # ---- tasks
@@ -334,7 +386,14 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", type=Path, help="write to this path instead of stdout")
     ap.add_argument("--quick", action="store_true", help="skip running the test suites")
+    ap.add_argument("--toolchain", action="store_true",
+                    help="print just the resolved toolchain and exit")
     build.args = ap.parse_args()
+
+    if build.args.toolchain:
+        for t in TOOLS:
+            print(f"{t}: {find_tool(t) or 'NOT INSTALLED'}")
+        return 0
 
     text = build()
     if build.args.write:
