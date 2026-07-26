@@ -16,8 +16,8 @@ STATE="$HOME/.local/state/workbench/publish-failures"
 mkdir -p "$(dirname "$STATE")"
 cd "$REPO" || exit 1
 
-# --quick on the timer path: the test suite runs in the dedicated job below so a
-# slow suite never delays the status page. Here we want the real numbers, so no.
+# No --quick here: the whole point of the page is measured test counts, and a
+# suite slow enough to delay a 30-minute timer is itself worth noticing.
 python3 "$HOME/bin/workbench-status.py" --write "$STATUS" >/dev/null 2>&1 || {
     echo "status generation failed" >&2
     exit 1
@@ -57,9 +57,15 @@ fi
 
 # Push failed. Wi-Fi drops here, so one failure is not worth a message; three
 # consecutive ones means the phone view is going stale and Lukas should know.
+#
+# Re-alert instead of firing once. A push that stays broken is exactly the case
+# that matters, and a single message means Lukas hears about it once and then
+# watches a frozen page that still looks healthy. Every 12th failure after the
+# third mirrors the watchdog's 6h COOLDOWN at this 30-minute cadence: first
+# alert at 1.5h, then every 6h.
 fails=$(( $(cat "$STATE" 2>/dev/null || echo 0) + 1 ))
 echo "$fails" >"$STATE"
-if [ "$fails" -eq 3 ]; then
-    "$NOTIFY" "⚠️ Status page has failed to reach GitHub 3 times — the view on your phone is going stale."
+if [ "$fails" -ge 3 ] && [ $(( (fails - 3) % 12 )) -eq 0 ]; then
+    "$NOTIFY" "⚠️ Status page has failed to reach GitHub $fails times — the view on your phone is stale."
 fi
 exit 1

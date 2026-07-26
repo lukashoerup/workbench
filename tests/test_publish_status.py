@@ -186,6 +186,25 @@ def test_third_consecutive_push_failure_alerts(pub):
     assert "stale" in pub.sent[0]
 
 
+def test_a_permanently_broken_push_keeps_re_alerting(pub):
+    """The failure that matters most is the one that does not go away. Alerting
+    exactly once and then going quiet leaves Lukas watching a frozen page that
+    still looks healthy — so the alert has to repeat on a schedule."""
+    pub.set_status("a\nb\nc\n")
+    pub.run()
+    git(pub.repo, "remote", "set-url", "origin", "/nonexistent/remote.git")
+
+    for i in range(30):
+        pub.set_status(f"change number {i}\n" + f"body-{i}\n" * 5)
+        pub.run()
+
+    # Alerts at failure 3, 15 and 27 — first at ~1.5h, then every ~6h.
+    assert len(pub.sent) == 3, f"expected 3 alerts across 30 failures, got {pub.sent}"
+    assert "3 times" in pub.sent[0]
+    assert "15 times" in pub.sent[1]
+    assert "27 times" in pub.sent[2]
+
+
 def test_recovered_push_clears_the_failure_count(pub):
     pub.set_status("a\nb\nc\n")
     pub.run()

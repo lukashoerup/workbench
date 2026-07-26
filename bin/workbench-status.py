@@ -80,8 +80,12 @@ def collect_git(repo: Path) -> dict:
     return {
         "branch": run(["git", "branch", "--show-current"], repo),
         "dirty": run(["git", "status", "--porcelain"], repo),
+        # %cd, not %ad: publish-status.sh collapses consecutive status commits
+        # with --amend, which preserves the author date and moves only the
+        # committer date. With %ad the page showed commits days older than they
+        # were — the status line claiming "26 Jul" dated "24 Jul".
         "log": run(["git", "log", "-8", "--date=format:%d %b %H:%M",
-                    "--pretty=%ad  %s"], repo),
+                    "--pretty=%cd  %s"], repo),
         "unpushed": run(["git", "log", "--oneline", "@{u}..HEAD"], repo)
         if "no upstream" not in run(["git", "rev-parse", "--abbrev-ref", "@{u}"], repo)
         else "",
@@ -225,7 +229,7 @@ def build() -> str:
 
     out.append("\n---\n")
     out.append("_Ask Claude about any file in this repo — the markdown in `docs/`, "
-               "`workbench-setup-spec.md`, and `../workbench-context/` is the full picture._")
+               "`context/`, and `workbench-setup-spec.md` is the full picture._")
     return "\n".join(out) + "\n"
 
 
