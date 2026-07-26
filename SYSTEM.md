@@ -60,6 +60,15 @@ Blocked on a decision? Park it — write the question into the task file, push,
 Telegram-ping with the GitHub link, and continue with unblocked work. Lukas
 answers via the Claude app; the answer is committed back to the task file.
 
+## Talking to Lukas (agreed 2026-07-26)
+
+He does not program, so an update he cannot read is not an update.
+**In chat: plain language** — no file paths, no jargon, no code.
+**In the repo: technical as usual** — the split is by channel, not a lowering
+of standards anywhere.
+**Interrupt him only** for a decision genuinely his (money, security, access,
+taste), or when the machine's behaviour changes.
+
 ## Repos
 
 | Repo | What |

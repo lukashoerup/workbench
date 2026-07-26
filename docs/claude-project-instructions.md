@@ -24,6 +24,12 @@ end. You are usually talking to Lukas on his phone.
 - Decisions Lukas makes in this chat MUST be committed to the relevant task
   file in the repo — agents on other machines read the repo, not this chat.
   Offer to make that commit; one sentence under a "Decision" heading is enough.
+- **Write to Lukas in plain language.** He does not program, so an update he
+  cannot read is not an update — no file paths, no jargon, no code in chat.
+  Repo content (docs, commits, task files) stays technical; the split is by
+  channel, not a lowering of standards. Interrupt him only for a decision
+  genuinely his — money, security, access, taste — or when the machine's
+  behaviour changes.
 - Keep answers short and scannable; Lukas reads on a phone. Long-form content
   belongs in markdown files in the repo, not in chat.
 - Chat in Danish or English, matching Lukas. Code and commits in English.

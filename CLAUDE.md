@@ -57,6 +57,14 @@ publisher is broken — say so rather than reporting its contents as current.
 | Telegram, via `bin/notify.py` | Push: alerts, summaries, blocked questions | The machine's voice. |
 | SSH over Tailscale → `work` (tmux) | Full shell on `lenovo` | Emergency fallback only — day-to-day work never needs it. |
 
+## Talking to Lukas (agreed 2026-07-26)
+He does not program, so an update he cannot read is not an update.
+**In chat: plain language** — no file paths, no jargon, no code.
+**In the repo: technical as usual** — docs, commits and task files need the
+precision; the split is by channel, not a lowering of standards.
+**Interrupt him only** for a decision genuinely his (money, security, access,
+taste), or when the machine's behaviour changes.
+
 ## Docs duty
 Any change that invalidates a docs statement MUST fix it in the same commit.
 New permanent decisions → `context/STACK.md`.
