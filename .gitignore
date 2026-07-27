@@ -4,3 +4,11 @@ __pycache__/
 .pytest_cache/
 uv.lock
 .env
+
+# Claude Code local state. Neither belongs in version control:
+# settings.local.json is one machine's permission allowlist, and worktrees/ is
+# scratch space for background agents — transient checkouts that appear and
+# vanish mid-session, and committing them would vendor a copy of this repo
+# inside itself.
+.claude/settings.local.json
+.claude/worktrees/
