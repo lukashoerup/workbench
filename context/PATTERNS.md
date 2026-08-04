@@ -15,6 +15,18 @@ notify("Nightly triage: all green", silent=True)  # no sound for routine reports
 Missing credentials degrade to a log line in `~/logs/notify.log` and return `False` — a
 dead notification channel must never take down a job.
 
+**A dropped Wi-Fi link no longer loses the message.** Transient failures (network, timeout,
+429, 5xx) are retried three times over 7 s and then queued to
+`~/.local/state/workbench/outbox.jsonl`. The queue drains oldest-first at the start of the
+next `notify()` call, and from the end of every watchdog run — so it empties within 15 min
+even on a box with nothing to say. Permanent failures (no credentials, other 4xx, an API
+`ok: false`) are never queued, because they would never leave.
+
+**`False` means "not delivered now", not "lost".** A queued message still returns `False`,
+and callers must keep treating that as failure: `bin/watchdog-check.sh` starts a 6 h alert
+cooldown on `True`, so a queued alert reporting success would mute the incident it was
+about until morning.
+
 ## Job heartbeat (so the watchdog notices silent death)
 ```python
 from pathlib import Path

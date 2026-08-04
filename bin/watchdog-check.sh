@@ -13,6 +13,7 @@ CONF="$HOME/.config/workbench/watchdog.conf"
 STATE_DIR="$HOME/.local/state/workbench/watchdog"
 LOG="$HOME/logs/watchdog.log"
 NOTIFY="$HOME/bin/notify.py"
+OUTBOX="$HOME/.local/state/workbench/outbox.jsonl"
 COOLDOWN=21600   # 6h between repeat alerts for a still-failing check
 
 mkdir -p "$STATE_DIR" "$(dirname "$LOG")"
@@ -160,6 +161,17 @@ while read -r kind a b c; do
         *)          log "unknown check kind: $kind" ;;
     esac
 done < <(grep -v '^[[:space:]]*#' "$CONF")
+
+# Drain anything notify.py queued while the link was down, so the outbox empties
+# within 15 min even on a silent box with nothing to report. Deliberately last:
+# check_net above has just woken the Wi-Fi, which is the best moment to try.
+#
+# Guarded on a non-empty outbox rather than called unconditionally — the common
+# case is an empty queue, and this box is CPU-only, so 96 pointless interpreter
+# starts a day is a cost worth not paying. Never allowed to change the exit code.
+if [ -s "$OUTBOX" ]; then
+    "$NOTIFY" --flush >/dev/null 2>&1 || true
+fi
 
 log "run complete: $failures failing"
 [ "$failures" -eq 0 ]

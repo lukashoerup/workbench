@@ -290,6 +290,50 @@ def test_undelivered_alert_does_not_start_the_cooldown(wd, tmp_path):
     assert sf.read_text().split()[1] == "0", "must not enter cooldown on a lost alert"
 
 
+# --------------------------------------------------- outbox drain (2026-08-04)
+def outbox(wd):
+    path = wd.home / ".local" / "state" / "workbench" / "outbox.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def test_a_queued_message_is_drained_at_the_end_of_a_run(wd):
+    """The watchdog tick is what empties the outbox on a silent box — without
+    it a queued message waits for the next thing that happens to notify."""
+    outbox(wd).write_text('{"message": "queued while offline", "silent": false}\n')
+    hb = wd.heartbeat("scraper", age_seconds=10)
+    wd.write_conf(f"heartbeat scraper {hb} 3600\n")
+
+    assert wd.run().returncode == 0
+    assert wd.sent == ["--flush"]
+
+
+def test_an_empty_outbox_does_not_spawn_the_notifier(wd):
+    """96 interpreter starts a day on a CPU-only box, for nothing."""
+    outbox(wd).write_text("")
+    hb = wd.heartbeat("scraper", age_seconds=10)
+    wd.write_conf(f"heartbeat scraper {hb} 3600\n")
+
+    assert wd.run().returncode == 0
+    assert wd.sent == []
+
+
+def test_draining_does_not_change_the_exit_status(wd, tmp_path):
+    """A failing flush must not turn a clean run red, nor a red run clean."""
+    stub = tmp_path / "bin" / "notify.py"
+    stub.write_text("#!/usr/bin/env python3\nimport sys; sys.exit(1)\n")
+    stub.chmod(0o755)
+    outbox(wd).write_text('{"message": "stuck", "silent": false}\n')
+
+    good = wd.heartbeat("good", age_seconds=10)
+    wd.write_conf(f"heartbeat good {good} 3600\n")
+    assert wd.run().returncode == 0
+
+    bad = wd.heartbeat("bad", age_seconds=99999)
+    wd.write_conf(f"heartbeat bad {bad} 3600\n")
+    assert wd.run().returncode == 1
+
+
 def test_user_scope_keyword_is_recognised(wd):
     """Everything interesting on this box is a --user unit. A typo here means a
     config full of silently-ignored checks reporting all-clear."""
