@@ -86,11 +86,20 @@ The resolution is to **change the job, not the model**:
   headline over correct facts. Removing it costs nothing measurable and deletes a whole
   failure class: a confabulated "all quiet" on the night something broke is worse than no
   brief, because it actively reassures.
-- **The weekly docs gardener is blocked pending Lukas's call** — see
-  `tasks/2026-07-26-local-model-jobs.md`. "Which statements are no longer true" cannot be
-  computed, so it is the worst possible fit for the weakest model on hand. Either run it
-  with Claude weekly, or drop it and keep `tests/test_docs_invariants.py`, which already
-  catches the mechanical half for free.
+- **The weekly docs gardener runs on Claude, weekly** — Lukas chose this over dropping it,
+  same day. "Which statements are no longer true" cannot be computed, so it is the one job
+  here that genuinely needs judgement, and it gets the model to match. It runs headless on
+  the box against the installed Claude Code auth, not in CI against an API key, and it must
+  not overlap the work block — one box, one rate-limit window.
+
+  Weekly is load-bearing, not incidental: §8's zero-token rule was aimed at nightly jobs
+  burning 5-hour windows on a box that is idle most nights. A weekly pass over ~10 docs
+  files is a rounding error next to one dispatched session. **If the cadence ever creeps
+  toward daily, re-take this decision rather than extending it.**
+
+  The hallucination guard stays regardless of model: a finding is rejected unless the named
+  file exists and the quoted statement appears in it verbatim. A better model lowers the
+  rate but does not change the shape of the failure, and the check is free.
 
 **The generalisation, which outlives both jobs:** prefer computing a fact to generating it.
 Reach for a model only where the output is genuinely not computable, and then match the
@@ -108,13 +117,18 @@ unattended by default.
 
 Amended 2026-08-04: this layer is now zero-token because it is *code*, not
 because it runs a local model — see the decision above. The weekly gardener left
-the layer entirely and is blocked pending Lukas's call.
+this layer entirely: it moved to the agent layer below, on Claude, weekly.
 
 **Agent layer, bounded.** Headless Claude work blocks on the box, off by
 default. Spec §1 warns against long autonomous cloud-agent runs because
 5-hour rate-limit windows, not compute, are the bottleneck on Claude Pro — so
 blocks are bounded: one atomic task at a time, wall-clock capped, 3-strike
 circuit breaker, night-scheduled, never merging to `main`.
+
+The weekly docs gardener joined this layer 2026-08-04. It is the cheap, safe end
+of it — read-only, one weekly pass, never fixes anything — but it draws on the
+same rate-limit window as a work block on the same box, so the two must be locked
+against each other rather than merely scheduled apart.
 
 Corollary that decides everything else: **the box pulls from GitHub; nothing
 pushes into the box.** Cloud sessions cannot reach `lenovo` (no ssh, no keys,

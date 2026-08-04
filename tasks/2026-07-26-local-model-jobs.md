@@ -32,21 +32,32 @@ So the buildable half is: **nightly triage, deterministic, no model.**
 - [ ] The brief is deterministic: same inputs → same output, byte for byte.
       That makes it diffable, and makes a wrong brief a bug with a repro rather
       than a bad roll
-- [ ] `bin/weekly-gardener.py` — **blocked on a decision, see below.** Do not
-      build it against a local model.
-- [ ] ~~Both units wrapped in `flock -n` on a shared Ollama lock~~ — moot while
-      nothing loads a model. Reinstate with the gardener if option 1 is chosen
-      and anything local ever returns.
-- [ ] `setup/watchdog.conf` gains a heartbeat line for the triage job
-- [ ] Tests green — and now with no Ollama stub needed anywhere, which is itself
-      a sign the right thing was cut
+- [ ] `bin/weekly-gardener.sh` — **runs on Claude, weekly** (Lukas chose this
+      2026-08-04). Headless `claude -p`, one call per docs file, the spec's
+      verbatim prompt (`workbench-setup-spec.md:305-316`)
+- [ ] **It only points; it never fixes** (`workbench-setup-spec.md:310`). No
+      write tools, no commits, no branch. Output is a report, full stop
+- [ ] **The hallucination guard survives the model upgrade** — a finding is
+      rejected unless the named file exists *and* the quoted statement appears in
+      it verbatim. Cheap, and the failure it catches is silent
+- [ ] Findings land in `reports/gardener/YYYY-MM-DD.md`; one Telegram summary,
+      and **silence when nothing was found** — a weekly "nothing to report" buzz
+      trains him to ignore it
+- [ ] Exits cleanly on rate-limit exhaustion rather than burning retries
+      (spec §1); never runs concurrently with a work block, since both want
+      Claude on the same box
+- [ ] ~~Both units wrapped in `flock -n` on a shared Ollama lock~~ — no Ollama
+      left. The gardener still needs a lock, but against the **work block**, not
+      against a model
+- [ ] `setup/watchdog.conf` gains a heartbeat line per job
+- [ ] Tests green — with `claude` stubbed as a subprocess (no network, CI-safe),
+      the same way the bash scripts are already driven in `tests/`
 
 ## Scope
-**May change:** `bin/ollama_json.py`, `bin/nightly-triage.py`,
-`bin/weekly-gardener.py`, `setup/systemd/user/`, `setup/watchdog.conf`,
-`context/STACK.md`, `tests/`
-**Must NOT touch:** `bin/notify.py` internals, `pyproject.toml` (no new deps —
-schema validation is hand-rolled; `jsonschema` would need approval)
+**May change:** `bin/nightly-triage.py`, `bin/weekly-gardener.sh`,
+`setup/systemd/user/`, `setup/watchdog.conf`, `context/STACK.md`, `tests/`
+**Must NOT touch:** `bin/notify.py` internals, `pyproject.toml` (no new deps).
+No `bin/ollama_json.py` — deferred, see the first criterion.
 
 ## Lukas's ruling — 2026-08-04 (supersedes the section below)
 Asked what the next step was, Lukas rejected running the nightly brief and the
@@ -66,19 +77,30 @@ ever writing a decorative headline on top of correct facts; deleting it removes 
 whole class of failure and loses nothing measurable. This also makes the job
 cheaper, faster, and testable without stubbing Ollama.
 
-**Weekly docs gardener: blocked, needs Lukas.** This one cannot be made
-deterministic — "which statements in this doc are no longer true" is irreducibly
-a judgement call, which is precisely why it is the *worst* fit for the weakest
-model available. Two honest options:
-1. **Run it with Claude, weekly.** Matches "kræver tankekraft". Weekly, one call
-   per docs file, is a rounding error next to a single dispatched session — the
-   spec's zero-token rule was aimed at *nightly* jobs burning 5-hour rate-limit
-   windows, not a weekly one. Recommended.
-2. **Drop it.** `tests/test_docs_invariants.py` already catches the mechanical
-   half (dead paths, stale references) with no model and no cost. The gardener
-   only ever added the judgement half.
+**Weekly docs gardener: Claude, weekly. Chosen by Lukas 2026-08-04.** This one
+cannot be made deterministic — "which statements in this doc are no longer true"
+is irreducibly a judgement call, which is precisely why it was the *worst* fit
+for the weakest model available. Asked to choose between running it on Claude and
+dropping it, he took Claude.
 
-Do not build option 1 without asking him — it changes the cost model from zero.
+Consequences to build against:
+- **It runs on the box, not in CI.** Claude Code is installed and authenticated
+  at `/home/lukashoerup/.local/bin/claude` (`STATUS.md` toolchain table), so a
+  weekly user timer reuses the existing auth. A GitHub Actions schedule would
+  need an API key — a new secret *and* a second billing relationship, when the
+  subscription already covers this.
+- **It competes with the work block for the same Claude.** Both run headless on
+  one box against one rate-limit window. They must not overlap: lock, and
+  schedule the gardener well clear of the block.
+- **Weekly is what makes this affordable.** The zero-token rule in spec §8 was
+  aimed at jobs running *every night* and burning 5-hour windows on machines that
+  are idle most nights. One weekly pass over ~10 docs files is a rounding error
+  next to a single dispatched session. If the cadence ever creeps toward daily,
+  this decision needs re-taking, not extending.
+- **The hallucination guard stays.** A better model lowers the rate but does not
+  change the shape of the failure, and the check — does this file exist, does
+  this quoted line actually appear in it — costs nothing. The 4B earned this
+  guard; Claude does not get to inherit an exemption from it.
 
 **One correction to his framing, for the record:** the plan was the 9B, not the
 4B. The 4B was rejected on 2026-07-22 for exactly the failure he describes

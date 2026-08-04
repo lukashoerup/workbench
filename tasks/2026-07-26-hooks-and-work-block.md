@@ -40,6 +40,11 @@ written expecting `Dependency approved by Lukas:`. Pick one and use it in both.
 - [ ] 3 attempts on the same failing test → note in the task file, move to the
       review queue, move on (`CLAUDE.md:28-29`)
 - [ ] Exits the block cleanly on rate-limit exhaustion rather than burning retries
+- [ ] **Locks against the weekly docs gardener** (added 2026-08-04, when the
+      gardener moved onto Claude). Both run headless on this box against one
+      rate-limit window; if they overlap, the block can exhaust the window and
+      the gardener's failure looks like a docs problem rather than a scheduling
+      one. Scheduling them apart is not enough — take a lock.
 - [ ] Ends with exactly ONE Telegram summary: done / blocked / questions
 - [ ] Writes a heartbeat
 - [ ] Tests green
