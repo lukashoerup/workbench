@@ -73,13 +73,42 @@ if the 9B's wall-clock becomes a problem at real volume.
 **Hard rule:** local models do bounded structured tasks only. They never do open-ended
 development work, regardless of harness.
 
+### Decision 2026-08-04 — no local model writes anything a human reads as fact
+Lukas ruled out the local model for the nightly brief and the weekly docs review: the work
+"kræver tankekraft", and a weak model summarising and deciding "vil reelt ødelægge mere
+kontekst end det vil gavne."
+
+The resolution is to **change the job, not the model**:
+
+- **Nightly triage is now entirely deterministic — no model at all.** Every question that
+  matters (tests failing, stale heartbeat, dead channel, unpushed work) is already answered
+  by `collect_blockers()` in `bin/workbench-status.py`. The model was only ever writing a
+  headline over correct facts. Removing it costs nothing measurable and deletes a whole
+  failure class: a confabulated "all quiet" on the night something broke is worse than no
+  brief, because it actively reassures.
+- **The weekly docs gardener is blocked pending Lukas's call** — see
+  `tasks/2026-07-26-local-model-jobs.md`. "Which statements are no longer true" cannot be
+  computed, so it is the worst possible fit for the weakest model on hand. Either run it
+  with Claude weekly, or drop it and keep `tests/test_docs_invariants.py`, which already
+  catches the mechanical half for free.
+
+**The generalisation, which outlives both jobs:** prefer computing a fact to generating it.
+Reach for a model only where the output is genuinely not computable, and then match the
+model to how much judgement the task really needs. This tightens rather than contradicts
+the hard rule above — "bounded and structured" was never sufficient on its own, as the 4B
+proved by being 6/6 schema-valid and 3/6 correct.
+
 ## Autonomy model — decided 2026-07-26
 Two layers, because they have different costs and different risks.
 
 **Free layer, runs forever, zero cloud tokens.** CI on every push, the watchdog,
-the status publisher, and the §8 local-model jobs (nightly triage, weekly
-gardener). This is what actually delivers "keeps working without being
-prompted", and it is the only layer allowed to run unattended by default.
+the status publisher, and the §8 nightly triage. This is what actually delivers
+"keeps working without being prompted", and it is the only layer allowed to run
+unattended by default.
+
+Amended 2026-08-04: this layer is now zero-token because it is *code*, not
+because it runs a local model — see the decision above. The weekly gardener left
+the layer entirely and is blocked pending Lukas's call.
 
 **Agent layer, bounded.** Headless Claude work blocks on the box, off by
 default. Spec §1 warns against long autonomous cloud-agent runs because

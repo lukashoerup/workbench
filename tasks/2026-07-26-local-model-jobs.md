@@ -1,40 +1,45 @@
-# Task: the §8 zero-token autonomy layer (triage + gardener)
+# Task: the §8 autonomy layer (nightly triage; gardener blocked)
 
-Depends on: `2026-07-26-notify-retry-outbox.md` (a 03:15 message lost to a blip
-is the whole output of a night's work), and on the box being able to pull.
+Depends on: ~~`2026-07-26-notify-retry-outbox.md`~~ — **satisfied 2026-08-04**
+(a 03:15 message lost to a blip is now retried and queued rather than lost) —
+and on the box being able to pull, satisfied 2026-07-26.
 
 ## Goal
 Spec §8 — "the 24/7 part, zero cloud tokens" — is entirely unbuilt. This is the
-layer that actually delivers "keeps working without being prompted", because it
-runs on the local model and therefore costs nothing and is not rate-limited.
+layer that actually delivers "keeps working without being prompted".
 
-Build the two jobs that are useful **today**, before any scraper exists:
-nightly triage and the weekly docs gardener.
+Originally scoped as two local-model jobs. **Lukas ruled the local model out on
+2026-08-04** (see below), which does not weaken the layer: the nightly brief
+becomes pure code, which is cheaper, faster and strictly more reliable. The
+gardener is the only part that genuinely needed judgement, and it is now blocked
+pending his decision.
+
+So the buildable half is: **nightly triage, deterministic, no model.**
 
 ## Acceptance criteria
-- [ ] `bin/ollama_json.py` — one tested client for the
-      `context/PATTERNS.md:30-54` recipe, stdlib only, always sending
-      `"think": false`, schema-enforced, quarantining invalid output
-- [ ] A response with `"response": ""` and a populated `thinking` field
-      produces a diagnostic naming the `think` flag, not a generic JSON error
+- [ ] ~~`bin/ollama_json.py`~~ — **deferred, no consumer.** Both jobs that would
+      have used it are now model-free or blocked; building a client for nobody is
+      speculative work. Un-defer when something actually needs Ollama. The
+      `"think": false` trap it was meant to encapsulate stays recorded in
+      `context/LEARNINGS.md` and `context/PATTERNS.md`, which is where it is
+      useful anyway.
 - [ ] `bin/nightly-triage.py` — one short brief from the day's logs, failures
       and commits; `reports/nightly/YYYY-MM-DD.md`; heartbeat on success only
-- [ ] **The facts section is computed, never generated** — counts, names,
-      statuses and the needs-a-human verdict come from code, reusing
-      `collect_blockers()` in `bin/workbench-status.py`
-- [ ] The model writes **only** the headline and a "where I would look first"
-      line, from facts handed to it — it is never given raw logs to interpret
-- [ ] **Triage still produces a brief when the model is down or returns
-      garbage** — deterministic fallback from the counts alone, heartbeat still
-      touched, exit 0
-- [ ] `bin/weekly-gardener.py` — the spec's verbatim prompt
-      (`workbench-setup-spec.md:305-316`), one call per docs file
-- [ ] Gardener findings are rejected unless the named file exists **and** the
-      quoted statement actually appears in it — hallucinated findings are
-      quarantined, never surfaced
-- [ ] Both units wrapped in `flock -n` on a shared Ollama lock
-- [ ] `setup/watchdog.conf` gains a heartbeat line per job
-- [ ] Tests green, with Ollama stubbed (no network, CI-safe)
+- [ ] **The brief is entirely computed. No model is involved at all** — see
+      "Lukas's ruling" below. Counts, names, statuses and the needs-a-human
+      verdict come from code, reusing `collect_blockers()` in
+      `bin/workbench-status.py`
+- [ ] The brief is deterministic: same inputs → same output, byte for byte.
+      That makes it diffable, and makes a wrong brief a bug with a repro rather
+      than a bad roll
+- [ ] `bin/weekly-gardener.py` — **blocked on a decision, see below.** Do not
+      build it against a local model.
+- [ ] ~~Both units wrapped in `flock -n` on a shared Ollama lock~~ — moot while
+      nothing loads a model. Reinstate with the gardener if option 1 is chosen
+      and anything local ever returns.
+- [ ] `setup/watchdog.conf` gains a heartbeat line for the triage job
+- [ ] Tests green — and now with no Ollama stub needed anywhere, which is itself
+      a sign the right thing was cut
 
 ## Scope
 **May change:** `bin/ollama_json.py`, `bin/nightly-triage.py`,
@@ -43,7 +48,47 @@ nightly triage and the weekly docs gardener.
 **Must NOT touch:** `bin/notify.py` internals, `pyproject.toml` (no new deps —
 schema validation is hand-rolled; `jsonschema` would need approval)
 
-## Which model writes the brief — decided 2026-07-26
+## Lukas's ruling — 2026-08-04 (supersedes the section below)
+Asked what the next step was, Lukas rejected running the nightly brief and the
+weekly docs review on the local model: the job "kræver tankekraft", a weak local
+model taking decisions and writing summaries is risky, and it "vil reelt ødelægge
+mere kontekst end det vil gavne."
+
+He is right, and the 2026-07-26 analysis below already conceded the ground —
+it kept a model in the loop for one sentence and left an explicit escape hatch
+("drop it and ship the deterministic brief alone — it is complete without it").
+Take the escape hatch.
+
+**Nightly brief: no model. Pure code.** Every question that matters is already
+deterministic — did tests fail, is a heartbeat stale, is the channel dead, is
+there unpushed work. `collect_blockers()` answers all of them. The model was only
+ever writing a decorative headline on top of correct facts; deleting it removes a
+whole class of failure and loses nothing measurable. This also makes the job
+cheaper, faster, and testable without stubbing Ollama.
+
+**Weekly docs gardener: blocked, needs Lukas.** This one cannot be made
+deterministic — "which statements in this doc are no longer true" is irreducibly
+a judgement call, which is precisely why it is the *worst* fit for the weakest
+model available. Two honest options:
+1. **Run it with Claude, weekly.** Matches "kræver tankekraft". Weekly, one call
+   per docs file, is a rounding error next to a single dispatched session — the
+   spec's zero-token rule was aimed at *nightly* jobs burning 5-hour rate-limit
+   windows, not a weekly one. Recommended.
+2. **Drop it.** `tests/test_docs_invariants.py` already catches the mechanical
+   half (dead paths, stale references) with no model and no cost. The gardener
+   only ever added the judgement half.
+
+Do not build option 1 without asking him — it changes the cost model from zero.
+
+**One correction to his framing, for the record:** the plan was the 9B, not the
+4B. The 4B was rejected on 2026-07-22 for exactly the failure he describes
+(`context/STACK.md`: 6/6 schema-valid, 3/6 correct — a coin flip that looks like
+an answer). His objection survives the correction, because the 9B was never
+shown capable of *this* task either; its one benchmark was bounded
+classification against a rubric, on a sample of six, recorded as "indicative not
+conclusive".
+
+## Which model writes the brief — decided 2026-07-26 (superseded, kept for the reasoning)
 Lukas asked whether the 9B is actually good enough, and was explicit that
 quality wins over the appeal of running it locally. The answer is to change the
 job, not the model.
