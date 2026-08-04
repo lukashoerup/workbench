@@ -4,8 +4,9 @@
 #
 # Run by workbench-status.timer every 30 min. Safe to run by hand.
 #
-# Deliberately narrow: it commits STATUS.md and nothing else. Work in progress
-# is never auto-pushed — that stays a human decision.
+# Deliberately narrow: it commits STATUS.md and reports/ and nothing else. Both
+# are generated output written by this box's own timers. Work in progress is
+# never auto-pushed — that stays a human decision.
 set -uo pipefail
 
 REPO="$HOME/workbench"
@@ -30,19 +31,30 @@ python3 "$HOME/bin/workbench-status.py" --write "$STATUS" >/dev/null 2>&1 || {
     exit 1
 }
 
+# The staging pathspec. reports/ carries the nightly brief and the weekly docs
+# gardener, which are written by timers on this box and are useless if they never
+# reach GitHub — a brief nobody can read is a brief that was not written.
+#
+# The pre-commit hook's publisher fast-path must match this list byte for byte
+# (tasks/2026-07-26-hooks-and-work-block.md), so widening one means widening the
+# other in the same commit. Guarded on the directory existing: `git add` fails
+# outright on a pathspec that matches nothing, which would take STATUS.md with it.
+PATHS=(STATUS.md)
+[ -d reports ] && PATHS+=(reports)
+
 # An untracked STATUS.md produces no diff at all, so the very first run would
 # exit here and never publish. Intent-to-add makes it visible to git diff.
-git add -N STATUS.md 2>/dev/null
+git add -N "${PATHS[@]}" 2>/dev/null
 
-# Nothing changed but the "Generated <time>" line? Don't commit every 30 min
-# forever. -I ignores lines matching the pattern, so this is exact rather than
-# a guess at how many lines a timestamp-only change touches.
-if git diff --quiet -I '^_Generated ' -- STATUS.md; then
-    git reset -q -- STATUS.md 2>/dev/null || true
+# Nothing changed but the "Generated <time>" line, and no new report? Don't
+# commit every 30 min forever. -I ignores lines matching the pattern, so this is
+# exact rather than a guess at how many lines a timestamp-only change touches.
+if git diff --quiet -I '^_Generated ' -- "${PATHS[@]}"; then
+    git reset -q -- "${PATHS[@]}" 2>/dev/null || true
     exit 0
 fi
 
-git add STATUS.md
+git add "${PATHS[@]}"
 
 # Uptime, free RAM and log tails move on every run, so a plain commit-per-run
 # would bury real history under ~48 status commits a day. The *history* of a

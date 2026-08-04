@@ -161,6 +161,70 @@ def test_work_in_progress_is_never_auto_committed(pub):
     assert git(pub.repo, "show", "HEAD:seed.txt") == "seed"
 
 
+# --------------------------------------------------- reports (added 2026-08-04)
+def remote_tree(pub):
+    return subprocess.run(
+        ["git", "ls-tree", "-r", "--name-only", "main"],
+        cwd=pub.remote, capture_output=True, text=True,
+    ).stdout
+
+
+def test_a_nightly_brief_reaches_the_remote(pub):
+    """A brief written at 03:15 that never leaves the box is a brief nobody can
+    read — and Lukas reads this repo through the GitHub app, not over SSH."""
+    pub.set_status("a\nb\nc\n")
+    pub.run()
+
+    brief = pub.repo / "reports" / "nightly" / "2026-08-04.md"
+    brief.parent.mkdir(parents=True)
+    brief.write_text("# Nightly brief\n\nNothing needs a human.\n")
+    pub.run()
+
+    assert "reports/nightly/2026-08-04.md" in remote_tree(pub)
+
+
+def test_a_new_report_publishes_even_when_the_status_page_is_unchanged(pub):
+    """The timestamp-only early exit must not swallow a report. The brief lands
+    at 03:15 on a quiet night, which is exactly when STATUS.md has not moved —
+    so the one case the report most needs to survive is the one that used to
+    exit 0 without committing anything.
+
+    It arrives by amending the standing status commit rather than adding a new
+    one; collapsing consecutive status commits is deliberate, and the report
+    rides along in the amended tree.
+    """
+    pub.set_status("steady\n")
+    pub.run()
+
+    report = pub.repo / "reports" / "gardener" / "2026-08-04.md"
+    report.parent.mkdir(parents=True)
+    report.write_text("# Docs gardener\n\nNothing found.\n")
+    pub.run()
+
+    assert "reports/gardener/2026-08-04.md" in remote_tree(pub)
+    published = subprocess.run(
+        ["git", "show", "main:reports/gardener/2026-08-04.md"],
+        cwd=pub.remote, capture_output=True, text=True,
+    ).stdout
+    assert "Nothing found." in published, "the file reached the remote, but empty"
+
+
+def test_reports_do_not_widen_the_net_to_everything_else(pub):
+    """Widening the pathspec must not turn the publisher into an auto-committer.
+    Work in progress stays a human decision."""
+    pub.set_status("a\n")
+    pub.run()
+
+    (pub.repo / "reports").mkdir()
+    (pub.repo / "reports" / "brief.md").write_text("# report\n")
+    (pub.repo / "half_done.py").write_text("def broken(:\n")
+    pub.run()
+
+    tree = remote_tree(pub)
+    assert "reports/brief.md" in tree
+    assert "half_done.py" not in tree
+
+
 # ------------------------------------------------------------- push failures
 def test_unreachable_remote_is_reported_not_silent(pub):
     pub.set_status("a\nb\nc\n")
