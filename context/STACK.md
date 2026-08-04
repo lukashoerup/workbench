@@ -137,13 +137,21 @@ the meeting point, exactly as the 2026-07-24 deferral note put it: "cloud =
 Claude working, lenovo = scripts working, GitHub = meeting point."
 
 ## Scheduled jobs
-| Job | Cadence | Heartbeat marker |
-|---|---|---|
-| `workbench-status.timer` | 30 min | _watched as a unit, not a heartbeat_ |
-| `workbench-watchdog.timer` | 15 min | _watched as a unit, not a heartbeat_ |
+| Job | Cadence | Heartbeat marker | Notes |
+|---|---|---|---|
+| `workbench-status.timer` | 30 min | _watched as a unit_ | publishes `STATUS.md` **and `reports/`** |
+| `workbench-watchdog.timer` | 15 min | _watched as a unit_ | also drains the notify outbox |
+| `workbench-apply.timer` | 10 min | `heartbeats/apply` (40 min) | pull + self-install |
+| `workbench-triage.timer` | daily 03:15 | `heartbeats/triage` (30 h) | no model — pure computation |
+| `workbench-gardener.timer` | Sun 04:30 | `heartbeats/gardener` (9 d) | Claude; `flock -n` vs the work block |
 
-Planned, not yet installed: `workbench-apply` (pull + self-install),
-`workbench-triage` (nightly 03:15), `workbench-gardener` (Sunday 04:30).
+Every one of these writes its marker on a **successful** run only, so a stale marker means
+the job stopped working rather than merely stopped finding anything. The gardener
+deliberately writes none on a rate-limited pass — "has not completed in over a week" is
+exactly what should surface, and a heartbeat there would hide it.
+
+Not installed: `workbench-work-block` (headless task runner, off by default). It shares the
+Claude lock with the gardener — see the agent layer above.
 
 Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check list from
 `~/.config/workbench/watchdog.conf`. Add a `heartbeat` line there for every new job.

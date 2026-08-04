@@ -1,4 +1,4 @@
-# Task: the §8 autonomy layer (nightly triage; gardener blocked)
+# Task: the §8 autonomy layer (nightly triage + weekly docs gardener)
 
 Depends on: ~~`2026-07-26-notify-retry-outbox.md`~~ — **satisfied 2026-08-04**
 (a 03:15 message lost to a blip is now retried and queued rather than lost) —
@@ -11,50 +11,50 @@ layer that actually delivers "keeps working without being prompted".
 Originally scoped as two local-model jobs. **Lukas ruled the local model out on
 2026-08-04** (see below), which does not weaken the layer: the nightly brief
 becomes pure code, which is cheaper, faster and strictly more reliable. The
-gardener is the only part that genuinely needed judgement, and it is now blocked
-pending his decision.
+gardener is the only part that genuinely needed judgement, and it moved to Claude
+when he chose that over dropping it, later the same day.
 
-So the buildable half is: **nightly triage, deterministic, no model.**
+So: **nightly triage, deterministic, no model. Gardener, Claude, weekly.**
 
 ## Acceptance criteria
-- [ ] ~~`bin/ollama_json.py`~~ — **deferred, no consumer.** Both jobs that would
+- [x] ~~`bin/ollama_json.py`~~ — **deferred, no consumer.** Both jobs that would
       have used it are now model-free or blocked; building a client for nobody is
       speculative work. Un-defer when something actually needs Ollama. The
       `"think": false` trap it was meant to encapsulate stays recorded in
       `context/LEARNINGS.md` and `context/PATTERNS.md`, which is where it is
       useful anyway.
-- [ ] `bin/nightly-triage.py` — one short brief from the day's logs, failures
+- [x] `bin/nightly-triage.py` — one short brief from the day's logs, failures
       and commits; `reports/nightly/YYYY-MM-DD.md`; heartbeat on success only
-- [ ] **The brief is entirely computed. No model is involved at all** — see
+- [x] **The brief is entirely computed. No model is involved at all** — see
       "Lukas's ruling" below. Counts, names, statuses and the needs-a-human
       verdict come from code, reusing `collect_blockers()` in
       `bin/workbench-status.py`
-- [ ] The brief is deterministic: same inputs → same output, byte for byte.
+- [x] The brief is deterministic: same inputs → same output, byte for byte.
       That makes it diffable, and makes a wrong brief a bug with a repro rather
       than a bad roll
-- [ ] `bin/weekly-gardener.sh` — **runs on Claude, weekly** (Lukas chose this
+- [x] `bin/weekly-gardener.py` — **runs on Claude, weekly** (Lukas chose this
       2026-08-04). Headless `claude -p`, one call per docs file, the spec's
       verbatim prompt (`workbench-setup-spec.md:305-316`)
-- [ ] **It only points; it never fixes** (`workbench-setup-spec.md:310`). No
+- [x] **It only points; it never fixes** (`workbench-setup-spec.md:310`). No
       write tools, no commits, no branch. Output is a report, full stop
-- [ ] **The hallucination guard survives the model upgrade** — a finding is
+- [x] **The hallucination guard survives the model upgrade** — a finding is
       rejected unless the named file exists *and* the quoted statement appears in
       it verbatim. Cheap, and the failure it catches is silent
-- [ ] Findings land in `reports/gardener/YYYY-MM-DD.md`; one Telegram summary,
+- [x] Findings land in `reports/gardener/YYYY-MM-DD.md`; one Telegram summary,
       and **silence when nothing was found** — a weekly "nothing to report" buzz
       trains him to ignore it
-- [ ] Exits cleanly on rate-limit exhaustion rather than burning retries
+- [x] Exits cleanly on rate-limit exhaustion rather than burning retries
       (spec §1); never runs concurrently with a work block, since both want
       Claude on the same box
-- [ ] ~~Both units wrapped in `flock -n` on a shared Ollama lock~~ — no Ollama
+- [x] ~~Both units wrapped in `flock -n` on a shared Ollama lock~~ — no Ollama
       left. The gardener still needs a lock, but against the **work block**, not
       against a model
-- [ ] `setup/watchdog.conf` gains a heartbeat line per job
-- [ ] Tests green — with `claude` stubbed as a subprocess (no network, CI-safe),
+- [x] `setup/watchdog.conf` gains a heartbeat line per job
+- [x] Tests green — 169 passing (was 117), shellcheck clean; `claude` stubbed as a subprocess (no network, CI-safe),
       the same way the bash scripts are already driven in `tests/`
 
 ## Scope
-**May change:** `bin/nightly-triage.py`, `bin/weekly-gardener.sh`,
+**May change:** `bin/nightly-triage.py`, `bin/weekly-gardener.py`,
 `setup/systemd/user/`, `setup/watchdog.conf`, `context/STACK.md`, `tests/`
 **Must NOT touch:** `bin/notify.py` internals, `pyproject.toml` (no new deps).
 No `bin/ollama_json.py` — deferred, see the first criterion.
@@ -179,3 +179,54 @@ supersedes the inline recipe.
 Two jobs plus a shared client. Split into three commits if it runs long.
 
 ## Working notes (agent fills in)
+Done 2026-08-04. 52 new tests; 169 green overall, shellcheck clean.
+
+**The brief reuses `collect_blockers()` rather than reimplementing it.**
+workbench-status.py has a dash in its name, so it loads via importlib — the same
+trick `tests/test_status_generator.py` already uses. This matters beyond tidiness:
+two implementations of "is this machine healthy" would eventually disagree, and
+the phone page and the 03:15 brief disagreeing is the worst possible version of
+that.
+
+**`render()` is pure and tested as such**, including a test that fails if it ever
+shells out. Determinism is what replaces the model's judgement with something
+reviewable: a wrong brief is now a bug with a reproduction.
+
+**Status commits are excluded from the brief's commit list.** The publisher
+amends one forward every 30 minutes, so including them buries the real work.
+
+**The publisher had to be widened to `reports/`** — otherwise both jobs write
+files that never leave the box, and a brief nobody can read is a brief that was
+not written. Guarded on the directory existing, because `git add` fails outright
+on a pathspec matching nothing and would have taken STATUS.md down with it. A
+test covers the case that actually bites: a report landing on a quiet night when
+STATUS.md has not substantively changed, which used to hit the early exit. Note
+it arrives by *amending* the standing status commit, so the commit count does not
+move — the first version of that test asserted otherwise and was wrong.
+
+**This pathspec is now duplicated knowledge.** `bin/publish-status.sh` and the
+future `hooks/pre-commit` fast-path must list the same paths; both carry a
+comment saying so. If a third place ever needs it, extract it instead.
+
+**Gardener notes.** One call per docs file, contents passed inline so the model
+needs no tools at all — which is what makes denying the mutating tools honest
+rather than decorative. The hallucination guard normalises whitespace before
+matching, because these docs are hard-wrapped at 90 columns and an exact
+substring test would reject nearly every true finding; the smoke test on the real
+`CLAUDE.md` confirmed a real quote spanning a line wrap passes while an invented
+one is quarantined. Quarantined findings are *listed*, not hidden, so the
+invention rate stays visible — if it turns out to be high, that is the evidence
+for dropping the job.
+
+**A rate-limited pass writes no heartbeat.** It writes the report, says it was
+truncated, and exits 0. The watchdog then surfaces "has not completed in over a
+week", which is the honest signal; a heartbeat there would hide a job that
+silently stopped working.
+
+**Not built: the §8.3 canary.** Still no scrapers, so its trigger is unchanged —
+un-defer when the first scraper writes its first heartbeat.
+
+**Untested on real hardware.** The `claude -p` flag set (`--strict-mcp-config`,
+`--disallowedTools`) was read off `claude --help` in a cloud container and is
+stubbed in tests, so the *contract* is covered but the invocation itself has
+never run against the real CLI on the box. First live Sunday will prove it.

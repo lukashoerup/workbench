@@ -1,0 +1,12 @@
+[Unit]
+Description=Weekly docs gardener, Sunday night
+
+[Timer]
+# Sunday 04:30: clear of the 03:15 brief, and of the hours a work block would
+# use. Spec 8.4 says Sunday night.
+OnCalendar=Sun *-*-* 04:30:00
+Persistent=true
+RandomizedDelaySec=600
+
+[Install]
+WantedBy=timers.target

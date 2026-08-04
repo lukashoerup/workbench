@@ -1,0 +1,12 @@
+[Unit]
+Description=Nightly brief at 03:15
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+# The box sleeps and loses power. Persistent runs a missed brief on the next
+# boot rather than skipping the night entirely.
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

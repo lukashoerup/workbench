@@ -1,0 +1,17 @@
+[Unit]
+Description=Weekly docs gardener - report docs statements that stopped being true
+Documentation=file:///home/lukashoerup/workbench/bin/weekly-gardener.py
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/mkdir -p /home/lukashoerup/.local/state/workbench
+# flock -n against the headless work block, NOT against a model: both run Claude
+# on this box against one shared rate-limit window, and an overlap makes the
+# gardener fail in a way that reads as a docs problem rather than a scheduling
+# one. -n exits immediately instead of queueing behind a run that can last hours
+# — skipping one weekly pass is cheap, stacking two Claude sessions is not.
+ExecStart=/usr/bin/flock -n /home/lukashoerup/.local/state/workbench/claude.lock /home/lukashoerup/bin/weekly-gardener.py
+# 1 is flock declining the lock: expected, not a fault.
+SuccessExitStatus=0 1
+TimeoutStartSec=3600
+Nice=15

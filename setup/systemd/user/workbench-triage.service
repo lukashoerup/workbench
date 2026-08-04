@@ -1,0 +1,12 @@
+[Unit]
+Description=Write the nightly brief from the day's logs, tests and commits
+Documentation=file:///home/lukashoerup/workbench/bin/nightly-triage.py
+
+[Service]
+Type=oneshot
+# No model, no Ollama, no lock: this job is pure computation over logs and git,
+# so it cannot contend with anything (decided 2026-08-04, context/STACK.md).
+ExecStart=/home/lukashoerup/bin/nightly-triage.py
+# It runs the test suites to measure them, which is the slowest part.
+TimeoutStartSec=900
+Nice=15
