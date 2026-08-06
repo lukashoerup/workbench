@@ -17,6 +17,20 @@ marking almost everything relevant with a score of 0. Structural validation cann
 this; only human-labelled samples can. Confirms the spec's insistence on a weekly
 spot-check, and the reason the benchmark measures agreement rather than just tok/s.
 
+## 2026-08-06 — A heartbeat commit that runs CI turns any GitHub outage into mail
+`publish-status.sh` pushes a STATUS.md-only commit every 30 minutes, and `tests.yml`
+triggered on every push, so the repo ran ~46 CI runs a day that could only ever repeat the
+previous commit's verdict. On 2026-08-06 GitHub could not assign hosted runners: queue
+times crept up (22 s → 105 s → 321 s), then two consecutive runs sat unassigned
+(`runner_id: 0`) for exactly 951 s and were cancelled. Nothing was broken — 87 tests green
+locally, last real code commit green in CI — but each cancellation mailed a "Run failed"
+notice, so the first symptom of a GitHub-side problem was an inbox, not a red test.
+
+Fixed by `paths-ignore: STATUS.md` on both triggers. The general lesson: a scheduled
+heartbeat commit must not trigger CI. It multiplies every provider hiccup by the heartbeat
+frequency, and alerts that fire when nothing is wrong are the ones that get ignored when
+something is.
+
 ## 2026-07-22 — Machine is Wi-Fi only, no ethernet
 `lenovo` has no wired connection at its home location. Wi-Fi power save is disabled via a
 systemd unit because an idle headless box otherwise drops its link. The watchdog retries

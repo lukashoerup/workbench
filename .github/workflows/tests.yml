@@ -8,9 +8,20 @@
 # declares dependencies = [], so plain pip covers it.
 name: tests
 
+# STATUS.md is excluded because `bin/publish-status.sh` commits it — and
+# nothing else — every 30 minutes, forever. Those commits change no code: CI
+# already judged the identical tree on the previous commit, and the box ran the
+# full suite locally to produce the file in the first place. Re-testing them was
+# ~46 runs a day that could only ever repeat a verdict, and on 2026-08-06 that
+# noise turned a GitHub-side runner shortage into a stream of "Run failed" mail
+# about a repo whose tests were green. Any commit touching real code still runs.
 on:
   push:
+    paths-ignore:
+      - STATUS.md
   pull_request:
+    paths-ignore:
+      - STATUS.md
 
 jobs:
   pytest:
