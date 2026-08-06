@@ -1,6 +1,6 @@
 # Workbench status
 
-_Generated Thursday 06 August 2026, 19:07 CEST on `lenovo`._
+_Generated Friday 07 August 2026, 05:05 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
 ## Needs you
@@ -16,14 +16,14 @@ Branch `main` — clean.
 
 Recent commits:
 ```
-06 Aug 18:36  Status: 06 Aug 18:36
+07 Aug 04:33  Status: 07 Aug 04:33
+06 Aug 19:15  Stop the 30-minute status commit from triggering CI
+06 Aug 19:07  Status: 06 Aug 19:07
 26 Jul 16:17  Make the plain-language rule permanent
 26 Jul 16:01  Status: 26 Jul 16:01
 26 Jul 15:37  Make the box's own facts trustworthy, and publish them continuously
 26 Jul 15:30  Status: 26 Jul 15:30
 26 Jul 15:15  Stop the apply agent notifying every 10 minutes, and let it self-heal
-26 Jul 15:12  Decide what the local model is actually allowed to do in the nightly brief
-26 Jul 15:09  Capture lenovo's live machine state
 ```
 ### `erhvervsklubben`
 Branch `main` — clean.
@@ -45,24 +45,24 @@ Recent commits:
 ## Scheduled jobs
 
 ```
-NEXT                          LEFT LAST                              PASSED UNIT                           ACTIVATES
-Thu 2026-08-06 19:12:24 CEST  5min Thu 2026-08-06 18:57:14 CEST   10min ago workbench-watchdog.timer       workbench-watchdog.service
-Thu 2026-08-06 19:13:14 CEST  5min Thu 2026-08-06 19:03:14 CEST 4min 9s ago workbench-apply.timer          workbench-apply.service
-Thu 2026-08-06 19:56:14 CEST 48min Wed 2026-08-05 19:56:14 CEST     23h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
--                                - Thu 2026-08-06 19:07:14 CEST      9s ago workbench-status.timer         workbench-status.service
+NEXT                             LEFT LAST                           PASSED UNIT                           ACTIVATES
+Fri 2026-08-07 05:10:14 CEST 4min 50s Fri 2026-08-07 05:00:14 CEST 5min ago workbench-apply.timer          workbench-apply.service
+Fri 2026-08-07 05:21:01 CEST    15min Fri 2026-08-07 05:05:14 CEST   9s ago workbench-watchdog.timer       workbench-watchdog.service
+Fri 2026-08-07 19:56:14 CEST      14h Thu 2026-08-06 19:56:14 CEST   9h ago launchpadlib-cache-clean.timer launchpadlib-cache-clean.service
+-                                   - Fri 2026-08-07 05:05:14 CEST   9s ago workbench-status.timer         workbench-status.service
 
 4 timers listed.
 ```
 
 | Job | Last success |
 |---|---|
-| `apply` | 4 min ago |
+| `apply` | 5 min ago |
 
 ## Machine
 
 - Disk: 60G free of 98G (36% used)
 - RAM: 11Gi available of 15Gi
-- Uptime: up 2 weeks, 23 hours, 29 minutes
+- Uptime: up 2 weeks, 1 day, 9 hours, 27 minutes
 
 Toolchain:
 
@@ -102,12 +102,12 @@ Completed: 15
 
 Watchdog:
 ```
-2026-08-06T17:37:16+02:00	run complete: 0 failing
-2026-08-06T17:53:16+02:00	run complete: 0 failing
-2026-08-06T18:09:16+02:00	run complete: 0 failing
-2026-08-06T18:25:16+02:00	run complete: 0 failing
-2026-08-06T18:41:16+02:00	run complete: 0 failing
-2026-08-06T18:57:16+02:00	run complete: 0 failing
+2026-08-07T03:29:16+02:00	run complete: 0 failing
+2026-08-07T03:45:16+02:00	run complete: 0 failing
+2026-08-07T04:01:16+02:00	run complete: 0 failing
+2026-08-07T04:17:16+02:00	run complete: 0 failing
+2026-08-07T04:33:16+02:00	run complete: 0 failing
+2026-08-07T04:49:16+02:00	run complete: 0 failing
 ```
 
 Notifications sent:
