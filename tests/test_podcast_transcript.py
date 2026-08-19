@@ -117,3 +117,52 @@ def test_lasses_five_windows_can_all_be_addressed():
                ("19:45", "21:35"), ("36:10", "40:10")]
     for a, b in windows:
         assert window(cues, a, b), f"{a}-{b} came back empty"
+
+
+# --------------------------------------------------------------------------
+# What actually arrived: TurboScribe free tier, no timestamps, cut at 30 min
+# --------------------------------------------------------------------------
+
+BANNER = "(Transskriberet af TurboScribe. Opgrader til Ubegrænset for at fjerne denne meddelelse.)"
+TRUNCATED = (
+    "(Denne fil er længere end 30 minutter. Opgrader til Ubegrænset på "
+    "https://turboscribe.ai/da/ for at transskribere filer på op til 10 timer.)"
+)
+
+
+def test_the_services_own_truncation_notice_is_read_not_stripped():
+    """The single most useful line in the file. A free tier that quietly stops
+    at thirty minutes produces a transcript that parses, reads well, and is
+    missing a third of the episode."""
+    from transcript import truncation_notice
+
+    assert "30 minutter" in truncation_notice(f"{BANNER}\n\nnoget tekst\n\n{TRUNCATED}")
+
+
+def test_an_ordinary_upgrade_banner_is_not_mistaken_for_truncation():
+    """The banner at the top of every free-tier transcript also says 'opgrader'.
+    Treating that as a warning would cry wolf on every file."""
+    from transcript import truncation_notice
+
+    assert truncation_notice(f"{BANNER}\n\nnoget tekst") == ""
+
+
+def test_an_untimed_transcript_is_usable_for_content_and_refused_for_placement():
+    """Two functions on purpose: the words are still the primary source for what
+    is described, and still cannot be tied to a timecode. Saying which is which
+    out loud is the point."""
+    from transcript import NoTimestamps, parse, parse_untimed
+
+    text = f"{BANNER}\n\nTo børn fik deres livs chok.\n\nDer lå et bål.\n\n{TRUNCATED}"
+    assert parse_untimed(text) == ["To børn fik deres livs chok.", "Der lå et bål."]
+    with pytest.raises(NoTimestamps):
+        parse(text)
+
+
+def test_service_notices_never_reach_the_content():
+    """Boilerplate in the shot-building material would end up quoted as if the
+    episode had said it."""
+    from transcript import parse_untimed
+
+    for para in parse_untimed(f"{BANNER}\n\nrigtig tekst\n\n{TRUNCATED}"):
+        assert "TurboScribe" not in para and "Opgrader" not in para

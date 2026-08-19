@@ -284,7 +284,7 @@ def test_every_shot_holds_the_established_continuity(shot):
     [
         ("light", "Low raking sun under a heavy sky"),
         ("atmosphere", "A clear sky after the rain has passed"),
-        ("subject", "The clearing in warm light"),
+        ("subject", "The clearing in bright sunshine"),
         ("motion", "Sunlight moves across the ash"),
     ],
 )
@@ -303,13 +303,24 @@ def test_the_continuity_block_reaches_every_prompt(shot):
     assert LOOK.continuity in build_image_prompt(shot, LOOK, ENTITIES)
 
 
-def test_the_only_directed_light_in_the_episode_is_motivated_in_scene():
-    """Exactly one shot uses hard directional light, and it comes from a police
-    work lamp that is physically present — not from weather the episode has
-    already ruled out."""
-    directed = [s for s in SHOTS if "raking" in s.light.lower()]
-    assert len(directed) == 1, [s.id for s in directed]
-    assert "lamp" in directed[0].light.lower()
+def test_all_directed_light_is_motivated_by_something_in_the_scene():
+    """The episode has no sun and no break in the weather, so any hard
+    directional light has to come from an object that is physically there — a
+    work lamp, a torch, a bulb, a forecourt canopy. Light with no source in the
+    scene is the tell that gives a generated frame away.
+
+    This started life asserting exactly one such shot. The transcript added the
+    night of the disposal, which is lit by torches and forecourt lights, so the
+    count was never the invariant — the motivation was.
+    """
+    sources = ("lamp", "torch", "bulb", "forecourt", "surgical", "fluorescent",
+               "flame", "sodium", "firelight")
+    unmotivated = [
+        s.id for s in SHOTS
+        if any(w in s.light.lower() for w in ("raking", "directed", "beam"))
+        and not any(src in s.light.lower() for src in sources)
+    ]
+    assert not unmotivated, f"directed light with no source in the scene: {unmotivated}"
 
 
 def test_the_look_carries_the_bridge_between_interiors_and_exteriors():
@@ -322,8 +333,10 @@ def test_the_look_carries_the_bridge_between_interiors_and_exteriors():
 # Sources — the narration outranks everything, including better facts
 # --------------------------------------------------------------------------
 
-# Flip to True in the same commit that adds the transcript.
-TRANSCRIPT_EXISTS = False
+# True since 19 Aug 2026: Lukas transcribed the episode with TurboScribe and put
+# it in Drive. It covers the first 30 minutes only, which is why segment 5 is
+# still on Lasse's notes rather than on the audio.
+TRANSCRIPT_EXISTS = True
 
 
 @pytest.mark.parametrize("shot", SHOTS, ids=lambda s: s.id)
@@ -333,13 +346,24 @@ def test_every_shot_declares_a_real_source(shot):
     check_source(shot, transcript_exists=TRANSCRIPT_EXISTS)
 
 
-def test_no_shot_claims_the_audio_before_there_is_one():
-    """The failure this prevents: research turns up a vivid detail, it goes into
-    a shot, and later nobody remembers the episode never mentioned it — so the
-    programme shows something its own narration does not support."""
-    assert not [s.id for s in SHOTS if s.source == "audio"], (
-        "a shot claims the audio as its source; set TRANSCRIPT_EXISTS when that "
-        "is actually true"
+def test_the_untranscribed_segment_does_not_claim_the_audio():
+    """The transcript stops at 30 minutes, so nothing after it can rest on the
+    audio. Segment 5 is the part that is not covered, and it must say so."""
+    unsupported = [
+        s.id for s in SHOTS
+        if s.id.startswith("S5-") and s.source == "audio"
+    ]
+    assert not unsupported, (
+        f"{unsupported} claim the audio, but the transcript stops before 36:40"
+    )
+
+
+def test_most_of_the_shot_list_now_rests_on_the_audio():
+    """The measure of whether the transcript did its job. Before it arrived this
+    was zero."""
+    from_audio = [s.id for s in SHOTS if s.source == "audio"]
+    assert len(from_audio) > len(SHOTS) * 0.6, (
+        f"only {len(from_audio)}/{len(SHOTS)} shots rest on the audio"
     )
 
 

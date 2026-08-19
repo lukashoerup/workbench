@@ -2,50 +2,64 @@
 
 The episode
 -----------
-*Danske Drabssager*, season 6 episode 5, "Det Brændende Lig", 29 March 2022,
-44:37. Confirmed 19 Aug 2026 against the show's own feed, which Lukas exported
-to Drive. It is the only episode in 219 whose length and description match
-Lasse's five timecodes.
+*Danske Drabssager* s6e5, "Det Brændende Lig", 29 March 2022, 44:37.
 
-The feed's own description, verbatim:
+**Identification confirmed 19 Aug 2026 against the audio.** Four of Lasse's
+five timecodes are matched by content in the transcript, in his order: the
+children and the burning bonfire, the forensic pathologist, the lighter fluid
+and the tyre track, and the sweating men disposing of her. The fifth — the
+prosecutor at 36:40 — falls past the transcript's cut, but Anne Birgitte
+Stürup is in the episode's contributor list. The question is closed.
 
-    To børn fik deres livs chok, og leg blev vendt til gru, da de i et bål fandt
-    en bylt, som indeholdt de jordiske rester af et menneske. Ugenkendelig,
-    dræbt, forbrændt og efterladt. Du hører om en tom flaske tændvæske
-    efterladt i et bål, et dækspor i skovbunden og et billede i avisen af en
-    afdød kvindes maltrakterede ansigt. Og om beslutninger, der skal træffes,
-    selv om de kan virke brutale.
+The transcript itself is **not in this repo**: it is a verbatim transcript of a
+commercial podcast and this repository is public. It lives in Lukas's Drive.
+Only short quotations appear here, to justify a shot.
 
-Contributors, and they are what Lasse's five timecodes are: former murder chief
-**Bent Isager-Nielsen**, forensic technician **Bent Hytholm Jensen**, professor
-of forensic medicine **Hans Petter Hougen**, and former prosecutor **Anne
-Birgitte Stürup**. Host: crime reporter **Stine Bolther**. These are also the
-people who would be on camera if the programme keeps its talking heads.
+What the audio actually says
+----------------------------
+Late September 1999, a forest near Køge. Children playing in pouring rain see a
+large bonfire burning with high flames and something lying in it. Køge police
+call in Rejseholdet; the fire brigade is called both to put the fire out and to
+tent the site against the rain. In the fire, a bundle about 70 cm across,
+wrapped in plastic, fabric and carpet.
 
-What is fact and what is art direction
---------------------------------------
-**Fact**, from the description above: two children at play; a bundle in a
-bonfire; remains unrecognisable and burnt; an emptied bottle of lighter fluid
-left in the fire; a tyre track in the forest floor; a newspaper photograph of
-the dead woman's battered face; a decision that felt brutal to make.
+At Retsmedicinsk Institut in the Teilum building on Frederik den 5.s Vej, in
+the section room they call *Drabstuen*, Hans Petter Hougen finds a woman: the
+front of her burnt away where she lay against the fire, the back largely
+intact, several skull fractures and severe brain injury — and **no soot in the
+airways**, so she was already dead when she was put on the fire. Blunt force,
+several impressions in the skull. Forensic anthropologists under Niels
+Lynnerup add age, that she had borne children, and — by strontium analysis —
+that she grew up in Iran, Iraq or Turkey. Forensic odontologists map her teeth;
+the press is told she was midway through extensive dental work; a Copenhagen
+dentist recognises an Iranian patient who stopped coming. That is the match.
 
-**Chosen, not known**: the weather, the season and the hour. A wet grey day is
-an art-direction decision — it suits the material, it is unmistakably Danish,
-and it gives the episode one continuous world to sit in. It is not sourced, and
-it should be checked against the audio before the look is locked.
+She was 29, married to an Iranian man, three small daughters, a kiosk in inner
+Copenhagen. He never reported her missing. The weapon was a seven-kilo club
+kept for Iranian martial arts or for defending the kiosk. Blood had run between
+the floorboards of the back room, under a moved piece of furniture, and the
+floor had been washed. Lighter fluid was bought in quantity between Copenhagen
+and Køge; the melted bottle was left in the fire and went to Teknologisk
+Institut for analysis. A tyre impression in the wet forest floor was cast in
+plaster, traced through the tyre importers' association to a VW Golf or Polo,
+and matched 100% to the Golf belonging to a friend — parked across the street
+from the kiosk — who was charged with complicity.
 
-**Not confirmed for this episode**: the forensic odontologist and the dental
-identification. That detail comes from *Dødens detektiver* ep. 1, "Liget i
-bålet", which appears to cover the same case — but appears is not is. S2-04 is
-written so it works either way.
+On 30 September 1999 Ekstra Bladet published a photograph of her burnt, unknown
+face to get her identified. That decision is the episode's hardest thread, and
+the one image this production will never generate (docs/RAILS.md).
 
-The narration itself is still untranscribed: the feed carries the mp3, not a
-transcript, and this machine cannot reach the audio host. Subject lines are
-built from the description above, not from what is said.
+What is fact and what is direction
+----------------------------------
+Almost everything below is now `audio`. The weather was a guess and the audio
+confirmed it outright — "regnen står ned i stænger", "rejnværstunge september",
+"rigtig dårlig vejr". So was the forensic odontology, which the audio makes
+central rather than incidental. The date moves the look from "recent past" to
+**late September 1999**, which is a real change: period cars, period clothing,
+a 1999 kiosk, a 1999 front page.
 
-The five segments are the timecodes Lasse picked. Each gets a hero shot — the
-frame he asked to see — plus the shots around it, because one frame proves the
-look and a sequence proves the format.
+Still unverified: everything in segment 5. The transcript stops at 30 minutes —
+the free tier's limit — so the prosecutor is not in it.
 """
 from prompt_builder import Entity, Look, Shot
 
@@ -57,14 +71,14 @@ LOOK = Look(
     ),
     light=(
         "One dominant, motivated source per frame and nothing else: flat grey "
-        "daylight filtered down through a soaked canopy outdoors, hard 4000K "
-        "fluorescent in institutional rooms, firelight where something is actually "
-        "burning. Shadows stay open and blacks lift to charcoal."
+        "daylight through a soaked canopy outdoors, hard 4000K fluorescent in "
+        "institutional rooms, sodium and forecourt light at night, firelight where "
+        "something is burning. Shadows stay open and blacks lift to charcoal."
     ),
     palette=(
         "soaked forest greens desaturated towards grey, wet black bark, the "
         "grey-white of sodden ash, one cold cyan sitting in the shadows, and amber "
-        "only where a real flame is putting it there"
+        "only where a real flame or a sodium lamp is putting it there"
     ),
     lens_family=(
         "35mm, 50mm and 85mm spherical primes worked near wide open, nothing "
@@ -75,41 +89,41 @@ LOOK = Look(
         "breathing, focus falling off fast."
     ),
     continuity=(
-        "The whole episode is one continuous wet grey day in late autumn, some time "
-        "in the recent past: rain falling or just fallen, no sun anywhere, no blue in "
-        "the sky, standing water on every horizontal surface, and the same soaked "
-        "flat light indoors and out. Interiors carry the same cold cyan in the "
-        "shadows and the same open blacks as the forest, so a cut from the wood to a "
-        "tiled room does not jar."
+        "Everything happens inside one wet stretch of late September 1999 — the "
+        "night the body is driven south, and the grey day the children find the "
+        "fire. Rain falls or has just fallen in every frame, indoors and out; "
+        "there is no break in the weather and nothing in the sky. Period is 1999 "
+        "Denmark and it is visible: cars, clothing, signage and fittings of the "
+        "late nineties, no flat screens, no mobile phones with screens. Interiors "
+        "carry the same cold cyan in the shadows and the same open blacks as the "
+        "forest, so a cut from the wood to a tiled room does not jar."
     ),
     breaks_continuity=(
         "sun", "sunlight", "sunlit", "sunny", "sunshine", "sunset", "sunrise",
-        "golden hour", "blue sky", "clear sky", "warm light", "dry", "dusty light",
-        "summer", "snow", "moonlight",
+        "golden hour", "blue sky", "clear sky", "summer", "snow",
+        "smartphone", "mobile phone", "flat screen", "LED",
     ),
     format="16:9 for broadcast, composed with clear space on one side for lower-thirds",
 )
 
-# Places and objects that recur. Written once, pasted verbatim wherever they
-# appear — this is what stops the clearing being a different clearing each time
-# the programme cuts back to it.
 ENTITIES = {
     e.id: e
     for e in (
         Entity(
             "baalplads",
             "The bonfire site",
-            "The fire is a low, wide heap of branches and broken pallet wood in a small "
-            "clearing off a forestry track, burning badly in the rain so that it gives "
-            "far more smoke than flame, with the ground around it churned to mud.",
+            "The fire is a big heap of cut branches and firewood built down in a "
+            "natural hollow off a forestry track, burning hard with high flames in "
+            "spite of the rain, with the ground around it churned to mud.",
             anchor="S1-01",
         ),
         Entity(
             "skoven",
             "The forest",
-            "The wood is Danish mixed plantation — dark wet spruce on one side, bare "
-            "beech on the other, deep soft leaf litter and needles underfoot, a rutted "
-            "forestry track running through it, and everything soaked through.",
+            "The wood is Danish mixed plantation south of Copenhagen — wet spruce on "
+            "one side, beech on the other, deep soft leaf litter underfoot strewn with "
+            "the rubbish a roadside wood collects, and a rutted forestry track running "
+            "through it, everything soaked through.",
             anchor="S1-01",
         ),
         Entity(
@@ -121,11 +135,12 @@ ENTITIES = {
             anchor="S2-01",
         ),
         Entity(
-            "afhoering",
-            "The interview room",
-            "The room is small and grey: scratched laminate table, two stacking chairs, "
-            "a wall-mounted recorder, and one window of closed venetian blinds.",
-            anchor="S4-02",
+            "kiosken",
+            "The kiosk",
+            "The kiosk is a small 1999 Copenhagen corner shop: wire racks, a chest "
+            "freezer, cigarette shelves behind the counter, worn lino at the front and "
+            "bare painted floorboards in the back room.",
+            anchor="X-02",
         ),
         Entity(
             "retssal",
@@ -139,38 +154,39 @@ ENTITIES = {
 }
 
 SHOTS = (
-    # ---- Segment 1 — 03:30–06:00 -----------------------------------------
+    # ---- Segment 1 — 03:30–06:00 ------------------------------------------
     # "legede børn og bål og beredskab på gerningsstedet"
+    # "de bliver opmærksomme på et kæmpebål med meget høje flammer … selvom
+    #  regnen står ned i stænger"
     Shot(
         id="S1-01",
-        source="description",
+        source="audio",
         segment="03:30-06:00 what the children walked up to",
         subject=(
-            "A low wide bonfire burning badly in steady rain in a small forest clearing, "
-            "giving off far more smoke than flame, the smoke hanging low and refusing to "
-            "rise through the wet air"
+            "A big bonfire burning hard with high flames down in a hollow off a forestry "
+            "track, driving rain falling straight through the fire and turning to steam "
+            "above it"
         ),
         camera=(
-            "35mm at f/2.8, camera on the forestry track at chest height some twenty "
-            "metres back, fire low and left of centre with the wet track running out to "
-            "the right"
+            "35mm at f/2.8, camera on the track at chest height some twenty metres back, "
+            "fire low and left of centre with the wet track running out to the right"
         ),
         atmosphere=(
-            "Steady rain falling through bare branches, the whole wood soaked and the "
+            "Rain coming down hard through bare branches, the whole wood soaked and the "
             "light flat and shadowless under the canopy"
         ),
         entities=("baalplads", "skoven"),
-        motion="Smoke rolls sideways off the heap and settles again; rain keeps falling through it",
+        motion="Rain drives through the flames and lifts off them as steam; the fire holds",
         motion_tier="B",
         seconds=6,
     ),
     Shot(
         id="S1-02",
-        source="description",
+        source="audio",
         segment="03:30-06:00 the children",
         subject=(
             "Two children seen from behind at forty metres, small dark shapes stopped "
-            "still on the wet forestry track, one bicycle lying on its side beside them"
+            "still on the wet forestry track, a bicycle lying on its side beside them"
         ),
         camera=(
             "85mm at f/4 from further down the track, heavy compression, the figures "
@@ -181,38 +197,47 @@ SHOTS = (
         motion_tier="B",
         seconds=5,
     ),
+    # "sådan en skov, der er fyldt med kondomer, kapsler, plastik … flasker,
+    #  skrald, cigaretpakker og alt muligt"
     Shot(
         id="S1-03",
-        source="description",
-        segment="03:30-06:00 close on the fire",
+        source="audio",
+        segment="03:30-06:00 a scene with no edges",
         subject=(
-            "Wet branches and pallet wood at the edge of the heap, steaming as much as "
-            "burning, water running off the bark into the ash below"
+            "The forest floor close up: sodden leaf litter with bottle caps, a crushed "
+            "plastic bottle, a cigarette packet gone soft and a scrap of wrapper trodden "
+            "into the mould, a numbered evidence marker standing among them"
         ),
         camera=(
-            "85mm at f/2, camera low and close to the edge of the heap, focus held on "
-            "the steaming wood with the heart of the fire soft and dark behind"
-        ),
-        light="Firelight from within the heap, weak and intermittent against the grey daylight",
-        entities=("baalplads",),
-        motion="Steam lifts off the wet wood in a slow curl; one branch settles",
-        motion_tier="B",
-    ),
-    Shot(
-        id="S1-04",
-        source="notes",
-        segment="03:30-06:00 the response arrives",
-        subject=(
-            "Blue emergency light pulsing through wet spruce trunks from somewhere off "
-            "the track, the vehicle itself never in frame, only the light and the water "
-            "on the bark it catches"
-        ),
-        camera=(
-            "50mm at f/2, locked off, trunks filling the frame in receding layers with "
-            "the light coming from deep behind them"
+            "50mm at f/2, camera down on the litter looking along the ground, marker "
+            "sharp and the rubbish falling away either side"
         ),
         entities=("skoven",),
-        motion="The blue light pulses through the trunks at the rhythm of a rotating beacon",
+        motion="Rain strikes the leaf litter and darkens it in patches",
+        motion_tier="B",
+    ),
+    # "man får tilkaldt beredskab … prøver at overdække … og få slukket, men
+    #  også for at sikre sporene" / "dækket over med presenning, fordi det er
+    #  styrtregn"
+    Shot(
+        id="S1-04",
+        source="audio",
+        segment="03:30-06:00 the site is tented against the rain",
+        subject=(
+            "A tarpaulin rigged on poles over the hollow to keep the rain off the scene, "
+            "sagging and pooling with water, lit from beneath by work lamps so the "
+            "underside glows against the dark wood"
+        ),
+        camera=(
+            "35mm at f/2.8, camera outside the tarpaulin at chest height and slightly "
+            "below, the sheet filling the upper half of frame"
+        ),
+        light=(
+            "Work lamps under the tarpaulin, throwing everything upward; grey daylight "
+            "failing behind the trees"
+        ),
+        entities=("skoven",),
+        motion="Water gathers in a sag of the tarpaulin and lets go in a single fall",
         motion_tier="B",
     ),
     Shot(
@@ -233,71 +258,78 @@ SHOTS = (
         motion_tier="B",
     ),
 
-    # ---- Segment 2 — 09:34–13:00 -----------------------------------------
-    # "retsmediciner og kig på lig"
+    # ---- Segment 2 — 09:34–13:00 ------------------------------------------
+    # "forsigtigt at løfte det op, og nogle flige" — burnt fabric and carpet
+    # lifted off, piece by piece
     Shot(
         id="S2-01",
-        source="notes",
+        source="audio",
         segment="09:34-13:00 the forensic examination",
         subject=(
-            "A wet gloved hand lifting a stainless steel instrument from a folded green "
-            "cloth on a trolley, with only the hand and the gown cuff in frame and the "
-            "rest of the room falling away into soft green-grey"
+            "A gloved hand lifting the charred edge of a piece of carpet with forceps, "
+            "the fabric coming away in a stiff burnt flake, everything beneath it held "
+            "out of focus and out of frame"
         ),
         camera=(
-            "85mm at f/1.8, camera at trolley height, very shallow focus held on the "
-            "instrument, hand entering from the right"
+            "85mm at f/1.8, camera at table height, very shallow focus held on the "
+            "forceps and the flake, hand entering from the right"
         ),
         light=(
             "Hard even 4000K fluorescent from directly overhead, so nothing in frame "
             "casts a shadow with anywhere to go"
         ),
         entities=("retspatologi",),
-        motion="The hand lifts the instrument clear of the cloth and out of frame; nothing else moves",
+        motion="The flake comes free and lifts out of frame; nothing else moves",
         motion_tier="B",
     ),
+    # "På Frederik den 5.s Vej på Østerbro … i Teilumbygningen lige ved siden af
+    #  Rigshospitalet"
     Shot(
         id="S2-02",
-        source="direction",
+        source="audio",
         segment="09:34-13:00 arriving at the institute",
         subject=(
-            "An empty institutional corridor with one heavy door standing ajar at the far "
-            "end and brighter light behind it"
+            "A 1960s hospital block of pale concrete and repeating windows seen from the "
+            "wet pavement across the road, rain streaking the frame, one lit window on an "
+            "otherwise dark elevation"
         ),
         camera=(
-            "35mm at f/2.8, camera low and centred in the corridor so the door sits small "
-            "at the end of the perspective"
+            "50mm at f/2.8, camera at head height from across the street, the building "
+            "filling the right of frame and running out of the top"
         ),
-        entities=("retspatologi",),
-        motion="A slow push down the corridor towards the door; the light on the tile shifts very slightly",
-        motion_tier="A",
-        seconds=6,
+        light="Flat grey afternoon under heavy cloud, one warm interior window",
+        motion="Rain runs down; a car passes through the near foreground out of focus",
+        motion_tier="B",
     ),
+    # "den sektionsstue de kalder Drabstuen"
     Shot(
         id="S2-03",
-        source="direction",
-        segment="09:34-13:00 the examination room",
+        source="audio",
+        segment="09:34-13:00 Drabstuen",
         subject=(
             "An empty stainless steel examination table with a drain slot down its centre "
-            "and a film of water still lying on the surface, a folded sheet at the far end"
+            "and a film of water still lying on the surface, a bank of surgical lights "
+            "switched on above it"
         ),
         camera=(
             "50mm at f/2, camera at table height at the foot end, looking down the length "
-            "of the table"
+            "of the table into the lights"
         ),
-        light="Hard even 4000K fluorescent from directly overhead",
+        light="Hard even 4000K fluorescent, plus the surgical lights burning into the lens",
         entities=("retspatologi",),
         motion="A single drop of water travels down the drain slot",
         motion_tier="B",
     ),
+    # "retsodontologerne … tandkort … og så var der et bingo, så var der et match"
     Shot(
         id="S2-04",
-        source="case",
-        segment="09:34-13:00 what the examination found",
+        source="audio",
+        segment="09:34-13:00 the teeth are what identify her",
         subject=(
-            "A row of small radiographs clipped side by side to a backlit viewing panel "
-            "in an otherwise dark room, the little grey shapes abstracted and held "
-            "slightly out of focus, a gloved fingertip resting under one of them"
+            "A row of small dental radiographs clipped side by side to a backlit viewing "
+            "panel in an otherwise dark room, and beside them a paper dental chart held "
+            "just out of focus, a gloved fingertip resting under one of the little grey "
+            "shapes"
         ),
         camera=(
             "85mm at f/1.4, camera close and off-axis with the lit panel filling the left "
@@ -309,65 +341,74 @@ SHOTS = (
         motion_tier="B",
     ),
 
-    # ---- Segment 3 — 15:30–17:09 -----------------------------------------
-    # "tændvæske i bål, dæk aftryk"
+    # ---- Segment 3 — 15:30–17:09 ------------------------------------------
+    # "der fandt man resterne af en flaske, der havde indeholdt tændvæske"
     Shot(
         id="S3-01",
-        source="description",
-        segment="15:30-17:09 the fire was helped",
-        subject=(
-            "One patch of the heap burning hard and clean in the rain while everything "
-            "around it only smoulders and steams — a bright wrong heat in a single place"
-        ),
-        camera=(
-            "85mm at f/2.8, camera low and close, the burning patch filling the lower "
-            "third with wet smoking wood above and behind it"
-        ),
-        light="The flame is the only source; everything is lit from below and from inside the frame",
-        entities=("baalplads",),
-        motion="The clean flame gutters in the rain, holds, and lifts again",
-        motion_tier="B",
-    ),
-    Shot(
-        id="S3-02",
-        source="description",
+        source="audio",
         segment="15:30-17:09 what was used",
         subject=(
-            "A scorched plastic bottle at the edge of the ash, one side melted and "
-            "slumped inward, the label burnt away to nothing, half sunk in wet grey ash"
+            "The scorched remains of a plastic bottle half sunk in wet grey ash, one side "
+            "melted and slumped inward and the label burnt away to nothing, a gloved hand "
+            "lowering an opened evidence bag towards it"
         ),
         camera=(
             "85mm at f/1.8, camera down at ash level, bottle left of centre with focus "
-            "on the melted shoulder"
+            "held on the melted shoulder"
         ),
         entities=("baalplads",),
         motion="Rain strikes the ash around the bottle and darkens it",
         motion_tier="B",
-        seconds=4,
+        seconds=5,
     ),
+    # "rigtig mange indkøb af lige præcis tændvæske fra København til Køge"
     Shot(
-        id="S3-03",
-        source="direction",
-        segment="15:30-17:09 the accelerant in the timber",
+        id="S3-02",
+        source="audio",
+        segment="15:30-17:09 bought along the way",
         subject=(
-            "Charred timber filling the frame edge to edge, the char broken open to show "
-            "the burn running deeper along one line than anywhere around it"
+            "A shelf of identical lighter-fluid bottles in a late-nineties petrol station "
+            "shop, seen at an angle so the labels turn away, one gap in the row where "
+            "several have been taken"
         ),
-        camera="Macro-equivalent at f/4, camera directly above the timber, frame filled",
-        entities=("baalplads",),
-        motion="A drop of rain lands on the char and steams off",
+        camera=(
+            "50mm at f/2, camera at shelf height and slightly below, the gap sitting just "
+            "right of centre"
+        ),
+        light="Hard fluorescent strip lighting the whole aisle evenly",
+        motion="Nothing moves; the strip light flickers once at the far end",
         motion_tier="B",
         seconds=4,
     ),
+    # "så sender man den på Teknologisk Institut, hvor man laver en analyse for
+    #  brændbare væsker"
+    Shot(
+        id="S3-03",
+        source="audio",
+        segment="15:30-17:09 the analysis",
+        subject=(
+            "A sealed nylon evidence bag lying on a laboratory bench with the scorched "
+            "bottle inside it, condensation on the inside of the plastic, laboratory glass "
+            "out of focus behind"
+        ),
+        camera=(
+            "85mm at f/2, camera at bench height, bag filling the lower left with the "
+            "bench running away to the right"
+        ),
+        light="Hard even 4000K fluorescent from directly overhead",
+        motion="A slow drift right along the bench",
+        motion_tier="A",
+        seconds=4,
+    ),
+    # "der var dækaftryk af nogle biler … affotografering med målestok på siden af"
     Shot(
         id="S3-04",
-        source="description",
+        source="audio",
         segment="15:30-17:09 the tyre print",
         subject=(
-            "One tyre track pressed deep into soft forest floor where a vehicle turned "
-            "off the track, leaf litter and needles compressed down into wet loam, the "
-            "tread edge sharp and holding standing water, a plastic evidence scale laid "
-            "beside it"
+            "One tyre track pressed deep into soft forest floor where a vehicle turned off "
+            "the track, leaf litter and needles compressed down into wet loam, the tread "
+            "edge sharp and holding standing water, a plastic evidence scale laid beside it"
         ),
         camera=(
             "35mm at f/4, camera low and raking along the track so the tread stands up in "
@@ -375,130 +416,156 @@ SHOTS = (
         ),
         light=(
             "A technician's work lamp set low and to one side, raking hard across the "
-            "impression so the tread stands up in relief — the one piece of directed "
-            "light in the episode, and it is a police lamp, not weather"
+            "impression so the tread stands up in relief — the one piece of directed light "
+            "in the episode, and it is a police lamp, not weather"
         ),
         entities=("skoven",),
         motion="The water standing in the tread trembles as a drip comes off the branches above",
         motion_tier="B",
     ),
+    # "og så laver man gipsafstøbninger derude"
     Shot(
         id="S3-05",
-        source="direction",
-        segment="15:30-17:09 where it led",
+        source="audio",
+        segment="15:30-17:09 the cast",
         subject=(
-            "The forestry track running away from camera between wet spruce walls into "
-            "flat white mist, the double line of ruts filled with water and holding what "
-            "little sky there is"
+            "A set plaster cast being lifted clear of the ground, wet loam and needles "
+            "still clinging to its underside where the tread has come away in reverse, two "
+            "gloved hands under it"
         ),
         camera=(
-            "50mm at f/2.8, camera centred down in the ruts at knee height with the "
-            "vanishing point high in frame"
+            "50mm at f/2, camera low at ground level, the cast lifting towards the lens "
+            "and filling the frame as it comes"
         ),
         entities=("skoven",),
-        motion="A slow push forward along the ruts; the mist does not resolve",
-        motion_tier="A",
-        seconds=6,
+        motion="The cast lifts free and turns slightly; loam falls from its underside",
+        motion_tier="B",
     ),
 
-    # ---- Segment 4 — 20:17–21:05 -----------------------------------------
-    # "sveder, drabsmænd, brandbart væske"
+    # ---- Segment 4 — 20:17–21:05 ------------------------------------------
+    # "Sveden løber fra panden, mens de arbejder. Løfter den døde, pakker hende
+    #  ind, gemmer hende væk." — the disposal, not an interrogation.
     Shot(
         id="S4-01",
-        source="notes",
-        segment="20:17-21:05 the interview",
+        source="audio",
+        segment="20:17-21:05 the men working",
         subject=(
-            "Two hands on a scratched laminate table, fingers interlaced too tightly and "
-            "the knuckles pale, an untouched paper cup of water beside them; above the "
-            "wrists the figure is only a dark unlit mass"
+            "A bare forearm and the back of a neck under a bare bulb, sweat standing on "
+            "the skin and running into the collar, the head cropped away above and the "
+            "room behind gone to black"
         ),
         camera=(
-            "50mm at f/1.8, camera at table height directly opposite, hands centred low, "
-            "the room behind going to a soft dark mass"
+            "85mm at f/1.8, camera close and behind at shoulder height, the neck filling "
+            "the right of frame, everything else unlit"
         ),
-        light=(
-            "One hard fluorescent panel directly overhead so the hands are lit and "
-            "everything above them is not"
-        ),
-        entities=("afhoering",),
-        motion="One thumb moves against the other twice and stops",
+        light="One bare bulb overhead, hard and close, nothing else lit at all",
+        motion="A bead of sweat runs down into the collar; the shoulder shifts once",
         motion_tier="B",
     ),
+    # "bliver lagt i en dyne, en sovepose og en stor sæk"
     Shot(
         id="S4-02",
-        source="direction",
-        segment="20:17-21:05 before the interview",
+        source="audio",
+        segment="20:17-21:05 what she was wrapped in",
         subject=(
-            "The interview room before anyone is in it: two stacking chairs at the table, "
-            "the wall recorder, and daylight edging through closed venetian blinds"
+            "A duvet, a sleeping bag and a large woven sack laid out flat and empty on "
+            "bare painted floorboards, in the order they will be used, a roll of plastic "
+            "sheeting standing at the edge of frame"
         ),
         camera=(
-            "35mm at f/2.8, camera in the corner at seated eye level, table to the left "
-            "and empty wall to the right"
+            "35mm at f/2.8, camera high and looking almost straight down, the three "
+            "objects filling the frame end to end"
         ),
-        entities=("afhoering",),
-        motion="A blade of light from the blinds creeps a few centimetres across the table",
+        light="One bare bulb overhead",
+        entities=("kiosken",),
+        motion="A slow push straight down towards the floorboards",
         motion_tier="A",
         seconds=6,
     ),
+    # "Sammen bærer de hende ud i bilen og kører syd for København"
     Shot(
         id="S4-03",
-        source="direction",
-        segment="20:17-21:05 on the record",
+        source="audio",
+        segment="20:17-21:05 the car",
         subject=(
-            "A wall-mounted interview recorder with one red indicator lit and dust settled "
-            "on the housing"
+            "The open boot of a late-nineties hatchback at night in rain, the interior "
+            "bulb the only light in it, the boot floor bare and the back seats already "
+            "folded down"
         ),
         camera=(
-            "85mm at f/1.4, camera close and slightly below, recorder to the right of "
-            "frame with the wall falling away left"
+            "50mm at f/2, camera at bumper height directly behind the car, the boot "
+            "opening filling the centre of frame"
         ),
-        entities=("afhoering",),
-        motion="The red indicator pulses slowly",
+        light="The boot bulb alone, with wet sodium street light falling in from behind camera",
+        motion="Rain crosses the light in the boot opening; nothing else moves",
         motion_tier="B",
-        seconds=4,
     ),
+    # "Undervejs standser de ved flere tankstationer. Ikke for at købe hotdogs
+    #  eller tanke op. De har en helt anden plan."
     Shot(
         id="S4-04",
-        source="notes",
-        segment="20:17-21:05 the flammable liquid",
+        source="audio",
+        segment="20:17-21:05 the stops along the way",
         subject=(
-            "A shelf in a cold garage lined with household tins and bottles gone furry "
-            "with dust, and one clean gap in the dust where something round has been "
-            "lifted out"
+            "A petrol station forecourt at night in heavy rain, seen from across the road, "
+            "one hatchback standing at a pump with nobody at it, the whole forecourt "
+            "burning white against the wet black road"
         ),
         camera=(
-            "50mm at f/2, camera at shelf height and slightly below, the gap sitting just "
-            "right of centre with the labels all turned away from the lens"
+            "50mm at f/2 from across the road at head height, forecourt small and central "
+            "with the wet road filling the lower third and throwing it all back"
         ),
-        motion="Motes drift slowly through the grey light falling from a door out of frame",
+        light="The forecourt canopy lights are the only source; everything outside them is unlit",
+        motion="Rain crosses the forecourt light; a car passes through the near foreground",
+        motion_tier="B",
+        seconds=6,
+    ),
+    # "I skoven finder de en egen fordybning, og gør bålet klar. Oven på brænde
+    #  og kviste …"
+    Shot(
+        id="S4-05",
+        source="audio",
+        segment="20:17-21:05 the fire is built",
+        subject=(
+            "Cut branches and firewood stacked ready and unlit in a natural hollow in the "
+            "forest at night, rain falling on it, torchlight coming in low from one side"
+        ),
+        camera=(
+            "35mm at f/2, camera down in the hollow at the level of the stacked wood, the "
+            "stack left of centre and the black wood beyond"
+        ),
+        light="A single torch beam from outside the frame, raking low across the wood",
+        entities=("baalplads", "skoven"),
+        motion="Rain falls through the torch beam; the beam moves a little across the stack",
         motion_tier="B",
     ),
 
-    # ---- Segment 5 — 36:40–39:36 -----------------------------------------
-    # "anklager"
+    # ---- Segment 5 — 36:40–39:36 ------------------------------------------
+    # NOT in the transcript: it stops at 30 minutes. These stand on Lasse's
+    # note "anklager" and on the contributor list, and should be rewritten when
+    # the rest of the audio is transcribed.
     Shot(
         id="S5-01",
         source="notes",
-        segment="36:40-39:36 the prosecution",
+        segment="36:40-39:36 the prosecution (segment not yet transcribed)",
         subject=(
             "An empty courtroom in the morning before anyone has come in, the long bench "
-            "and the rows of plain chairs standing in high flat window light with dust in "
-            "the air"
+            "and the rows of plain chairs standing in high flat window light, rain running "
+            "down the tall windows"
         ),
         camera=(
             "35mm at f/2.8, camera at seated height in the public gallery, bench left of "
-            "centre and the windows gently blowing out at the right edge"
+            "centre and the windows at the right edge"
         ),
         entities=("retssal",),
-        motion="Dust turns slowly in the window light",
+        motion="Rain runs down the window glass; the light on the bench shifts very slightly",
         motion_tier="B",
         seconds=6,
     ),
     Shot(
         id="S5-02",
-        source="direction",
-        segment="36:40-39:36 the case as paper",
+        source="notes",
+        segment="36:40-39:36 the case as paper (segment not yet transcribed)",
         subject=(
             "A stack of case binders bound with red cotton tape on a bench, the edges "
             "furred from handling, a pair of reading glasses folded on top"
@@ -514,7 +581,7 @@ SHOTS = (
     Shot(
         id="S5-03",
         source="notes",
-        segment="36:40-39:36 the prosecutor speaks",
+        segment="36:40-39:36 the prosecutor speaks (segment not yet transcribed)",
         subject=(
             "A dark-suited shoulder and the back of a head at a lectern in the near "
             "foreground, thrown completely out of focus into a soft dark mass, with the "
@@ -528,35 +595,13 @@ SHOTS = (
         motion="The out-of-focus figure shifts weight once",
         motion_tier="B",
     ),
-    Shot(
-        id="S5-04",
-        source="direction",
-        segment="36:40-39:36 outside the court",
-        subject=(
-            "The steps of a courthouse in rain seen from across the street through passing "
-            "traffic, three or four umbrellas at the top of the steps far too distant to "
-            "read as individuals"
-        ),
-        camera=(
-            "135mm at f/4 from across the street, heavy compression, steps small and "
-            "central, foreground traffic passing out of focus"
-        ),
-        atmosphere="Steady rain, standing water on the road throwing the sky back up",
-        motion="A car passes through the near foreground and briefly wipes the frame",
-        motion_tier="B",
-    ),
 
-    # ---- Extra — not one of Lasse's five timecodes ------------------------
-    # The description's hardest line: "et billede i avisen af en afdød kvindes
-    # maltrakterede ansigt … beslutninger, der skal træffes, selv om de kan
-    # virke brutale." The most charged image in the whole case is a photograph
-    # of a dead woman's face, printed to get her identified. We will never
-    # generate that photograph. This is what it looks like withheld — and it is
-    # the strongest possible demonstration of the rule, because the episode is
-    # itself about the ethics of showing a face.
+    # ---- Extra — outside Lasse's five timecodes ---------------------------
+    # "Hvem kender denne kvinde? Sådan stod der i Ekstra Bladet den 30.
+    #  september 1999." The photograph is the one image we will never generate.
     Shot(
         id="X-01",
-        source="description",
+        source="audio",
         segment="extra — the decision that felt brutal",
         subject=(
             "A bundle of the next morning's newspapers dropped on a wet pavement outside "
@@ -572,10 +617,29 @@ SHOTS = (
         motion_tier="B",
         seconds=5,
     ),
+    # "vi flyttede et møbel, og nede bag ved møblet kunne man se blodstænk …
+    #  det så nemt ud, som om det var rengjort"
+    Shot(
+        id="X-02",
+        source="audio",
+        segment="extra — the back room of the kiosk",
+        subject=(
+            "Bare painted floorboards in a small back room, scrubbed noticeably cleaner "
+            "than the skirting and the corners around them, and one clean rectangle in the "
+            "dust where a cabinet has been pulled away from the wall"
+        ),
+        camera=(
+            "35mm at f/2.8, camera low in the corner looking along the boards towards the "
+            "gap where the cabinet stood"
+        ),
+        light="One overhead bulb and a strip of grey daylight from a doorway out of frame",
+        entities=("kiosken",),
+        motion="A slow push towards the gap at the wall",
+        motion_tier="A",
+        seconds=6,
+    ),
 )
 
-# The frame Lasse asked to see for each timecode. Segment 3 gets two, because
-# his note named two distinct things (the accelerant and the tyre print).
-# X-01 is not one of the five, but it is the frame that proves the rule on the
-# hardest subject in the case, so it renders with them.
-HEROES = ("S1-01", "S2-01", "S3-01", "S3-04", "S4-01", "S5-01", "X-01")
+# The frame Lasse asked to see for each timecode, plus the two extras. Segment 3
+# gets two because his note named two distinct things.
+HEROES = ("S1-01", "S2-01", "S3-01", "S3-04", "S4-01", "S5-01", "X-01", "X-02")

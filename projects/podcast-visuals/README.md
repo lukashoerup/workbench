@@ -15,8 +15,8 @@ gets built until six frames have been judged on a television.
 
 | Piece | State |
 |---|---|
-| Episode identified and confirmed against the show's own feed | done |
-| Five segments turned into a shot list, 23 shots | done |
+| Episode identified, then **confirmed against the audio** | done |
+| Five segments turned into a shot list, 24 shots, 20 of them from the audio | done |
 | Production-grade prompts for every shot, still + motion | done |
 | Visual grammar and style bible | done |
 | Reference-anchoring, so a location holds across shots | done |
@@ -33,12 +33,15 @@ gets built until six frames have been judged on a television.
 The audio is at
 `bauernordic-pods.sharp-stream.com/dk/1103/dd_s6_ep5_det_brndende_lig_913db409_normal.mp3`.
 
-The mp3 is in Lukas's Drive but unreachable from a cloud session: the connector
-caps downloads at 10 MB against a 45 MB file, and every speech-model weight host
-is blocked by egress policy, so there is no speech recognition here even with
-the bytes. Splitting the file would deliver audio and still not deliver words.
-**Decided 19 Aug: Lukas transcribes the episode himself and puts the text in
-Drive** — see [docs/TRANSCRIPT.md](docs/TRANSCRIPT.md).
+**The transcript arrived 19 Aug** (TurboScribe free tier, via Drive) and settled
+the identification: four of Lasse's five timecodes are matched by content, in
+his order. It also corrected a real mistake — the 20:17 segment is the disposal,
+not an interrogation — and confirmed the weather, which had been a guess.
+
+It covers the first 30 minutes only, the free tier's ceiling, so segment 5 (the
+prosecutor at 36:40) still rests on Lasse's note. See
+[docs/TRANSCRIPT.md](docs/TRANSCRIPT.md). The transcript itself stays in Drive:
+it is a verbatim transcript of a commercial podcast and this repo is public.
 
 **What blocks the frames.** Until there is a transcript, every shot rests on
 the episode's published description, Lasse's notes, or art direction — recorded

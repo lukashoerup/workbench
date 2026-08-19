@@ -49,7 +49,7 @@ was opened, and nothing here is worth a repo until the format is proven.
       timestamps, refusing a transcript with none; window slicing by clock; a
       coverage check against the episode's 44:37 to catch the quiet failure
       where a transcript stops halfway
-- [x] 253 tests green
+- [x] 263 tests green
 
 ## Blocked — needs Lukas
 
@@ -73,13 +73,15 @@ which is the actual test.
 
 ## Next, once unblocked
 
-- [ ] Read the transcript from Drive, check coverage, slice the five windows
-- [ ] **Settle the identification**: if 03:30 is children and a bonfire and
-      20:17 is a suspect under pressure, it is Lasse's episode
-- [ ] Rewrite subject lines against what is actually said; upgrade each shot's
-      source to `audio` and flip `TRANSCRIPT_EXISTS` in the same commit
-- [ ] Revisit the nine art-direction shots and check the weather against the
-      narration
+- [x] Transcript read from Drive; identification **confirmed** — four of five
+      timecodes matched by content, in Lasse's order
+- [x] Shot list rewritten against the audio: 20 of 24 shots now `audio`, up
+      from 0. Segment 4 rebuilt from an interrogation to the disposal; the look
+      moved to late September 1999; the weather confirmed rather than assumed
+- [ ] **Transcribe 30:00–44:37** — the free tier stopped at 30 min, so segment 5
+      is still on Lasse's note. Cut a clip and run it as a second file, or use a
+      paid tier once
+- [ ] Then rewrite S5-01..03 against the audio and re-source them
 - [ ] Run the bake-off in `docs/POC.md`; judge on a television, not a laptop
 - [ ] Record the result in `docs/POC.md` and the winning model in
       `context/STACK.md`

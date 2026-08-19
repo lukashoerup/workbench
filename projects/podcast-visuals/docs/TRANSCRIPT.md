@@ -1,4 +1,47 @@
-# The transcript — what to produce, and what happens when it lands
+# The transcript
+
+## What arrived, 19 Aug 2026
+
+TurboScribe free tier, Danish, as a plain `.txt` in Drive. It did its job: 20 of
+24 shots now rest on the audio, where none did before, and it settled the
+episode identification outright.
+
+Two limitations, both handled rather than hoped about:
+
+**It stops at 30 minutes.** The free tier's ceiling, against a 44:37 episode.
+The file says so itself, in a line most tools would strip as boilerplate:
+*"Denne fil er længere end 30 minutter."* `truncation_notice()` reads that line
+deliberately — a transcript that announces its own truncation is far safer than
+one that just stops. The cost is segment 5: Lasse's fifth timecode, the
+prosecutor at 36:40, is not covered, and those three shots still rest on his
+note. A test fails if any of them claims the audio.
+
+**It has no timestamps.** So content can be attributed but not placed:
+`parse()` refuses it, `parse_untimed()` accepts it for content. Segment order in
+the narration is unambiguous enough to map the four covered timecodes by
+content, and the ad breaks fall almost exactly where the timecodes say they
+should, which is corroboration in itself.
+
+**Accuracy is mediocre and it does not matter.** Names come back mangled —
+Hougen as "Hans Peterhåben", Isager-Nielsen as "Bent Isar Nielsen". We are
+mining the transcript for *what is described*, not quoting it. Every proper
+noun used in the docs was verified against the feed's own description, not
+taken from the transcript.
+
+**The transcript is not in this repo.** It is a verbatim transcript of a
+commercial podcast and this repository is public. It stays in Drive; only short
+quotations appear in the docs, to justify a shot.
+
+## To finish the job
+
+The last fifteen minutes. Either a paid tier for one file, or the same free tool
+run on a clip of 30:00–44:37 cut out of the mp3 — the ceiling is per file, so a
+second file gets a second thirty minutes. That would put segment 5 on the audio
+with everything else.
+
+---
+
+# What to produce, and what happens when it lands
 
 Lukas is producing this with whatever tool suits him. The format is not ours to
 dictate, so `transcript.py` reads the shapes that actually turn up: SRT, WebVTT,

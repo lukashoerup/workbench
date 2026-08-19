@@ -102,6 +102,56 @@ def _make(at: float, body: str) -> Cue:
     return Cue(at, body)
 
 
+# Transcription services put their own notices in the output. TurboScribe's
+# free tier does it twice: a banner at the top and, at the point it gave up, a
+# line saying the file was longer than thirty minutes. That second one is the
+# single most useful line in the file — a transcript that announces its own
+# truncation is far safer than one that just stops — so it gets read, not
+# stripped.
+# Deliberately narrow: it must claim a *length limit*, not merely mention an
+# upgrade. The banner at the top of a free-tier transcript also says "opgrader",
+# and treating that as a truncation warning would cry wolf on every file.
+_TRUNCATION = re.compile(
+    r"(længere end|longer than|kun de første|only the first)\s*\D{0,12}\d+\s*"
+    r"(minut|time|hour|min\b)",
+    re.IGNORECASE,
+)
+_SERVICE_NOTICE = re.compile(r"^\s*\(.*(transskriber|transcrib|opgrader|upgrade).*\)\s*$",
+                             re.IGNORECASE)
+
+
+def truncation_notice(text: str) -> str:
+    """The service's own admission that it stopped early, if it made one.
+
+    Worth checking before anything else. A free tier that quietly cuts at
+    thirty minutes produces a transcript that parses, reads well, and is
+    missing a third of the episode — and the only clue is a line most tools
+    would strip as boilerplate.
+    """
+    for line in text.splitlines():
+        if _SERVICE_NOTICE.match(line) and _TRUNCATION.search(line):
+            return line.strip()
+    return ""
+
+
+def parse_untimed(text: str) -> list[str]:
+    """Paragraphs from a transcript that carries no timestamps.
+
+    `parse()` refuses these on purpose, because nothing in them can be tied to a
+    timecode. But the words are still the primary source for *what is
+    described*, which is most of what this project needs — so they are usable
+    for content and unusable for placement, and saying which is which out loud
+    is the whole point of keeping the two functions apart.
+    """
+    out = []
+    for block in re.split(r"\n\s*\n", text):
+        block = " ".join(block.split())
+        if not block or _SERVICE_NOTICE.match(block):
+            continue
+        out.append(block)
+    return out
+
+
 def window(cues: list[Cue], start: str | float, end: str | float) -> list[Cue]:
     """The cues falling inside a window, given as seconds or as "3:30"."""
     a, b = _to_seconds(start), _to_seconds(end)
