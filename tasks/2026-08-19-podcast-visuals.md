@@ -41,18 +41,28 @@ was opened, and nothing here is worth a repo until the format is proven.
       shot in the same location; prompt pack is ordered anchors-first
 - [x] Style bible, POC plan with a five-model bake-off, cost model, approval
       workflow, legal and editorial rails — all under `docs/`
-- [x] 211 tests green
+- [x] Source tier recorded per shot — audio > Lasse's notes > the episode's
+      description > case reporting > art direction — with tests forbidding any
+      shot from claiming the audio while no transcript exists, and forbidding a
+      hero frame sourced to art direction alone. Current split: 0 / 6 / 7 / 1 / 9
+- [x] `transcript.py` — tolerant reader for SRT, VTT, bracketed and plain
+      timestamps, refusing a transcript with none; window slicing by clock; a
+      coverage check against the episode's 44:37 to catch the quiet failure
+      where a transcript stops halfway
+- [x] 253 tests green
 
 ## Blocked — needs Lukas
 
 Neither is solvable from a cloud session; both are small.
 
-1. **The episode audio.** Known exactly now:
-   `https://bauernordic-pods.sharp-stream.com/dk/1103/dd_s6_ep5_det_brndende_lig_913db409_normal.mp3`
-   — this session's network policy blocks that host, so it has to be fetched by
-   hand. **Open that link, save the mp3, drop it in Google Drive.** Subject
-   lines currently come from the episode's published description, not from what
-   is said in it.
+1. **The transcript.** The mp3 is in Drive (45 MB) but unreachable from a
+   cloud session: the Drive connector caps downloads at 10 MB, and every
+   speech-model weight host — OpenAI's, Hugging Face, Vosk, Google, the CDNs —
+   is blocked by egress policy, so there is no ASR here even with the bytes.
+   Splitting the file would deliver audio and still not deliver words.
+   **Decided with Lukas 19 Aug: he transcribes the full episode himself and
+   puts it in Drive as a document**, the way the RSS feed arrived. Format spec
+   and what happens next: `docs/TRANSCRIPT.md`.
 2. **A generation account.** No image or video model is reachable from here and
    none of Lukas's keys are attached. Google AI Studio covers both Nano Banana
    Pro and Veo with one key. Budget for the whole POC: about 1,000 DKK for the
@@ -63,8 +73,13 @@ which is the actual test.
 
 ## Next, once unblocked
 
-- [ ] Transcribe, diarised with word timestamps; rewrite the subject lines
-      against what is actually said
+- [ ] Read the transcript from Drive, check coverage, slice the five windows
+- [ ] **Settle the identification**: if 03:30 is children and a bonfire and
+      20:17 is a suspect under pressure, it is Lasse's episode
+- [ ] Rewrite subject lines against what is actually said; upgrade each shot's
+      source to `audio` and flip `TRANSCRIPT_EXISTS` in the same commit
+- [ ] Revisit the nine art-direction shots and check the weather against the
+      narration
 - [ ] Run the bake-off in `docs/POC.md`; judge on a television, not a laptop
 - [ ] Record the result in `docs/POC.md` and the winning model in
       `context/STACK.md`

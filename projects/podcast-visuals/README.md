@@ -33,11 +33,12 @@ gets built until six frames have been judged on a television.
 The audio is at
 `bauernordic-pods.sharp-stream.com/dk/1103/dd_s6_ep5_det_brndende_lig_913db409_normal.mp3`.
 
-The mp3 is now in Lukas's Drive. This session still cannot read it: the Drive
-connector caps downloads at 10 MB and the file is 45 MB, and every speech-model
-weight host is blocked here too. **Transcription has to happen somewhere else** —
-`lenovo` or a paid API — which is a dependency decision for Lukas, not one to
-take unilaterally.
+The mp3 is in Lukas's Drive but unreachable from a cloud session: the connector
+caps downloads at 10 MB against a 45 MB file, and every speech-model weight host
+is blocked by egress policy, so there is no speech recognition here even with
+the bytes. Splitting the file would deliver audio and still not deliver words.
+**Decided 19 Aug: Lukas transcribes the episode himself and puts the text in
+Drive** — see [docs/TRANSCRIPT.md](docs/TRANSCRIPT.md).
 
 **What blocks the frames.** Until there is a transcript, every shot rests on
 the episode's published description, Lasse's notes, or art direction — recorded
@@ -60,6 +61,7 @@ by hand today.
 | [docs/COSTS.md](docs/COSTS.md) | What a full episode costs |
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | Who approves what, what runs by itself |
 | [docs/RAILS.md](docs/RAILS.md) | What we never generate, and why |
+| [docs/TRANSCRIPT.md](docs/TRANSCRIPT.md) | What to produce, and what happens then |
 
 ## Commands
 
