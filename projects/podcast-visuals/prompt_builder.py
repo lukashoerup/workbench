@@ -31,7 +31,29 @@ FORBIDDEN = (
     "no recognisable human face, no portrait, no eye contact with camera",
     "no depiction of a body, no wounds, no blood, no gore",
     "no legible text, no signage, no logos, no brand marks, no watermarks",
+    # Also found by looking at output: given a continuity block that says "late
+    # September 1999", the model burned "LATE SEPTEMBER 1999 / 02:14 AM" into
+    # the corner of the frame. It reads as surveillance or archive footage —
+    # the exact thing the rails forbid — and it asserts a time nothing in the
+    # case supports. The world state is context, never a caption.
+    "no burned-in timecode, no date stamp, no caption, no subtitle, no lower "
+    "third, no surveillance or CCTV overlay, no camera-status graphics",
+    # And: 16:9 means 16:9. A film-scan border silently crops the deliverable.
+    "no letterboxing, no black bars, no film-scan border, no sprocket holes — "
+    "the image fills the 16:9 frame edge to edge",
     "no news-graphic or true-crime-poster styling",
+    # Found by looking at output: asked for an empty forest track, the model put
+    # a period estate car on it, twice. Nobody reads that as set dressing — in a
+    # factual programme a vehicle at the scene is the killer's car or a police
+    # car, and this case's car was neither. An invented object that carries a
+    # claim is a rails breach, not a composition note.
+    "nothing in frame that is not described above: no vehicles, no people, "
+    "no animals, no buildings, no equipment",
+    # The same class again, found in the drawn look: handprints on walls and
+    # floors, drag marks, scratches. All invented, all evidential claims, and
+    # all borrowed from horror rather than from this case.
+    "no handprints, no fingerprints on surfaces, no smears, no drag marks, no "
+    "scratches or gouges, no marks of a struggle anywhere",
 )
 
 # The tells that make a photographic image read as "AI" rather than as footage.

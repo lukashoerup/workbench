@@ -28,7 +28,8 @@ gets built until six frames have been judged on a television.
 | Cost model, POC and full episode | done |
 | Approval workflow — where Lasse steers, what automates | done |
 | Editorial and legal rails | done |
-| **Frames actually generated** | **not done — blocked** |
+| **Frames actually generated** | **done — 54 stills, 2 clips, 58 kr** |
+| Findings from looking at the output | [docs/FINDINGS.md](docs/FINDINGS.md) |
 
 **The episode.** "Det Brændende Lig", *Danske Drabssager* s6e5, 29 March 2022,
 44:37 — confirmed against the show's own feed, which Lukas exported to Drive.
@@ -58,7 +59,9 @@ by hand today.
 
 | Document | What it answers |
 |---|---|
-| [docs/START-HERE.md](docs/START-HERE.md) | **Which programs, what to paste, in what order** |
+| [docs/FINDINGS.md](docs/FINDINGS.md) | **What the first pass showed — read this first** |
+| [stills/](stills) | The frames themselves |
+| [docs/START-HERE.md](docs/START-HERE.md) | Which programs, what to paste, in what order |
 | [docs/POC.md](docs/POC.md) | The test itself — which models, how to judge |
 | [docs/APPROACH.md](docs/APPROACH.md) | Why this will not look like AI slop |
 | [docs/STYLE-BIBLE.md](docs/STYLE-BIBLE.md) | The locked look — Lasse's steering wheel |
@@ -73,6 +76,8 @@ by hand today.
 ## Commands
 
 ```bash
+GEMINI_API_KEY=... python3 generate.py            # the hero frames, for real
+GEMINI_API_KEY=... python3 animate.py S1-01 --frame stills/S1-01-photo.jpg
 python3 render.py                  # the hero frames, photographic look
 python3 render.py --look drawn     # the same frames, charcoal and ink
 python3 render.py --all            # all 24 shots

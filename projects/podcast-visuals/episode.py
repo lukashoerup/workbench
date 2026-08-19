@@ -99,6 +99,11 @@ LOOK = Look(
         "forest, so a cut from the wood to a tiled room does not jar."
     ),
     motion_grammar=(
+        "Across the whole clip almost nothing changes: the last frame must be "
+        "recognisably the same picture as the first, with only the one described "
+        "event having happened in between. Nothing grows, spreads, billows, "
+        "engulfs the frame, enters it or leaves it, and no smoke, steam, fog or "
+        "fire expands beyond where it already sits in the supplied frame. "
         "Everything that moves, moves in slight slow motion — roughly half real "
         "speed, as if filmed at 48 frames and played at 24. Rain, flame, water, "
         "dust, fabric and smoke all fall and drift more slowly than they should, "
@@ -172,20 +177,28 @@ SHOTS = (
         source="audio",
         segment="03:30-06:00 what the children walked up to",
         subject=(
-            "A big bonfire burning hard with high flames down in a hollow off a forestry "
-            "track, driving rain falling straight through the fire and turning to steam "
-            "above it"
+            "A bonfire far larger than anyone would build to burn garden waste, thrown "
+            "together in a hurry with branches and cut logs jutting out at all angles "
+            "rather than stacked into any shape, burning hard down inside a hollow in "
+            "the ground so that only the upper flames clear the lip of it, three or four "
+            "metres of fire standing out of a dip in a wood in the middle of the "
+            "afternoon in driving rain"
         ),
         camera=(
-            "35mm at f/2.8, camera on the track at chest height some twenty metres back, "
-            "fire low and left of centre with the wet track running out to the right"
+            "35mm at f/2.8, camera thirty metres back down the forestry track at the "
+            "chest height of someone who has stopped walking, a few thin bare twigs "
+            "brushing the near edge of frame out of focus so the fire is glimpsed past "
+            "them rather than presented, fire small and low and left of centre with the "
+            "cut bank of the hollow legible in front of it and the rutted track running "
+            "out to the right"
         ),
         atmosphere=(
-            "Rain coming down hard through bare branches, the whole wood soaked and the "
+            "Rain coming down hard enough to be visible in streaks against the dark wet "
+            "trunks and drifting through the firelight, the whole wood soaked and the "
             "light flat and shadowless under the canopy"
         ),
         entities=("baalplads", "skoven"),
-        motion="Rain drives through the flames and lifts off them as steam; the fire holds",
+        motion="Rain falls steadily through the frame and the flames lean once in a gust and come back; the fire stays exactly the size it already is",
         motion_tier="B",
         seconds=6,
     ),
@@ -275,13 +288,20 @@ SHOTS = (
         source="audio",
         segment="09:34-13:00 the forensic examination",
         subject=(
-            "A gloved hand lifting the charred edge of a piece of carpet with forceps, "
-            "the fabric coming away in a stiff burnt flake, everything beneath it held "
-            "out of focus and out of frame"
+            "A gloved hand lifting the charred edge of a piece of carpet with long "
+            "forceps, the fabric coming away in a stiff burnt flake, the carpet lying "
+            "spread on the polished stainless steel of an examination table that fills "
+            "the bottom of frame, everything beyond the flake held out of focus and "
+            "everything beneath the carpet out of frame entirely. A working institute in "
+            "daily use — clean tile, clean steel, instruments laid out in order, nothing "
+            "derelict or abandoned anywhere in it"
         ),
         camera=(
-            "85mm at f/1.8, camera at table height, very shallow focus held on the "
-            "forceps and the flake, hand entering from the right"
+            "85mm at f/1.8, camera down at the level of the table top so the steel runs "
+            "away as a bright band, depth of field so shallow that only the flake and the "
+            "tip of the forceps are sharp while the far end of the table and the whole "
+            "room behind dissolve into soft green-grey, gloved hand and gown cuff entering "
+            "from the right in a thin surgical glove rather than a heavy rubber gauntlet"
         ),
         light=(
             "Hard even 4000K fluorescent from directly overhead, so nothing in frame "
@@ -459,13 +479,18 @@ SHOTS = (
         source="audio",
         segment="20:17-21:05 the men working",
         subject=(
-            "A bare forearm and the back of a neck under a bare bulb, sweat standing on "
-            "the skin and running into the collar, the head cropped away above and the "
-            "room behind gone to black"
+            "The back of a man's neck and one bare forearm, seen from directly behind "
+            "while he works at something below and out of frame. Sweat stands on the skin "
+            "of the neck and runs down into the collar of a soaked work shirt. The top "
+            "edge of the frame cuts the head off cleanly above the hairline, so no ear, "
+            "no jaw, no cheek and nothing of the head below that cut line appears "
+            "anywhere in the picture — only neck, shoulder and arm"
         ),
         camera=(
-            "85mm at f/1.8, camera close and behind at shoulder height, the neck filling "
-            "the right of frame, everything else unlit"
+            "85mm at f/1.8, camera close and directly behind at the height of the "
+            "shoulders and slightly below, the neck and shoulder filling the left of "
+            "frame and the forearm entering low from the right, empty unlit room to the "
+            "right for a lower-third"
         ),
         light="One bare bulb overhead, hard and close, nothing else lit at all",
         motion="A bead of sweat runs down into the collar; the shoulder shifts once",
@@ -564,7 +589,8 @@ SHOTS = (
         ),
         camera=(
             "35mm at f/2.8, camera at seated height in the public gallery, bench left of "
-            "centre and the windows at the right edge"
+            "centre and the windows at the right edge, the bench bare — no screens, no "
+            "monitors, no cables, nothing on it but wood"
         ),
         entities=("retssal",),
         motion="Rain runs down the window glass; the light on the bench shifts very slightly",
@@ -613,9 +639,12 @@ SHOTS = (
         source="audio",
         segment="extra — the decision that felt brutal",
         subject=(
-            "A bundle of the next morning's newspapers dropped on a wet pavement outside "
-            "a shuttered kiosk, still bound with plastic strapping, the top copy lying "
-            "printed side down so the whole front page is pressed against the ground"
+            "A single tight bundle of the next morning's newspapers dropped on a wet "
+            "pavement outside a shuttered kiosk, still bound with unbroken plastic "
+            "strapping and lying printed side down so that every front page in it is "
+            "pressed against the ground. The bundle is intact: no loose sheets, no open "
+            "pages, no paper lying beside it, and no printed picture, poster or placard "
+            "visible anywhere in the frame"
         ),
         camera=(
             "50mm at f/2, camera down at kerb height on the pavement, the bundle right of "
@@ -667,9 +696,10 @@ LOOK_DRAWN = Look(
     stock=(
         "Charcoal, graphite and diluted India ink on heavy grey-toned paper, worked "
         "fast and left unresolved — construction lines still visible, edges "
-        "unfinished, smudges and the print of a hand in the tone, the tooth of the "
-        "paper reading through everything. In the tradition of courtroom sketch "
-        "rather than illustration"
+        "unfinished, and the tooth of the paper reading through everything. In the "
+        "tradition of courtroom sketch rather than illustration. Every wall, floor, "
+        "door and surface inside these drawings is plain, bare and completely unmarked "
+        "— the only marks anywhere are the marks of the pencil itself"
     ),
     light=(
         "Light is what has been left blank, not what has been drawn. One direction "
@@ -678,8 +708,10 @@ LOOK_DRAWN = Look(
     ),
     palette=(
         "the black of charcoal, the warm grey of the paper it is drawn on, and white "
-        "chalk used sparingly on the few things that catch light; one bled "
-        "rust-orange, and only where something is actually burning"
+        "chalk used sparingly on the few things that catch light. Exactly one other "
+        "colour is allowed anywhere: a bled rust-orange, used only for live flame and "
+        "for nothing else — never as a stain, a drip, a mark on a surface or a tint on "
+        "an object, and never anywhere indoors"
     ),
     lens_family=(
         "composed as a photograph would be — 35mm, 50mm and 85mm equivalents, the "
@@ -689,7 +721,12 @@ LOOK_DRAWN = Look(
     texture=(
         "The tooth of the paper visible throughout, dry-brush breaks where the ink "
         "ran out, drips allowed to run and dry, line weight varying constantly and "
-        "some passages barely drawn at all."
+        "some passages barely drawn at all, and the drawing running off all four edges "
+        "of the picture with no border or margin around it. The same fast unfinished "
+        "hand everywhere: "
+        "an interior is drawn no more carefully or evenly than a landscape, and a room "
+        "gets the same broken, searching line as a wood — never a tidier or more "
+        "rendered version of the style."
     ),
     continuity=(
         "Everything happens inside one wet stretch of late September 1999 — the "
@@ -705,6 +742,11 @@ LOOK_DRAWN = Look(
         "smartphone", "mobile phone", "flat screen", "LED",
     ),
     motion_grammar=(
+        "Across the whole clip almost nothing changes: the last frame must be "
+        "recognisably the same picture as the first, with only the one described "
+        "event having happened in between. Nothing grows, spreads, billows, "
+        "engulfs the frame, enters it or leaves it, and no smoke, steam, fog or "
+        "fire expands beyond where it already sits in the supplied frame. "
         "Movement is limited and deliberate, the way hand-drawn animation is: the "
         "line itself boils very slightly, as though every frame were redrawn, at "
         "around eight to twelve drawings a second, while any camera move runs "
@@ -719,6 +761,13 @@ LOOK_DRAWN = Look(
         "no concept-art or fantasy-illustration polish, nothing rendered",
         "not symmetrical, not centred, no glowing edges, no colour outside the palette",
         "no cartoon faces, no caricature, no stylised eyes",
+        # It kept drawing a ruled border around the picture, which turns a frame
+        # of a programme into a page from a sketchbook.
+        "no drawn border, no ruled frame, no panel outline, no margin — the "
+        "drawing runs off all four edges of the picture",
+        # And it kept drawing interiors more carefully than landscapes, which is
+        # the drift the whole project exists to prevent.
+        "no passage drawn more neatly or more finished than any other",
     ),
     medium_lead="Drawn in",
     frame_lead="Framing",

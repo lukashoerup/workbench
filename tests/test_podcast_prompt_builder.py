@@ -485,3 +485,14 @@ def test_both_prompt_packs_on_disk_are_current():
         ).stdout
         on_disk = (PROJECT / "docs" / rel).read_text()
         assert on_disk == generated, f"stale: docs/{rel}"
+
+
+def test_nothing_undescribed_may_appear_in_frame():
+    """Found by looking at output, not by reasoning about it. Asked for an empty
+    forest track, the model twice put a period estate car on it. In a factual
+    programme nobody reads a vehicle at the scene as set dressing — it is the
+    killer's car or a police car, and this case's was neither. An invented
+    object that carries a claim is a rails breach."""
+    prompt = build_image_prompt(SHOTS[0], LOOK, ENTITIES)
+    assert "no vehicles, no people" in prompt
+    assert "nothing in frame that is not described above" in prompt

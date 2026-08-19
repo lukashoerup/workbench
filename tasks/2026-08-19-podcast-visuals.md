@@ -49,7 +49,20 @@ was opened, and nothing here is worth a repo until the format is proven.
       timestamps, refusing a transcript with none; window slicing by clock; a
       coverage check against the episode's 44:37 to catch the quiet failure
       where a transcript stops halfway
-- [x] 263 tests green
+- [x] 345 tests green
+
+## Generated, 19–20 Aug
+
+- [x] Gemini key from Lukas; Nano Banana Pro **and Veo 3.1** both on it, so
+      Google Flow was never needed
+- [x] `generate.py` and `animate.py` — stdlib, key from the environment, never
+      written to disk; every image and clip logged to a manifest with model,
+      prompt and time, which is what AI Act disclosure will want
+- [x] 54 stills, 2 clips, **58 kr of 200**. Selected frames in `stills/`
+- [x] Four rails breaches found by *looking* — an invented car, a burned-in
+      timecode, handprints, letterboxing — all now closed. See `docs/FINDINGS.md`
+- [x] Motion grammar gained a no-net-change clause after the first clip ended
+      with the bonfire swallowed by a smoke plume
 
 ## Blocked — needs Lukas
 
