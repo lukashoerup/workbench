@@ -34,9 +34,11 @@ FORBIDDEN = (
     "no news-graphic or true-crime-poster styling",
 )
 
-# The tells that make an image read as "AI" rather than as footage. Naming them
-# as exclusions is more reliable than hoping the positive prompt outruns them.
-ANTI_SLOP = (
+# The tells that make a photographic image read as "AI" rather than as footage.
+# Naming them as exclusions is more reliable than hoping the positive prompt
+# outruns them. A drawn look needs a completely different list — see
+# `Look.anti_tells` — because nothing here describes what gives a drawing away.
+PHOTO_TELLS = (
     "not symmetrical, not centred, not a hero composition",
     "no HDR glow, no bloom, no lens flare, no rim-light halo",
     "no glossy plastic surfaces, no over-clean textures",
@@ -58,10 +60,28 @@ class Look:
     texture: str        # grain, softness, imperfection
     format: str = "16:9, broadcast delivery"
 
+    # How the medium and the framing are introduced. "Shot on" and "Lenses" are
+    # right for a photograph and faintly ridiculous for a charcoal drawing, and
+    # a model reading "Shot on charcoal" will hedge towards a photograph of a
+    # drawing, which is the one thing neither look wants.
+    medium_lead: str = "Shot on"
+    frame_lead: str = "Lenses"
+
     # The world state — season, weather, hour, era. Frozen like the rest of the
     # block, because a look can be perfectly consistent and the programme still
     # fall apart if it rains in one shot and not the next.
     continuity: str = ""
+
+    # How everything moves. Frozen for the same reason the look is: motion that
+    # varies shot to shot reads as a collection of clips, not as an edit. Goes
+    # into every motion prompt and nowhere else.
+    motion_grammar: str = ""
+
+    # What would give this medium away. Defaults to the photographic tells; a
+    # drawn look must supply its own, because "no HDR glow" says nothing about
+    # a charcoal drawing and "no vector-clean line" says nothing about a
+    # photograph.
+    anti_tells: tuple[str, ...] = PHOTO_TELLS
 
     # Words that contradict the continuity above. Checked against every shot
     # before a prompt is built, so a stray "low sun" cannot survive to the
@@ -79,8 +99,8 @@ class Look:
         light = f"{self.light} " if include_light else ""
         continuity = f"{self.continuity} " if self.continuity else ""
         return (
-            f"Shot on {self.stock}. {continuity}{light}"
-            f"Palette: {self.palette}. Lenses: {self.lens_family}. "
+            f"{self.medium_lead} {self.stock}. {continuity}{light}"
+            f"Palette: {self.palette}. {self.frame_lead}: {self.lens_family}. "
             f"{self.texture} Framed {self.format}."
         )
 
@@ -278,7 +298,7 @@ def build_image_prompt(shot: Shot, look: Look, registry: dict[str, Entity] | Non
         parts.append(shot.atmosphere.strip().rstrip(".") + ".")
 
     parts.append(look.block(include_light=not shot.light))
-    parts.append("Negative: " + "; ".join(FORBIDDEN + ANTI_SLOP) + ".")
+    parts.append("Negative: " + "; ".join(FORBIDDEN + look.anti_tells) + ".")
 
     return " ".join(parts)
 
@@ -295,13 +315,16 @@ def build_motion_prompt(shot: Shot, look: Look) -> str:
     if not shot.motion:
         raise ValueError(f"{shot.id}: motion tier {shot.motion_tier} needs a motion description")
 
+    grammar = f"{look.motion_grammar.strip()} " if look.motion_grammar else ""
     return (
         f"Animate the supplied frame. {shot.motion.strip().rstrip('.')}. "
         f"Everything else in frame is still. "
+        f"{grammar}"
         f"Camera: {shot.camera.strip().rstrip('.')}, moving only as described. "
         f"Duration {shot.seconds:g}s, single continuous take, no cut. "
         f"Preserve the grade and grain of the supplied frame exactly. "
         f"Negative: no new objects entering frame; no morphing; no added people; "
-        f"no camera shake beyond a slow handheld drift; "
+        f"no camera shake beyond a slow handheld drift; no speed ramp; "
+        f"no time-lapse; no fast motion; "
         + "; ".join(FORBIDDEN) + "."
     )

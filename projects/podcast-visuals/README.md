@@ -20,7 +20,9 @@ gets built until six frames have been judged on a television.
 | Production-grade prompts for every shot, still + motion | done |
 | Visual grammar and style bible | done |
 | Reference-anchoring, so a location holds across shots | done |
-| Continuity locked and enforced — one weather, one hour, every scene | done |
+| Continuity locked and enforced — one weather, one year, every scene | done |
+| Motion grammar: slight slow motion, frozen across every clip | done |
+| A second look — charcoal and ink — to test against the photographic one | done |
 | Source recorded per shot, with the audio outranking everything | done |
 | POC plan — model bake-off and how to judge it | done |
 | Cost model, POC and full episode | done |
@@ -56,11 +58,13 @@ by hand today.
 
 | Document | What it answers |
 |---|---|
-| [docs/POC.md](docs/POC.md) | **The test itself — which models, how to judge** |
+| [docs/START-HERE.md](docs/START-HERE.md) | **Which programs, what to paste, in what order** |
+| [docs/POC.md](docs/POC.md) | The test itself — which models, how to judge |
 | [docs/APPROACH.md](docs/APPROACH.md) | Why this will not look like AI slop |
 | [docs/STYLE-BIBLE.md](docs/STYLE-BIBLE.md) | The locked look — Lasse's steering wheel |
 | [docs/STORYBOARD.md](docs/STORYBOARD.md) | The five segments, shot by shot |
-| [docs/PROMPT-PACK.md](docs/PROMPT-PACK.md) | The exact prompts (generated) |
+| [docs/PROMPT-PACK.md](docs/PROMPT-PACK.md) | The exact prompts, photographic look (generated) |
+| [docs/PROMPT-PACK-DRAWN.md](docs/PROMPT-PACK-DRAWN.md) | The same shots, charcoal-and-ink look (generated) |
 | [docs/COSTS.md](docs/COSTS.md) | What a full episode costs |
 | [docs/WORKFLOW.md](docs/WORKFLOW.md) | Who approves what, what runs by itself |
 | [docs/RAILS.md](docs/RAILS.md) | What we never generate, and why |
@@ -69,10 +73,11 @@ by hand today.
 ## Commands
 
 ```bash
-python3 render.py            # the six hero frames, as prompts
-python3 render.py --all      # all 22 shots
-python3 render.py --json     # machine-readable
-uv run pytest tests/test_podcast_prompt_builder.py -o addopts=""
+python3 render.py                  # the hero frames, photographic look
+python3 render.py --look drawn     # the same frames, charcoal and ink
+python3 render.py --all            # all 24 shots
+python3 render.py --json           # machine-readable
+uv run pytest tests/ -o addopts=""
 ```
 
 ## Where the code lives

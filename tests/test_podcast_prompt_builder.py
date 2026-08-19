@@ -20,7 +20,7 @@ import pytest
 PROJECT = Path(__file__).resolve().parent.parent / "projects" / "podcast-visuals"
 sys.path.insert(0, str(PROJECT))
 
-from episode import ENTITIES, HEROES, LOOK, SHOTS  # noqa: E402
+from episode import ENTITIES, HEROES, LOOK, LOOKS, SHOTS  # noqa: E402
 from prompt_builder import (  # noqa: E402
     FORBIDDEN,
     Entity,
@@ -254,17 +254,6 @@ def test_anchors_are_rendered_before_the_shots_that_depend_on_them():
             )
 
 
-def test_the_prompt_pack_on_disk_is_current():
-    """PROMPT-PACK.md is generated. A stale one is worse than none, because it
-    is the file a human pastes from."""
-    generated = subprocess.run(
-        [sys.executable, str(PROJECT / "render.py"), "--all"],
-        capture_output=True, text=True, check=True,
-    ).stdout
-    on_disk = (PROJECT / "docs" / "PROMPT-PACK.md").read_text()
-    assert on_disk == generated, "run: python3 render.py --all > docs/PROMPT-PACK.md"
-
-
 # --------------------------------------------------------------------------
 # Continuity — one weather, one hour, one season, across every scene
 # --------------------------------------------------------------------------
@@ -388,3 +377,111 @@ def test_no_hero_frame_rests_on_art_direction_alone():
     invented; the frame that says what happened may not."""
     invented = [s.id for s in SHOTS if s.id in HEROES and s.source == "direction"]
     assert not invented, f"hero frames sourced to nothing: {invented}"
+
+
+# --------------------------------------------------------------------------
+# Motion grammar — one speed across the whole programme
+# --------------------------------------------------------------------------
+
+@pytest.mark.parametrize("shot", [s for s in SHOTS if s.motion], ids=lambda s: s.id)
+def test_the_motion_grammar_reaches_every_clip(shot):
+    """Motion that varies shot to shot reads as a collection of clips rather
+    than as an edit, so the grammar is frozen exactly like the look is."""
+    assert LOOK.motion_grammar in build_motion_prompt(shot, LOOK)
+
+
+def test_the_grammar_holds_one_speed_and_forbids_ramping():
+    """A clip that starts slow and returns to normal is the single most
+    recognisable AI-video move there is."""
+    assert "half real speed" in LOOK.motion_grammar
+    assert "never ramps" in LOOK.motion_grammar
+    assert "no speed ramp" in build_motion_prompt(SHOTS[0], LOOK)
+
+
+def test_the_camera_is_exempt_from_the_slow_motion():
+    """Slowing the camera as well turns every push into a drift and every drift
+    into nothing. The event slows; the move does not."""
+    assert "camera itself moves at ordinary speed" in LOOK.motion_grammar
+
+
+def test_generated_clips_animate_something_that_reads_when_slowed():
+    """Slow motion needs a fast physical event to slow down. A shot whose only
+    movement is the camera belongs in tier A, where it is done in post for free
+    and cannot fail."""
+    camera_only = ("drift", "push", "pan", "tilt", "track")
+    misfiled = [
+        s.id for s in SHOTS
+        if s.motion_tier == "B"
+        and any(s.motion.lower().startswith(w) or f"a slow {w}" in s.motion.lower()
+                for w in camera_only)
+    ]
+    assert not misfiled, f"camera-only motion filed as generative: {misfiled}"
+
+
+# --------------------------------------------------------------------------
+# Two looks, one shot list
+# --------------------------------------------------------------------------
+
+@pytest.mark.parametrize("name,look", sorted(LOOKS.items()))
+@pytest.mark.parametrize("shot", SHOTS, ids=lambda s: s.id)
+def test_every_shot_survives_both_looks(shot, name, look):
+    """The whole value of a second look is that it is the *only* variable. If a
+    shot works in one and not the other, something other than the medium
+    changed."""
+    prompt = build_image_prompt(shot, look, ENTITIES)
+    assert look.block(include_light=not shot.light) in prompt
+    for rule in FORBIDDEN:
+        assert rule in prompt
+
+
+def test_the_drawn_look_carries_drawn_tells_not_photographic_ones():
+    """"No HDR glow" says nothing about a charcoal drawing, and a prompt full of
+    irrelevant negatives spends the model's attention on nothing."""
+    from prompt_builder import PHOTO_TELLS
+
+    drawn = build_image_prompt(SHOTS[0], LOOKS["drawn"], ENTITIES)
+    assert "vector-clean" in drawn and "no comic-book inking" in drawn
+    assert not any(tell in drawn for tell in PHOTO_TELLS)
+
+
+def test_the_photographic_look_still_carries_the_photographic_tells():
+    from prompt_builder import PHOTO_TELLS
+
+    photo = build_image_prompt(SHOTS[0], LOOKS["photo"], ENTITIES)
+    assert all(tell in photo for tell in PHOTO_TELLS)
+
+
+def test_the_drawn_look_does_not_describe_itself_as_photographed():
+    """A model reading "Shot on charcoal" hedges towards a photograph of a
+    drawing, which is the one thing neither look wants."""
+    drawn = build_image_prompt(SHOTS[0], LOOKS["drawn"], ENTITIES)
+    assert "Shot on" not in drawn
+    assert "Drawn in" in drawn
+
+
+def test_both_looks_frame_the_shots_identically():
+    """A fair comparison needs the framing held constant. The camera line is the
+    shot's, not the look's, so it appears verbatim in both."""
+    for shot in SHOTS:
+        line = shot.camera.strip().rstrip(".")
+        for look in LOOKS.values():
+            assert line in build_image_prompt(shot, look, ENTITIES)
+
+
+@pytest.mark.parametrize("name,look", sorted(LOOKS.items()))
+def test_both_looks_hold_the_same_world(name, look):
+    """Same case, same weather, same year. Only the medium changes."""
+    assert "1999" in look.continuity
+    assert "slow motion" in look.motion_grammar
+
+
+def test_both_prompt_packs_on_disk_are_current():
+    import subprocess
+
+    for flag, rel in (([], "PROMPT-PACK.md"), (["--look", "drawn"], "PROMPT-PACK-DRAWN.md")):
+        generated = subprocess.run(
+            [sys.executable, str(PROJECT / "render.py"), "--all", *flag],
+            capture_output=True, text=True, check=True,
+        ).stdout
+        on_disk = (PROJECT / "docs" / rel).read_text()
+        assert on_disk == generated, f"stale: docs/{rel}"

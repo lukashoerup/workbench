@@ -98,6 +98,15 @@ LOOK = Look(
         "carry the same cold cyan in the shadows and the same open blacks as the "
         "forest, so a cut from the wood to a tiled room does not jar."
     ),
+    motion_grammar=(
+        "Everything that moves, moves in slight slow motion — roughly half real "
+        "speed, as if filmed at 48 frames and played at 24. Rain, flame, water, "
+        "dust, fabric and smoke all fall and drift more slowly than they should, "
+        "with the weight kept: nothing floats, nothing hangs. The camera itself "
+        "moves at ordinary speed. The clip holds a single continuous speed "
+        "throughout — it never ramps, never speeds up at the end and never comes "
+        "back to normal."
+    ),
     breaks_continuity=(
         "sun", "sunlight", "sunlit", "sunny", "sunshine", "sunset", "sunrise",
         "golden hour", "blue sky", "clear sky", "summer", "snow",
@@ -376,9 +385,9 @@ SHOTS = (
             "right of centre"
         ),
         light="Hard fluorescent strip lighting the whole aisle evenly",
-        motion="Nothing moves; the strip light flickers once at the far end",
-        motion_tier="B",
-        seconds=4,
+        motion="A slow drift along the shelf towards the gap in the row",
+        motion_tier="A",
+        seconds=5,
     ),
     # "så sender man den på Teknologisk Institut, hvor man laver en analyse for
     #  brændbare væsker"
@@ -639,6 +648,86 @@ SHOTS = (
         seconds=6,
     ),
 )
+
+
+
+# A second look, to be tested against the first on the same eight frames.
+#
+# The argument for it is not only taste. A drawing cannot be mistaken for
+# archive, which removes most of the ethical and regulatory weight in one move;
+# it has no uncanny valley to fall into; and it does not look like everybody
+# else's AI. The argument against is that it can slide into "true crime comic",
+# and that it is harder to intercut with real talking heads. Which is why it is
+# a test and not a decision.
+#
+# Courtroom sketch is the reference that matters: it is the one drawn form this
+# genre already treats as legitimate reporting.
+LOOK_DRAWN = Look(
+    name="Kul og blæk",
+    stock=(
+        "Charcoal, graphite and diluted India ink on heavy grey-toned paper, worked "
+        "fast and left unresolved — construction lines still visible, edges "
+        "unfinished, smudges and the print of a hand in the tone, the tooth of the "
+        "paper reading through everything. In the tradition of courtroom sketch "
+        "rather than illustration"
+    ),
+    light=(
+        "Light is what has been left blank, not what has been drawn. One direction "
+        "of light per image and no other. Darks are deep, smudged and completely "
+        "illegible — nothing is described inside them."
+    ),
+    palette=(
+        "the black of charcoal, the warm grey of the paper it is drawn on, and white "
+        "chalk used sparingly on the few things that catch light; one bled "
+        "rust-orange, and only where something is actually burning"
+    ),
+    lens_family=(
+        "composed as a photograph would be — 35mm, 50mm and 85mm equivalents, the "
+        "subject small in the frame with a lot of empty paper around it, never a "
+        "comic panel and never a page of them"
+    ),
+    texture=(
+        "The tooth of the paper visible throughout, dry-brush breaks where the ink "
+        "ran out, drips allowed to run and dry, line weight varying constantly and "
+        "some passages barely drawn at all."
+    ),
+    continuity=(
+        "Everything happens inside one wet stretch of late September 1999 — the "
+        "night the body is driven south, and the grey day the children find the "
+        "fire. Rain falls or has just fallen in every image. Period is 1999 Denmark "
+        "and it shows in the shapes of the cars, the clothing and the fittings. "
+        "Every drawing is on the same grey paper in the same hand, so a cut from "
+        "the wood to a tiled room does not jar."
+    ),
+    breaks_continuity=(
+        "sun", "sunlight", "sunlit", "sunny", "sunshine", "sunset", "sunrise",
+        "golden hour", "blue sky", "clear sky", "summer", "snow",
+        "smartphone", "mobile phone", "flat screen", "LED",
+    ),
+    motion_grammar=(
+        "Movement is limited and deliberate, the way hand-drawn animation is: the "
+        "line itself boils very slightly, as though every frame were redrawn, at "
+        "around eight to twelve drawings a second, while any camera move runs "
+        "smooth. Whatever actually moves — rain, flame, smoke, water — moves in "
+        "slight slow motion, roughly half real speed, and keeps its weight. The clip "
+        "holds one speed throughout; it never ramps and never resolves into smooth "
+        "three-dimensional motion."
+    ),
+    anti_tells=(
+        "not vector-clean, no even-weight outlines, no digital smoothness",
+        "no comic-book inking, no cross-hatching used as a shading fill, no halftone",
+        "no concept-art or fantasy-illustration polish, nothing rendered",
+        "not symmetrical, not centred, no glowing edges, no colour outside the palette",
+        "no cartoon faces, no caricature, no stylised eyes",
+    ),
+    medium_lead="Drawn in",
+    frame_lead="Framing",
+    format="16:9 for broadcast, composed with clear space on one side for lower-thirds",
+)
+
+# The two looks under test. Same 24 shots, same rails, same continuity — the
+# only variable is the medium, which is the point.
+LOOKS = {"photo": LOOK, "drawn": LOOK_DRAWN}
 
 # The frame Lasse asked to see for each timecode, plus the two extras. Segment 3
 # gets two because his note named two distinct things.

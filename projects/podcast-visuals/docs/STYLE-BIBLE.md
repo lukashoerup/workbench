@@ -1,4 +1,4 @@
-# Style bible — "Våd aske"
+# Style bible — two looks under test
 
 This is the steering wheel. Every prompt in the episode carries these blocks
 word for word; change a line here and re-render, and all 22 shots move
@@ -6,7 +6,16 @@ together. Nothing else in the pipeline has that reach.
 
 The name is the scene: a fire burning badly in the rain, ash going to slurry.
 
-## The two frozen blocks
+There are two, and they differ in exactly one thing: the medium. Same case,
+same weather, same year, same framing, same rails. Running both on the four
+anchor frames is the cheapest decisive comparison available.
+
+| | |
+|---|---|
+| **Våd aske** | Photographic. 500T pulled, wet forest greens, one cold cyan in the shadows. `docs/PROMPT-PACK.md` |
+| **Kul og blæk** | Charcoal, graphite and ink wash on grey paper, in the tradition of courtroom sketch rather than illustration. `docs/PROMPT-PACK-DRAWN.md` |
+
+## The three frozen blocks
 
 **The look** — how it is photographed.
 
@@ -18,6 +27,26 @@ The name is the scene: a fire burning badly in the rain, ash going to slurry.
 | **Lenses** | 35 / 50 / 85mm spherical primes worked near wide open. Nothing wider than 28mm, nothing longer than 135mm |
 | **Texture** | Fine 35mm grain, faint halation on highlights, a trace of lens breathing, focus falling off fast |
 | **Format** | 16:9 broadcast, composed with clear space on one side for lower-thirds |
+
+**The motion grammar** — how everything moves.
+
+> Everything that moves, moves in slight slow motion — roughly half real speed,
+> as if filmed at 48 frames and played at 24. Rain, flame, water, dust, fabric
+> and smoke all fall and drift more slowly than they should, with the weight
+> kept: nothing floats, nothing hangs. The camera itself moves at ordinary
+> speed. The clip holds a single continuous speed throughout — it never ramps,
+> never speeds up at the end and never comes back to normal.
+
+Slow motion suits the genre, and it is also the technically safer choice: less
+change between frames means fewer of the artefacts that give AI video away. The
+camera is exempt on purpose — slowing the move as well turns every push into a
+drift and every drift into nothing. And a clip that starts slow and returns to
+normal is the single most recognisable AI-video move there is, which is why the
+grammar forbids ramping outright and a test checks that it does.
+
+The drawn look carries its own version: the line boils very slightly at eight to
+twelve drawings a second, as hand-drawn animation does, while anything that
+actually moves is still slowed to half speed.
 
 **The continuity** — what world it is photographed in.
 
@@ -95,12 +124,21 @@ an image read as this genre rather than as drama:
   frame looks like a poster, it is wrong.
 - **The picture never explains.** It sets the room the voice is speaking in.
 
-## Anti-tells, applied to every prompt automatically
+## Anti-tells belong to the medium, not to the project
 
-not symmetrical · not centred · not a hero composition · no HDR glow · no bloom
-· no lens flare · no rim-light halo · no glossy plastic surfaces · no
-over-clean textures · no drone or god's-eye viewpoint · no crushed blacks · no
-orange-and-teal grade
+What gives a photograph away and what gives a drawing away have nothing in
+common, so each look carries its own list and neither inherits the other's. A
+prompt full of irrelevant negatives spends the model's attention on nothing.
+
+**Photographic:** not symmetrical · not centred · not a hero composition · no
+HDR glow · no bloom · no lens flare · no rim-light halo · no glossy plastic
+surfaces · no over-clean textures · no drone or god's-eye viewpoint · no crushed
+blacks · no orange-and-teal grade
+
+**Drawn:** not vector-clean · no even-weight outlines · no digital smoothness ·
+no comic-book inking · no cross-hatching as a shading fill · no halftone · no
+concept-art polish · nothing rendered · not symmetrical · no glowing edges · no
+colour outside the palette · no cartoon faces, caricature or stylised eyes
 
 ## Finished in post, not in the prompt
 
