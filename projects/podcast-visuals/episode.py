@@ -143,6 +143,7 @@ SHOTS = (
     # "legede børn og bål og beredskab på gerningsstedet"
     Shot(
         id="S1-01",
+        source="description",
         segment="03:30-06:00 what the children walked up to",
         subject=(
             "A low wide bonfire burning badly in steady rain in a small forest clearing, "
@@ -165,6 +166,7 @@ SHOTS = (
     ),
     Shot(
         id="S1-02",
+        source="description",
         segment="03:30-06:00 the children",
         subject=(
             "Two children seen from behind at forty metres, small dark shapes stopped "
@@ -181,6 +183,7 @@ SHOTS = (
     ),
     Shot(
         id="S1-03",
+        source="description",
         segment="03:30-06:00 close on the fire",
         subject=(
             "Wet branches and pallet wood at the edge of the heap, steaming as much as "
@@ -197,6 +200,7 @@ SHOTS = (
     ),
     Shot(
         id="S1-04",
+        source="notes",
         segment="03:30-06:00 the response arrives",
         subject=(
             "Blue emergency light pulsing through wet spruce trunks from somewhere off "
@@ -213,6 +217,7 @@ SHOTS = (
     ),
     Shot(
         id="S1-05",
+        source="direction",
         segment="03:30-06:00 the scene is closed",
         subject=(
             "Police tape strung between two spruce trunks across the forestry track, "
@@ -232,6 +237,7 @@ SHOTS = (
     # "retsmediciner og kig på lig"
     Shot(
         id="S2-01",
+        source="notes",
         segment="09:34-13:00 the forensic examination",
         subject=(
             "A wet gloved hand lifting a stainless steel instrument from a folded green "
@@ -252,6 +258,7 @@ SHOTS = (
     ),
     Shot(
         id="S2-02",
+        source="direction",
         segment="09:34-13:00 arriving at the institute",
         subject=(
             "An empty institutional corridor with one heavy door standing ajar at the far "
@@ -268,6 +275,7 @@ SHOTS = (
     ),
     Shot(
         id="S2-03",
+        source="direction",
         segment="09:34-13:00 the examination room",
         subject=(
             "An empty stainless steel examination table with a drain slot down its centre "
@@ -284,6 +292,7 @@ SHOTS = (
     ),
     Shot(
         id="S2-04",
+        source="case",
         segment="09:34-13:00 what the examination found",
         subject=(
             "A row of small radiographs clipped side by side to a backlit viewing panel "
@@ -304,6 +313,7 @@ SHOTS = (
     # "tændvæske i bål, dæk aftryk"
     Shot(
         id="S3-01",
+        source="description",
         segment="15:30-17:09 the fire was helped",
         subject=(
             "One patch of the heap burning hard and clean in the rain while everything "
@@ -320,6 +330,7 @@ SHOTS = (
     ),
     Shot(
         id="S3-02",
+        source="description",
         segment="15:30-17:09 what was used",
         subject=(
             "A scorched plastic bottle at the edge of the ash, one side melted and "
@@ -336,6 +347,7 @@ SHOTS = (
     ),
     Shot(
         id="S3-03",
+        source="direction",
         segment="15:30-17:09 the accelerant in the timber",
         subject=(
             "Charred timber filling the frame edge to edge, the char broken open to show "
@@ -349,6 +361,7 @@ SHOTS = (
     ),
     Shot(
         id="S3-04",
+        source="description",
         segment="15:30-17:09 the tyre print",
         subject=(
             "One tyre track pressed deep into soft forest floor where a vehicle turned "
@@ -371,6 +384,7 @@ SHOTS = (
     ),
     Shot(
         id="S3-05",
+        source="direction",
         segment="15:30-17:09 where it led",
         subject=(
             "The forestry track running away from camera between wet spruce walls into "
@@ -391,6 +405,7 @@ SHOTS = (
     # "sveder, drabsmænd, brandbart væske"
     Shot(
         id="S4-01",
+        source="notes",
         segment="20:17-21:05 the interview",
         subject=(
             "Two hands on a scratched laminate table, fingers interlaced too tightly and "
@@ -411,6 +426,7 @@ SHOTS = (
     ),
     Shot(
         id="S4-02",
+        source="direction",
         segment="20:17-21:05 before the interview",
         subject=(
             "The interview room before anyone is in it: two stacking chairs at the table, "
@@ -427,6 +443,7 @@ SHOTS = (
     ),
     Shot(
         id="S4-03",
+        source="direction",
         segment="20:17-21:05 on the record",
         subject=(
             "A wall-mounted interview recorder with one red indicator lit and dust settled "
@@ -443,6 +460,7 @@ SHOTS = (
     ),
     Shot(
         id="S4-04",
+        source="notes",
         segment="20:17-21:05 the flammable liquid",
         subject=(
             "A shelf in a cold garage lined with household tins and bottles gone furry "
@@ -461,6 +479,7 @@ SHOTS = (
     # "anklager"
     Shot(
         id="S5-01",
+        source="notes",
         segment="36:40-39:36 the prosecution",
         subject=(
             "An empty courtroom in the morning before anyone has come in, the long bench "
@@ -478,6 +497,7 @@ SHOTS = (
     ),
     Shot(
         id="S5-02",
+        source="direction",
         segment="36:40-39:36 the case as paper",
         subject=(
             "A stack of case binders bound with red cotton tape on a bench, the edges "
@@ -493,6 +513,7 @@ SHOTS = (
     ),
     Shot(
         id="S5-03",
+        source="notes",
         segment="36:40-39:36 the prosecutor speaks",
         subject=(
             "A dark-suited shoulder and the back of a head at a lectern in the near "
@@ -509,6 +530,7 @@ SHOTS = (
     ),
     Shot(
         id="S5-04",
+        source="direction",
         segment="36:40-39:36 outside the court",
         subject=(
             "The steps of a courthouse in rain seen from across the street through passing "
@@ -534,6 +556,7 @@ SHOTS = (
     # itself about the ethics of showing a face.
     Shot(
         id="X-01",
+        source="description",
         segment="extra — the decision that felt brutal",
         subject=(
             "A bundle of the next morning's newspapers dropped on a wet pavement outside "

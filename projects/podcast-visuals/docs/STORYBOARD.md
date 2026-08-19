@@ -29,21 +29,62 @@ forensic medicine **Hans Petter Hougen**, former prosecutor **Anne Birgitte
 Stürup**, host **Stine Bolther**. They are also who would be on camera if the
 programme keeps its talking heads.
 
-### Fact, choice, and guess
+### How certain is the identification?
 
-- **Fact**, from the description: children at play; a bundle in a bonfire;
-  remains unrecognisable and burnt; an emptied bottle of lighter fluid left in
-  the fire; a tyre track in the forest floor; a newspaper photograph of the
-  dead woman's battered face; a decision that felt brutal.
-- **Choice**: the weather, season and hour. A wet grey day is art direction —
-  it suits the material and gives the episode one world to sit in. Not sourced.
-  Check it against the audio before locking the look.
-- **Guess, and marked as one**: the forensic odontologist and the dental
-  identification. That is from *Dødens detektiver* ep. 1, which looks like the
-  same case but has not been shown to be. S2-04 is written to work either way.
+Practically certain. Not verified. The distinction matters, so here it is
+plainly.
 
-The narration is still untranscribed — the feed carries the mp3, not a
-transcript.
+**For:** of 219 episodes in the feed, only 44 run to 40 minutes or more, which a
+timecode of 36:40–39:36 requires. Of those, exactly one describes children, a
+bonfire, lighter fluid, a tyre track in the forest floor and a prosecutor. Its
+four contributors map one-to-one onto Lasse's five markers: pathologist at
+09:34, forensic technician at 15:30, murder chief at 20:17, prosecutor at
+36:40. Five independent coincidences would be needed for this to be the wrong
+episode.
+
+**Against:** nobody has resolved Apple's episode id `1000555640897` — the thing
+Lasse actually sent — to a title. Apple is blocked from this machine and the
+feed does not carry Apple ids. And nobody has listened to the audio.
+
+**Two checks that would settle it**, either of which takes under a minute: open
+Lasse's original link and read the episode title; or open the mp3 and skip to
+03:30 and 20:17 and hear whether it is children and a bonfire, then a suspect
+under pressure.
+
+### Where each shot's content comes from
+
+The narration outranks everything, including research that is more detailed and
+more interesting: this programme is a retelling of what a detective says
+happened, so a shot built on a good fact from the wrong source is still a shot
+the episode does not support. Every shot therefore records its own tier, and
+the test suite enforces it.
+
+| Tier | Meaning | Shots |
+|---|---|---|
+| `audio` | what is actually said — the only primary source | **0** |
+| `notes` | Lasse's timecode notes; a human who listened, paraphrasing | 6 |
+| `description` | the episode's own published description | 7 |
+| `case` | public reporting about the case, not about this episode | 1 |
+| `direction` | an art-direction decision, sourced to nothing | 9 |
+
+Two consequences worth saying out loud. **No shot may claim the audio until a
+transcript exists** — a test fails if one does, which is what stops a vivid
+research detail quietly becoming something "the episode said". And **no hero
+frame may rest on art direction alone**: atmosphere may be invented, but the
+frame that says what happened may not. Also under test.
+
+The nine `direction` shots are the honest number to watch. They are atmosphere
+— tape, corridors, empty rooms — and several should be replaced by shots the
+narration actually supports once there is a transcript. Expect that count to
+fall.
+
+The weather is `direction` too, at the look level rather than per shot: a wet
+grey day suits the material and gives the episode one world to sit in, but it
+is chosen, not known. Check it against the audio before locking the look.
+
+The odontologist and the dental identification are the single `case` shot.
+That detail is from *Dødens detektiver* ep. 1, which looks like the same case
+but has not been shown to be, so S2-04 is written to work either way.
 
 ---
 

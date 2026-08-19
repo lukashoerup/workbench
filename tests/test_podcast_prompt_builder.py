@@ -316,3 +316,51 @@ def test_the_look_carries_the_bridge_between_interiors_and_exteriors():
     """A cut from a wet wood to a tiled room is where an episode most obviously
     stops being one piece. The continuity block has to say what carries across."""
     assert "cyan" in LOOK.continuity and "jar" in LOOK.continuity
+
+
+# --------------------------------------------------------------------------
+# Sources — the narration outranks everything, including better facts
+# --------------------------------------------------------------------------
+
+# Flip to True in the same commit that adds the transcript.
+TRANSCRIPT_EXISTS = False
+
+
+@pytest.mark.parametrize("shot", SHOTS, ids=lambda s: s.id)
+def test_every_shot_declares_a_real_source(shot):
+    from prompt_builder import check_source
+
+    check_source(shot, transcript_exists=TRANSCRIPT_EXISTS)
+
+
+def test_no_shot_claims_the_audio_before_there_is_one():
+    """The failure this prevents: research turns up a vivid detail, it goes into
+    a shot, and later nobody remembers the episode never mentioned it — so the
+    programme shows something its own narration does not support."""
+    assert not [s.id for s in SHOTS if s.source == "audio"], (
+        "a shot claims the audio as its source; set TRANSCRIPT_EXISTS when that "
+        "is actually true"
+    )
+
+
+def test_a_shot_cannot_claim_the_audio_while_none_exists():
+    from prompt_builder import UnknownSource, check_source
+
+    shot = Shot(id="X", segment="t", subject="A table", camera="50mm", source="audio")
+    with pytest.raises(UnknownSource, match="no transcript"):
+        check_source(shot, transcript_exists=False)
+
+
+def test_an_invented_source_tier_is_rejected():
+    from prompt_builder import UnknownSource, check_source
+
+    shot = Shot(id="X", segment="t", subject="A table", camera="50mm", source="vibes")
+    with pytest.raises(UnknownSource, match="not one of"):
+        check_source(shot)
+
+
+def test_no_hero_frame_rests_on_art_direction_alone():
+    """The heroes are the frames that carry the case. An atmosphere shot may be
+    invented; the frame that says what happened may not."""
+    invented = [s.id for s in SHOTS if s.id in HEROES and s.source == "direction"]
+    assert not invented, f"hero frames sourced to nothing: {invented}"

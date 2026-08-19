@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from episode import ENTITIES, HEROES, LOOK, SHOTS  # noqa: E402
 from prompt_builder import (  # noqa: E402
+    SOURCE_MEANING,
     build_image_prompt,
     build_motion_prompt,
     reference_frames,
@@ -41,6 +42,7 @@ def pack(shots):
             "id": shot.id,
             "segment": shot.segment,
             "is_anchor": shot.id in ANCHORS,
+            "source": shot.source,
             "reference_frames": list(reference_frames(shot, ENTITIES)),
             "motion_tier": shot.motion_tier,
             "seconds": shot.seconds,
@@ -68,7 +70,8 @@ def main(argv=None):
     for row in rows:
         tag = " · **anchor — generate and approve this first**" if row["is_anchor"] else ""
         print(f"## {row['id']} — {row['segment']}{tag}")
-        print(f"_Tier {row['motion_tier']}, {row['seconds']:g}s_\n")
+        print(f"_Tier {row['motion_tier']}, {row['seconds']:g}s — "
+              f"source: {row['source']} ({SOURCE_MEANING[row['source']]})_\n")
         if row["reference_frames"]:
             refs = ", ".join(row["reference_frames"])
             print(f"**Attach as reference image(s):** {refs}\n")

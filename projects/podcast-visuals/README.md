@@ -21,6 +21,7 @@ gets built until six frames have been judged on a television.
 | Visual grammar and style bible | done |
 | Reference-anchoring, so a location holds across shots | done |
 | Continuity locked and enforced — one weather, one hour, every scene | done |
+| Source recorded per shot, with the audio outranking everything | done |
 | POC plan — model bake-off and how to judge it | done |
 | Cost model, POC and full episode | done |
 | Approval workflow — where Lasse steers, what automates | done |
@@ -32,13 +33,17 @@ gets built until six frames have been judged on a television.
 The audio is at
 `bauernordic-pods.sharp-stream.com/dk/1103/dd_s6_ep5_det_brndende_lig_913db409_normal.mp3`.
 
-**What blocks the frames.** Two things, both small, neither solvable from this
-session. This session's network policy blocks that audio host, so the file has
-to be fetched by hand and dropped in Drive before there can be a transcript —
-until then the shot descriptions come from the episode's own published
-description, not from what is said in it. And there is no image or video
-generation account attached to this work, so nothing can be rendered. See
-[docs/WORKFLOW.md](docs/WORKFLOW.md#what-is-needed-to-run-the-first-pass).
+The mp3 is now in Lukas's Drive. This session still cannot read it: the Drive
+connector caps downloads at 10 MB and the file is 45 MB, and every speech-model
+weight host is blocked here too. **Transcription has to happen somewhere else** —
+`lenovo` or a paid API — which is a dependency decision for Lukas, not one to
+take unilaterally.
+
+**What blocks the frames.** Until there is a transcript, every shot rests on
+the episode's published description, Lasse's notes, or art direction — recorded
+per shot and enforced (see [docs/STORYBOARD.md](docs/STORYBOARD.md)). And there
+is no image or video generation account attached, so nothing can be rendered.
+See [docs/WORKFLOW.md](docs/WORKFLOW.md#what-is-needed-to-run-the-first-pass).
 
 Everything else is finished and the prompts are ready to paste into a generator
 by hand today.

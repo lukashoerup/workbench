@@ -4,7 +4,7 @@
 Motion tiers: A parallax, B micro-motion, C generative.
 
 ## S1-01 — 03:30-06:00 what the children walked up to · **anchor — generate and approve this first**
-_Tier B, 6s_
+_Tier B, 6s — source: description (the episode's own published description)_
 
 **Still**
 
@@ -19,7 +19,7 @@ Animate the supplied frame. Smoke rolls sideways off the heap and settles again;
 ```
 
 ## S2-01 — 09:34-13:00 the forensic examination · **anchor — generate and approve this first**
-_Tier B, 5s_
+_Tier B, 5s — source: notes (Lasse's timecode notes; a human who listened, paraphrasing)_
 
 **Still**
 
@@ -34,7 +34,7 @@ Animate the supplied frame. The hand lifts the instrument clear of the cloth and
 ```
 
 ## S4-02 — 20:17-21:05 before the interview · **anchor — generate and approve this first**
-_Tier A, 6s_
+_Tier A, 6s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Still**
 
@@ -49,7 +49,7 @@ Animate the supplied frame. A blade of light from the blinds creeps a few centim
 ```
 
 ## S5-01 — 36:40-39:36 the prosecution · **anchor — generate and approve this first**
-_Tier B, 6s_
+_Tier B, 6s — source: notes (Lasse's timecode notes; a human who listened, paraphrasing)_
 
 **Still**
 
@@ -64,7 +64,7 @@ Animate the supplied frame. Dust turns slowly in the window light. Everything el
 ```
 
 ## S1-02 — 03:30-06:00 the children
-_Tier B, 5s_
+_Tier B, 5s — source: description (the episode's own published description)_
 
 **Attach as reference image(s):** S1-01
 
@@ -81,7 +81,7 @@ Animate the supplied frame. Rain falls through the frame; neither figure moves. 
 ```
 
 ## S1-03 — 03:30-06:00 close on the fire
-_Tier B, 5s_
+_Tier B, 5s — source: description (the episode's own published description)_
 
 **Attach as reference image(s):** S1-01
 
@@ -98,7 +98,7 @@ Animate the supplied frame. Steam lifts off the wet wood in a slow curl; one bra
 ```
 
 ## S1-04 — 03:30-06:00 the response arrives
-_Tier B, 5s_
+_Tier B, 5s — source: notes (Lasse's timecode notes; a human who listened, paraphrasing)_
 
 **Attach as reference image(s):** S1-01
 
@@ -115,7 +115,7 @@ Animate the supplied frame. The blue light pulses through the trunks at the rhyt
 ```
 
 ## S1-05 — 03:30-06:00 the scene is closed
-_Tier B, 5s_
+_Tier B, 5s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S1-01
 
@@ -132,7 +132,7 @@ Animate the supplied frame. The tape lifts once in the wind and drops, shedding 
 ```
 
 ## S2-02 — 09:34-13:00 arriving at the institute
-_Tier A, 6s_
+_Tier A, 6s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S2-01
 
@@ -149,7 +149,7 @@ Animate the supplied frame. A slow push down the corridor towards the door; the 
 ```
 
 ## S2-03 — 09:34-13:00 the examination room
-_Tier B, 5s_
+_Tier B, 5s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S2-01
 
@@ -166,7 +166,7 @@ Animate the supplied frame. A single drop of water travels down the drain slot. 
 ```
 
 ## S2-04 — 09:34-13:00 what the examination found
-_Tier B, 5s_
+_Tier B, 5s — source: case (public reporting about the case, not about this episode)_
 
 **Attach as reference image(s):** S2-01
 
@@ -183,7 +183,7 @@ Animate the supplied frame. The fingertip moves one frame to the left along the 
 ```
 
 ## S3-01 — 15:30-17:09 the fire was helped
-_Tier B, 5s_
+_Tier B, 5s — source: description (the episode's own published description)_
 
 **Attach as reference image(s):** S1-01
 
@@ -200,7 +200,7 @@ Animate the supplied frame. The clean flame gutters in the rain, holds, and lift
 ```
 
 ## S3-02 — 15:30-17:09 what was used
-_Tier B, 4s_
+_Tier B, 4s — source: description (the episode's own published description)_
 
 **Attach as reference image(s):** S1-01
 
@@ -217,7 +217,7 @@ Animate the supplied frame. Rain strikes the ash around the bottle and darkens i
 ```
 
 ## S3-03 — 15:30-17:09 the accelerant in the timber
-_Tier B, 4s_
+_Tier B, 4s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S1-01
 
@@ -234,7 +234,7 @@ Animate the supplied frame. A drop of rain lands on the char and steams off. Eve
 ```
 
 ## S3-04 — 15:30-17:09 the tyre print
-_Tier B, 5s_
+_Tier B, 5s — source: description (the episode's own published description)_
 
 **Attach as reference image(s):** S1-01
 
@@ -251,7 +251,7 @@ Animate the supplied frame. The water standing in the tread trembles as a drip c
 ```
 
 ## S3-05 — 15:30-17:09 where it led
-_Tier A, 6s_
+_Tier A, 6s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S1-01
 
@@ -268,7 +268,7 @@ Animate the supplied frame. A slow push forward along the ruts; the mist does no
 ```
 
 ## S4-01 — 20:17-21:05 the interview
-_Tier B, 5s_
+_Tier B, 5s — source: notes (Lasse's timecode notes; a human who listened, paraphrasing)_
 
 **Attach as reference image(s):** S4-02
 
@@ -285,7 +285,7 @@ Animate the supplied frame. One thumb moves against the other twice and stops. E
 ```
 
 ## S4-03 — 20:17-21:05 on the record
-_Tier B, 4s_
+_Tier B, 4s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S4-02
 
@@ -302,7 +302,7 @@ Animate the supplied frame. The red indicator pulses slowly. Everything else in 
 ```
 
 ## S4-04 — 20:17-21:05 the flammable liquid
-_Tier B, 5s_
+_Tier B, 5s — source: notes (Lasse's timecode notes; a human who listened, paraphrasing)_
 
 **Still**
 
@@ -317,7 +317,7 @@ Animate the supplied frame. Motes drift slowly through the grey light falling fr
 ```
 
 ## S5-02 — 36:40-39:36 the case as paper
-_Tier A, 5s_
+_Tier A, 5s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Attach as reference image(s):** S5-01
 
@@ -334,7 +334,7 @@ Animate the supplied frame. A slow drift to the right across the stack. Everythi
 ```
 
 ## S5-03 — 36:40-39:36 the prosecutor speaks
-_Tier B, 5s_
+_Tier B, 5s — source: notes (Lasse's timecode notes; a human who listened, paraphrasing)_
 
 **Attach as reference image(s):** S5-01
 
@@ -351,7 +351,7 @@ Animate the supplied frame. The out-of-focus figure shifts weight once. Everythi
 ```
 
 ## S5-04 — 36:40-39:36 outside the court
-_Tier B, 5s_
+_Tier B, 5s — source: direction (an art-direction decision, sourced to nothing)_
 
 **Still**
 
@@ -366,7 +366,7 @@ Animate the supplied frame. A car passes through the near foreground and briefly
 ```
 
 ## X-01 — extra — the decision that felt brutal
-_Tier B, 5s_
+_Tier B, 5s — source: description (the episode's own published description)_
 
 **Still**
 

@@ -106,6 +106,21 @@ class Entity:
     anchor: str = ""      # shot id whose approved frame conditions the rest
 
 
+# Where a shot's content came from, best first. The programme is a retelling of
+# what a detective says happened, so the narration outranks everything else —
+# including research that is more detailed and more interesting. A shot built on
+# a good fact from the wrong source is still a shot the episode does not support.
+SOURCES = ("audio", "notes", "description", "case", "direction")
+
+SOURCE_MEANING = {
+    "audio": "what is actually said in the episode — the only primary source",
+    "notes": "Lasse's timecode notes; a human who listened, paraphrasing",
+    "description": "the episode's own published description",
+    "case": "public reporting about the case, not about this episode",
+    "direction": "an art-direction decision, sourced to nothing",
+}
+
+
 @dataclass(frozen=True)
 class Shot:
     """One frame. `subject` is written as a camera report, not as a caption:
@@ -121,6 +136,12 @@ class Shot:
     motion: str = ""                   # the ONE physical event, for the video pass
     motion_tier: str = "A"             # A parallax | B micro-motion | C generative
     seconds: float = 5.0
+
+    # Which tier of SOURCES this shot's content rests on. Recorded per shot so
+    # that "we lean on the audio" is an auditable claim rather than a good
+    # intention — and so that upgrading a shot after transcription is a visible
+    # change rather than a silent one.
+    source: str = "direction"
 
 
 class UnsafeShot(ValueError):
@@ -165,6 +186,29 @@ def check_shot(shot: Shot) -> None:
                 f"(matched /{pattern}/). Show the aftermath, the room or the "
                 f"instrument instead. See docs/RAILS.md."
             )
+
+
+class UnknownSource(ValueError):
+    """Raised when a shot claims a source tier that does not exist."""
+
+
+def check_source(shot: Shot, transcript_exists: bool = False) -> None:
+    """A shot may only claim the audio once there is an audio to claim.
+
+    The temptation this guards against is specific and real: research turns up a
+    vivid detail, it goes into a shot, and three weeks later nobody remembers
+    that the episode never mentioned it. The programme would then be showing
+    something its own narration does not support.
+    """
+    if shot.source not in SOURCES:
+        raise UnknownSource(
+            f"{shot.id}: source {shot.source!r} is not one of {SOURCES}"
+        )
+    if shot.source == "audio" and not transcript_exists:
+        raise UnknownSource(
+            f"{shot.id}: claims the audio as its source, but no transcript "
+            f"exists yet. Downgrade to 'description' or 'case' until it does."
+        )
 
 
 class ContinuityBreak(ValueError):
