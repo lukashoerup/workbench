@@ -263,3 +263,56 @@ def test_the_prompt_pack_on_disk_is_current():
     ).stdout
     on_disk = (PROJECT / "docs" / "PROMPT-PACK.md").read_text()
     assert on_disk == generated, "run: python3 render.py --all > docs/PROMPT-PACK.md"
+
+
+# --------------------------------------------------------------------------
+# Continuity — one weather, one hour, one season, across every scene
+# --------------------------------------------------------------------------
+
+@pytest.mark.parametrize("shot", SHOTS, ids=lambda s: s.id)
+def test_every_shot_holds_the_established_continuity(shot):
+    """The look can be perfectly consistent and the programme still fall apart
+    because it rains in one scene and not the next. This catches the second
+    kind of drift, which is the one nobody writes down."""
+    from prompt_builder import check_continuity
+
+    check_continuity(shot, LOOK)
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("light", "Low raking sun under a heavy sky"),
+        ("atmosphere", "A clear sky after the rain has passed"),
+        ("subject", "The clearing in warm light"),
+        ("motion", "Sunlight moves across the ash"),
+    ],
+)
+def test_a_shot_that_fights_the_weather_is_rejected(field, value):
+    from prompt_builder import ContinuityBreak
+
+    kwargs = {"id": "X", "segment": "t", "subject": "A table", "camera": "50mm"}
+    kwargs[field] = value
+    kwargs.setdefault("motion", "nothing moves")
+    with pytest.raises(ContinuityBreak):
+        build_image_prompt(Shot(**kwargs), LOOK, ENTITIES)
+
+
+@pytest.mark.parametrize("shot", SHOTS, ids=lambda s: s.id)
+def test_the_continuity_block_reaches_every_prompt(shot):
+    assert LOOK.continuity in build_image_prompt(shot, LOOK, ENTITIES)
+
+
+def test_the_only_directed_light_in_the_episode_is_motivated_in_scene():
+    """Exactly one shot uses hard directional light, and it comes from a police
+    work lamp that is physically present — not from weather the episode has
+    already ruled out."""
+    directed = [s for s in SHOTS if "raking" in s.light.lower()]
+    assert len(directed) == 1, [s.id for s in directed]
+    assert "lamp" in directed[0].light.lower()
+
+
+def test_the_look_carries_the_bridge_between_interiors_and_exteriors():
+    """A cut from a wet wood to a tiled room is where an episode most obviously
+    stops being one piece. The continuity block has to say what carries across."""
+    assert "cyan" in LOOK.continuity and "jar" in LOOK.continuity

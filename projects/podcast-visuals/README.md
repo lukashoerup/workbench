@@ -15,10 +15,12 @@ gets built until six frames have been judged on a television.
 
 | Piece | State |
 |---|---|
+| The case identified from Lasse's notes and public sources | done |
 | Five segments turned into a shot list, 22 shots | done |
 | Production-grade prompts for every shot, still + motion | done |
 | Visual grammar and style bible | done |
 | Reference-anchoring, so a location holds across shots | done |
+| Continuity locked and enforced — one weather, one hour, every scene | done |
 | POC plan — model bake-off and how to judge it | done |
 | Cost model, POC and full episode | done |
 | Approval workflow — where Lasse steers, what automates | done |
@@ -26,11 +28,12 @@ gets built until six frames have been judged on a television.
 | **Frames actually generated** | **not done — blocked** |
 
 **What blocks the frames.** Two things, both small, neither solvable from this
-session. The episode audio has not reached a machine that can read it: this
-session's network policy blocks the podcast hosts, so there is no transcript
-yet and the shot descriptions are built from Lasse's own notes on each timecode
-rather than from what is said. And there is no image or video generation
-account attached to this work, so nothing can be rendered. See
+session. The episode audio has not reached a machine that can read it — this
+session's network policy blocks the podcast hosts and the feed at
+`rss.podplaystudio.com/1103.xml` alike — so there is no transcript, and the
+shot descriptions are built from the identified case plus Lasse's notes on each
+timecode rather than from what is said. And there is no image or video
+generation account attached to this work, so nothing can be rendered. See
 [docs/WORKFLOW.md](docs/WORKFLOW.md#what-is-needed-to-run-the-first-pass).
 
 Everything else is finished and the prompts are ready to paste into a generator

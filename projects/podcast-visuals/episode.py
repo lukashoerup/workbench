@@ -1,32 +1,47 @@
 """The test episode: look, world registry and shot list.
 
-The five segments are the ones Lasse picked out of the reference episode by
-timecode. Each gets a hero shot — the frame he asked to see — plus the shots
-around it that show how the whole segment would be built, because a single
-frame proves the look and a sequence proves the format.
+The case
+--------
+Identified 19 Aug 2026 from Lasse's timecode notes plus public sources. Two
+children find a bonfire burning in a forest in the rain; there is a body in it.
+An investigator from Rejseholdet lives a few hundred metres away and is on the
+scene fast. The forensic pathologist works on a partly burnt body and calls in a
+forensic odontologist, and the teeth turn out to be decisive. An emptied
+lighter-fluid bottle is left in the fire and a tyre track is pressed into the
+forest floor. The victim is a woman.
 
-Descriptions are written from Lasse's own one-line notes on each timecode. The
-exact wording of the narration is not in here yet: the audio has not reached
-this machine (see README.md). When it does, `subject` lines get rewritten
-against the transcript and everything else in this file stands.
+The same case is episode one of *Dødens detektiver*, "Liget i bålet" (True Crime
+Agency, 2020), which is where most of the corroboration comes from.
+
+**This is the case, not the transcript.** Every visual fact below is sourced;
+the wording of the narration is not, because the audio has not reached this
+machine (see README.md). The match is strong — bonfire, lighter fluid, tyre
+track, children, forensic pathologist and prosecutor all line up with Lasse's
+five notes — but it should be confirmed against the episode before anything is
+built on it.
+
+The five segments are the timecodes Lasse picked. Each gets a hero shot — the
+frame he asked to see — plus the shots around it, because one frame proves the
+look and a sequence proves the format.
 """
 from prompt_builder import Entity, Look, Shot
 
 LOOK = Look(
-    name="Kold Sankt Hans",
+    name="Våd aske",
     stock=(
         "Kodak Vision3 500T rated at 320 and processed normal, scanned flat and "
         "graded down"
     ),
     light=(
-        "One dominant, motivated source per frame and nothing else: flat overcast "
-        "sky outdoors, hard 4000K fluorescent in institutional rooms, sodium or "
-        "firelight at night. Shadows stay open and blacks lift to charcoal."
+        "One dominant, motivated source per frame and nothing else: flat grey "
+        "daylight filtered down through a soaked canopy outdoors, hard 4000K "
+        "fluorescent in institutional rooms, firelight where something is actually "
+        "burning. Shadows stay open and blacks lift to charcoal."
     ),
     palette=(
-        "wet greens desaturated towards grey, ash white, weathered timber, "
-        "one cold cyan sitting in the shadows, and amber only where a real flame "
-        "or a sodium lamp is putting it there"
+        "soaked forest greens desaturated towards grey, wet black bark, the "
+        "grey-white of sodden ash, one cold cyan sitting in the shadows, and amber "
+        "only where a real flame is putting it there"
     ),
     lens_family=(
         "35mm, 50mm and 85mm spherical primes worked near wide open, nothing "
@@ -35,6 +50,19 @@ LOOK = Look(
     texture=(
         "Fine 35mm grain, faint halation on the highlights, a trace of lens "
         "breathing, focus falling off fast."
+    ),
+    continuity=(
+        "The whole episode is one continuous wet grey day in late autumn, some time "
+        "in the recent past: rain falling or just fallen, no sun anywhere, no blue in "
+        "the sky, standing water on every horizontal surface, and the same soaked "
+        "flat light indoors and out. Interiors carry the same cold cyan in the "
+        "shadows and the same open blacks as the forest, so a cut from the wood to a "
+        "tiled room does not jar."
+    ),
+    breaks_continuity=(
+        "sun", "sunlight", "sunlit", "sunny", "sunshine", "sunset", "sunrise",
+        "golden hour", "blue sky", "clear sky", "warm light", "dry", "dusty light",
+        "summer", "snow", "moonlight",
     ),
     format="16:9 for broadcast, composed with clear space on one side for lower-thirds",
 )
@@ -48,17 +76,17 @@ ENTITIES = {
         Entity(
             "baalplads",
             "The bonfire site",
-            "The site is a head-high stack of broken pallets, storm branches and a "
-            "discarded panel door, built on the cut edge of a field with the grass "
-            "trodden flat in a wide ring around it.",
+            "The fire is a low, wide heap of branches and broken pallet wood in a small "
+            "clearing off a forestry track, burning badly in the rain so that it gives "
+            "far more smoke than flame, with the ground around it churned to mud.",
             anchor="S1-01",
         ),
         Entity(
-            "mark",
-            "The field",
-            "The field is flat, recently cut, hemmed by a dark hawthorn hedge on one "
-            "side and a thin line of birch on the other, with a rutted farm track "
-            "running out of it.",
+            "skoven",
+            "The forest",
+            "The wood is Danish mixed plantation — dark wet spruce on one side, bare "
+            "beech on the other, deep soft leaf litter and needles underfoot, a rutted "
+            "forestry track running through it, and everything soaked through.",
             anchor="S1-01",
         ),
         Entity(
@@ -92,85 +120,88 @@ SHOTS = (
     # "legede børn og bål og beredskab på gerningsstedet"
     Shot(
         id="S1-01",
-        segment="03:30-06:00 the site before anything happened",
+        segment="03:30-06:00 what the children walked up to",
         subject=(
-            "The unlit bonfire stack on the edge of a field, with a child's bicycle "
-            "lying on its side in the long grass at the near edge, front wheel still "
-            "turned"
+            "A low wide bonfire burning badly in steady rain in a small forest clearing, "
+            "giving off far more smoke than flame, the smoke hanging low and refusing to "
+            "rise through the wet air"
         ),
         camera=(
-            "35mm at f/2.8, camera at hip height down in the grass looking slightly up "
-            "at the stack, stack left of centre and the empty field open to the right"
+            "35mm at f/2.8, camera on the forestry track at chest height some twenty "
+            "metres back, fire low and left of centre with the wet track running out to "
+            "the right"
         ),
         atmosphere=(
-            "Late June, half an hour before rain. The air is completely still and the "
-            "light is flat and shadowless"
+            "Steady rain falling through bare branches, the whole wood soaked and the "
+            "light flat and shadowless under the canopy"
         ),
-        entities=("baalplads", "mark"),
-        motion="The long grass across the foreground moves once in a slow gust and settles",
+        entities=("baalplads", "skoven"),
+        motion="Smoke rolls sideways off the heap and settles again; rain keeps falling through it",
         motion_tier="B",
         seconds=6,
     ),
     Shot(
         id="S1-02",
-        segment="03:30-06:00 children at the site",
+        segment="03:30-06:00 the children",
         subject=(
-            "Three children at fifty metres, small dark silhouettes against a pale sky, "
-            "running past the stack towards the treeline"
+            "Two children seen from behind at forty metres, small dark shapes stopped "
+            "still on the wet forestry track, one bicycle lying on its side beside them"
         ),
         camera=(
-            "85mm at f/4 from across the field, heavy compression, the silhouettes small "
-            "and low in the frame"
+            "85mm at f/4 from further down the track, heavy compression, the figures "
+            "small and low in frame with the track closing in around them"
         ),
-        entities=("baalplads",),
-        motion="The silhouettes cross the frame right to left and are gone; the grass keeps moving",
+        entities=("skoven",),
+        motion="Rain falls through the frame; neither figure moves",
         motion_tier="B",
+        seconds=5,
     ),
     Shot(
         id="S1-03",
-        segment="03:30-06:00 the morning after",
+        segment="03:30-06:00 close on the fire",
         subject=(
-            "The burnt-out ring the next morning, a low bed of white ash and blackened "
-            "timber ends collapsed inward and still giving off thin smoke"
+            "Wet branches and pallet wood at the edge of the heap, steaming as much as "
+            "burning, water running off the bark into the ash below"
         ),
         camera=(
-            "50mm at f/2, camera low and close in to the ash, focus on the near embers "
-            "with the field falling out of focus behind"
+            "85mm at f/2, camera low and close to the edge of the heap, focus held on "
+            "the steaming wood with the heart of the fire soft and dark behind"
         ),
+        light="Firelight from within the heap, weak and intermittent against the grey daylight",
         entities=("baalplads",),
-        motion="A thread of smoke rises and bends; one ember brightens and dulls",
+        motion="Steam lifts off the wet wood in a slow curl; one branch settles",
         motion_tier="B",
     ),
     Shot(
         id="S1-04",
         segment="03:30-06:00 the response arrives",
         subject=(
-            "Blue emergency light sweeping across a wet hawthorn hedge and the flattened "
-            "grass in front of it, with the vehicle itself out of frame so only the light "
-            "and what it touches are visible"
+            "Blue emergency light pulsing through wet spruce trunks from somewhere off "
+            "the track, the vehicle itself never in frame, only the light and the water "
+            "on the bark it catches"
         ),
         camera=(
-            "50mm at f/2, locked off, hedge filling the right two-thirds and empty grey "
-            "sky at the top left"
+            "50mm at f/2, locked off, trunks filling the frame in receding layers with "
+            "the light coming from deep behind them"
         ),
-        entities=("mark",),
-        motion="The blue light sweeps across the hedge twice at the rhythm of a rotating beacon",
+        entities=("skoven",),
+        motion="The blue light pulses through the trunks at the rhythm of a rotating beacon",
         motion_tier="B",
     ),
     Shot(
         id="S1-05",
         segment="03:30-06:00 the scene is closed",
         subject=(
-            "Police tape strung between a fence post and a young birch, running diagonally "
-            "across the foreground and thrown out of focus at the near edge, with the "
-            "trodden ring in the grass beyond it"
+            "Police tape strung between two spruce trunks across the forestry track, "
+            "beaded with rain and sagging under the weight of it, thrown out of focus at "
+            "the near edge"
         ),
         camera=(
             "35mm at f/2, camera behind the tape at chest height, tape crossing low-left "
-            "to upper-right"
+            "to upper-right with the track receding beyond it"
         ),
-        entities=("mark",),
-        motion="The tape flutters and snaps taut in the wind",
+        entities=("skoven",),
+        motion="The tape lifts once in the wind and drops, shedding water",
         motion_tier="B",
     ),
 
@@ -230,19 +261,20 @@ SHOTS = (
     ),
     Shot(
         id="S2-04",
-        segment="09:34-13:00 what the examination found",
+        segment="09:34-13:00 the teeth are what identify her",
         subject=(
-            "A radiograph clipped to a backlit viewing panel in an otherwise dark room, "
-            "the image abstracted to soft grey shapes and held out of focus"
+            "A row of small dental radiographs clipped side by side to a backlit viewing "
+            "panel in an otherwise dark room, the little grey shapes abstracted and held "
+            "slightly out of focus, a gloved fingertip resting under one of them"
         ),
         camera=(
-            "85mm at f/1.4, camera close and off-axis with the panel filling the left of "
-            "frame and darkness to the right"
+            "85mm at f/1.4, camera close and off-axis with the lit panel filling the left "
+            "of frame and darkness to the right"
         ),
+        light="The viewing panel is the only source, lighting the hand from the front",
         entities=("retspatologi",),
-        motion="The panel's fluorescent tube flickers once as it warms",
+        motion="The fingertip moves one frame to the left along the row and stops",
         motion_tier="B",
-        seconds=4,
     ),
 
     # ---- Segment 3 — 15:30–17:09 -----------------------------------------
@@ -251,31 +283,31 @@ SHOTS = (
         id="S3-01",
         segment="15:30-17:09 the fire was helped",
         subject=(
-            "Fire taking hold at the base of the stack, a low sheet of flame running fast "
-            "along one fuel-wet timber while the wood beneath it is still black and unlit"
+            "One patch of the heap burning hard and clean in the rain while everything "
+            "around it only smoulders and steams — a bright wrong heat in a single place"
         ),
         camera=(
-            "85mm at f/2.8, camera low and close to the base of the stack, flame filling "
-            "the lower half of frame and darkness above"
+            "85mm at f/2.8, camera low and close, the burning patch filling the lower "
+            "third with wet smoking wood above and behind it"
         ),
         light="The flame is the only source; everything is lit from below and from inside the frame",
         entities=("baalplads",),
-        motion="The sheet of flame spreads along the timber from left to right and lifts",
+        motion="The clean flame gutters in the rain, holds, and lifts again",
         motion_tier="B",
     ),
     Shot(
         id="S3-02",
         segment="15:30-17:09 what was used",
         subject=(
-            "A plastic lighter-fluid bottle lying on its side in wet grass, cap gone and "
-            "the label turned away from the lens, grass blades pressed flat under it"
+            "A scorched plastic bottle at the edge of the ash, one side melted and "
+            "slumped inward, the label burnt away to nothing, half sunk in wet grey ash"
         ),
         camera=(
-            "85mm at f/1.8, camera down in the grass at bottle height, bottle left of "
-            "centre with focus on the neck"
+            "85mm at f/1.8, camera down at ash level, bottle left of centre with focus "
+            "on the melted shoulder"
         ),
-        entities=("mark",),
-        motion="A last bead of liquid runs from the neck into the grass",
+        entities=("baalplads",),
+        motion="Rain strikes the ash around the bottle and darkens it",
         motion_tier="B",
         seconds=4,
     ),
@@ -283,12 +315,12 @@ SHOTS = (
         id="S3-03",
         segment="15:30-17:09 the accelerant in the timber",
         subject=(
-            "Charred timber filling the frame edge to edge with liquid soaking into the "
-            "grain, the wet edge advancing across the char and throwing a faint iridescence"
+            "Charred timber filling the frame edge to edge, the char broken open to show "
+            "the burn running deeper along one line than anywhere around it"
         ),
         camera="Macro-equivalent at f/4, camera directly above the timber, frame filled",
         entities=("baalplads",),
-        motion="The wet edge creeps a centimetre further across the char",
+        motion="A drop of rain lands on the char and steams off",
         motion_tier="B",
         seconds=4,
     ),
@@ -296,35 +328,38 @@ SHOTS = (
         id="S3-04",
         segment="15:30-17:09 the tyre print",
         subject=(
-            "One tyre track pressed deep into wet clay at the edge of a farm track, the "
-            "tread pattern sharp and holding standing water, a plastic evidence scale "
-            "lying beside it"
+            "One tyre track pressed deep into soft forest floor where a vehicle turned "
+            "off the track, leaf litter and needles compressed down into wet loam, the "
+            "tread edge sharp and holding standing water, a plastic evidence scale laid "
+            "beside it"
         ),
         camera=(
             "35mm at f/4, camera low and raking along the track so the tread stands up in "
-            "relief, the track running diagonally out of frame"
+            "relief, the impression running diagonally out of frame"
         ),
         light=(
-            "Low raking sun beneath a heavy sky — the one moment of direct light in the "
-            "sequence"
+            "A technician's work lamp set low and to one side, raking hard across the "
+            "impression so the tread stands up in relief — the one piece of directed "
+            "light in the episode, and it is a police lamp, not weather"
         ),
-        entities=("mark",),
-        motion="The water standing in the tread trembles as a gust crosses it",
+        entities=("skoven",),
+        motion="The water standing in the tread trembles as a drip comes off the branches above",
         motion_tier="B",
     ),
     Shot(
         id="S3-05",
         segment="15:30-17:09 where it led",
         subject=(
-            "The farm track running away from camera between two hedges into flat white "
-            "fog, the double line of ruts filled with water and holding the sky"
+            "The forestry track running away from camera between wet spruce walls into "
+            "flat white mist, the double line of ruts filled with water and holding what "
+            "little sky there is"
         ),
         camera=(
             "50mm at f/2.8, camera centred down in the ruts at knee height with the "
             "vanishing point high in frame"
         ),
-        entities=("mark",),
-        motion="A slow push forward along the ruts; the fog does not resolve",
+        entities=("skoven",),
+        motion="A slow push forward along the ruts; the mist does not resolve",
         motion_tier="A",
         seconds=6,
     ),
@@ -387,15 +422,15 @@ SHOTS = (
         id="S4-04",
         segment="20:17-21:05 the flammable liquid",
         subject=(
-            "A dented metal jerrycan standing in the corner of a concrete garage with a "
-            "dark stain on the floor beneath its spout, dust hanging in a shaft of daylight "
-            "from a door out of frame"
+            "A shelf in a cold garage lined with household tins and bottles gone furry "
+            "with dust, and one clean gap in the dust where something round has been "
+            "lifted out"
         ),
         camera=(
-            "50mm at f/2, camera down on the concrete floor looking slightly up, can right "
-            "of centre"
+            "50mm at f/2, camera at shelf height and slightly below, the gap sitting just "
+            "right of centre with the labels all turned away from the lens"
         ),
-        motion="Dust drifts slowly through the shaft of light",
+        motion="Motes drift slowly through the grey light falling from a door out of frame",
         motion_tier="B",
     ),
 

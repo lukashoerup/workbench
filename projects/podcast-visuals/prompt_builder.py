@@ -58,6 +58,16 @@ class Look:
     texture: str        # grain, softness, imperfection
     format: str = "16:9, broadcast delivery"
 
+    # The world state — season, weather, hour, era. Frozen like the rest of the
+    # block, because a look can be perfectly consistent and the programme still
+    # fall apart if it rains in one shot and not the next.
+    continuity: str = ""
+
+    # Words that contradict the continuity above. Checked against every shot
+    # before a prompt is built, so a stray "low sun" cannot survive to the
+    # render. Cheaper than noticing it on a television three weeks later.
+    breaks_continuity: tuple[str, ...] = ()
+
     def block(self, include_light: bool = True) -> str:
         """The frozen block, pasted byte-identical into every prompt.
 
@@ -67,8 +77,9 @@ class Look:
         overcast sky in it.
         """
         light = f"{self.light} " if include_light else ""
+        continuity = f"{self.continuity} " if self.continuity else ""
         return (
-            f"Shot on {self.stock}. {light}"
+            f"Shot on {self.stock}. {continuity}{light}"
             f"Palette: {self.palette}. Lenses: {self.lens_family}. "
             f"{self.texture} Framed {self.format}."
         )
@@ -156,6 +167,29 @@ def check_shot(shot: Shot) -> None:
             )
 
 
+class ContinuityBreak(ValueError):
+    """Raised when a shot contradicts the production's frozen world state."""
+
+
+def check_continuity(shot: Shot, look: Look) -> None:
+    """Reject a shot that fights the established weather, hour or season.
+
+    Consistency across scenes is the whole difference between one programme and
+    three hundred pictures, and it does not erode in the look — it erodes here,
+    one plausible-sounding shot at a time. A single "low raking sun" in an
+    episode established as overcast and wet reads as a continuity error to every
+    viewer, whether or not they could name what was wrong.
+    """
+    text = f"{shot.subject} {shot.light} {shot.atmosphere} {shot.motion}".lower()
+    for word in look.breaks_continuity:
+        if re.search(rf"\b{re.escape(word)}\b", text):
+            raise ContinuityBreak(
+                f"{shot.id}: '{word}' contradicts the established continuity "
+                f"({look.continuity.strip()!r}). Motivate the light from "
+                f"something in the scene instead."
+            )
+
+
 def _entity_block(shot: Shot, registry: dict[str, Entity]) -> str:
     missing = [e for e in shot.entities if e not in registry]
     if missing:
@@ -183,6 +217,7 @@ def build_image_prompt(shot: Shot, look: Look, registry: dict[str, Entity] | Non
     """The still. Layered rather than prose: subject, then camera, then the
     frozen look, then what must not appear."""
     check_shot(shot)
+    check_continuity(shot, look)
     registry = registry or {}
 
     parts = [shot.subject.strip().rstrip(".") + "."]
@@ -212,6 +247,7 @@ def build_motion_prompt(shot: Shot, look: Look) -> str:
     time; a shot that asks for a person to walk, turn and speak does not.
     """
     check_shot(shot)
+    check_continuity(shot, look)
     if not shot.motion:
         raise ValueError(f"{shot.id}: motion tier {shot.motion_tier} needs a motion description")
 
