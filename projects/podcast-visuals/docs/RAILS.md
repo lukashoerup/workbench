@@ -26,6 +26,27 @@ every commit. The check is deliberately blunt. A false positive costs a
 rewording; a false negative is a real person's face in a programme about a real
 killing.
 
+It has already thrown one false positive, which is the system working. X-01 was
+written as a newspaper lying "face-down" on a pavement — no human face anywhere
+near the frame, but the word was there and the check does not read context. It
+became "printed side down". Thirty seconds, and the check stays blunt.
+
+## This episode is itself about the rule
+
+"Det Brændende Lig" turns on a newspaper printing a photograph of the dead
+woman's battered face so that somebody would recognise her — and on the
+description's own phrase, *beslutninger, der skal træffes, selv om de kan virke
+brutale*.
+
+That is the most charged image in the case and we will never generate it. If
+the real front page is used, it is used as archive: cleared, sourced, labelled,
+and visibly not synthetic. What we generate instead is X-01 — the bundle of
+papers on the pavement, printed side down — which carries the whole weight of
+that decision without reproducing a pixel of the photograph.
+
+It is worth noticing how neatly that lands. A programme that asks whether it
+was right to publish a dead woman's face cannot itself manufacture one.
+
 ## Why — the recent record
 
 Every AI controversy in this genre has been about a depicted **person**:

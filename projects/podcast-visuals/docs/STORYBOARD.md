@@ -8,26 +8,42 @@ proves the look and a sequence proves the format.
 [PROMPT-PACK.md](PROMPT-PACK.md), generated from the same data and ordered
 anchors-first.
 
-## The case
+## The episode
 
-Identified 19 Aug 2026 from Lasse's notes plus public sources. Two children
-find a bonfire burning in a forest in the rain, and there is a body in it. An
-investigator from Rejseholdet lives a few hundred metres away and is on the
-scene fast. The forensic pathologist works on a partly burnt body and calls in
-a forensic odontologist — the teeth turn out to be decisive. An emptied
-lighter-fluid bottle is left in the fire; a tyre track is pressed into the
-forest floor. The victim is a woman. The same case is episode one of *Dødens
-detektiver*, "Liget i bålet".
+**"Det Brændende Lig"** — *Danske Drabssager* season 6 episode 5, 29 March
+2022, 44:37. Confirmed against the show's own feed: the only episode of 219
+whose length and description fit Lasse's five timecodes.
 
-**This is the case, not the transcript.** The visual facts are sourced; the
-wording of the narration is not, because the audio has not reached this machine.
-The match is strong — bonfire, lighter fluid, tyre track, children, forensic
-pathologist and prosecutor all line up with Lasse's five notes — but confirm it
-against the episode before building on it.
+Its own description, verbatim:
 
-**One thing the case has that we will never generate:** a press photograph of
-the dead woman's injured face. That is archive, and if it is used at all it is
-used as archive. We do not make a version of it. See [RAILS.md](RAILS.md).
+> To børn fik deres livs chok, og leg blev vendt til gru, da de i et bål fandt
+> en bylt, som indeholdt de jordiske rester af et menneske. Ugenkendelig,
+> dræbt, forbrændt og efterladt. Du hører om en tom flaske tændvæske efterladt
+> i et bål, et dækspor i skovbunden og et billede i avisen af en afdød kvindes
+> maltrakterede ansigt. Og om beslutninger, der skal træffes, selv om de kan
+> virke brutale.
+
+The contributors *are* Lasse's five timecodes: former murder chief **Bent
+Isager-Nielsen**, forensic technician **Bent Hytholm Jensen**, professor of
+forensic medicine **Hans Petter Hougen**, former prosecutor **Anne Birgitte
+Stürup**, host **Stine Bolther**. They are also who would be on camera if the
+programme keeps its talking heads.
+
+### Fact, choice, and guess
+
+- **Fact**, from the description: children at play; a bundle in a bonfire;
+  remains unrecognisable and burnt; an emptied bottle of lighter fluid left in
+  the fire; a tyre track in the forest floor; a newspaper photograph of the
+  dead woman's battered face; a decision that felt brutal.
+- **Choice**: the weather, season and hour. A wet grey day is art direction —
+  it suits the material and gives the episode one world to sit in. Not sourced.
+  Check it against the audio before locking the look.
+- **Guess, and marked as one**: the forensic odontologist and the dental
+  identification. That is from *Dødens detektiver* ep. 1, which looks like the
+  same case but has not been shown to be. S2-04 is written to work either way.
+
+The narration is still untranscribed — the feed carries the mp3, not a
+transcript.
 
 ---
 
@@ -65,10 +81,10 @@ routine — and procedure is more unsettling than anatomy.
 | S2-03 | Empty steel table, drain slot, a film of water. A drop travels the slot | B |
 | S2-04 | A row of small dental radiographs on a backlit panel, a gloved fingertip under one of them | B |
 
-S2-04 earns its place on the facts: the body was partly burnt, an odontologist
-was called in, and the teeth are what identified her. It is also the safest
-possible way to show an identification — abstract grey shapes on a light box,
-and a hand.
+S2-04 is written as small radiographs on a light box rather than specifically
+dental ones, because the odontologist detail is not confirmed for this episode.
+Either way it is the safest possible way to show an identification: abstract
+grey shapes, and a hand.
 
 ---
 
@@ -125,6 +141,26 @@ the point.
 | S5-02 | Case binders bound in red tape, edges furred, reading glasses on top. Slow drift | A |
 | S5-03 | A dark-suited shoulder at a lectern, thrown right out of focus; the sharp empty bench beyond | B |
 | S5-04 | Courthouse steps in rain, 135mm across traffic, umbrellas too far to read | B |
+
+---
+
+## Extra · the decision that felt brutal
+*not one of Lasse's five timecodes*
+
+The description's hardest line is a photograph of a dead woman's battered face,
+printed in a newspaper to get her identified — and the brutal decision behind
+it. It is the most charged image in the case, and we will never generate it.
+
+| | Shot | Tier |
+|---|---|---|
+| **★ X-01** | **A bundle of the next morning's papers dropped on a wet pavement outside a shuttered kiosk, still bound with strapping, the top copy printed side down so the whole front page is against the ground.** | **B, 5s** |
+
+Include it in the test. It is the strongest possible demonstration of the rule,
+because this episode is *itself* about the ethics of showing a face — and the
+frame carries the weight of that photograph without reproducing a pixel of it.
+
+If the real front page is used at all, it is used as archive, cleared and
+labelled. We do not make a version of it.
 
 ---
 

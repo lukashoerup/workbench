@@ -1,6 +1,6 @@
 # Prompt pack — look: Våd aske
 
-22 shot(s), in generation order — anchors first.
+23 shot(s), in generation order — anchors first.
 Motion tiers: A parallax, B micro-motion, C generative.
 
 ## S1-01 — 03:30-06:00 what the children walked up to · **anchor — generate and approve this first**
@@ -165,7 +165,7 @@ An empty stainless steel examination table with a drain slot down its centre and
 Animate the supplied frame. A single drop of water travels down the drain slot. Everything else in frame is still. Camera: 50mm at f/2, camera at table height at the foot end, looking down the length of the table, moving only as described. Duration 5s, single continuous take, no cut. Preserve the grade and grain of the supplied frame exactly. Negative: no new objects entering frame; no morphing; no added people; no camera shake beyond a slow handheld drift; no recognisable human face, no portrait, no eye contact with camera; no depiction of a body, no wounds, no blood, no gore; no legible text, no signage, no logos, no brand marks, no watermarks; no news-graphic or true-crime-poster styling.
 ```
 
-## S2-04 — 09:34-13:00 the teeth are what identify her
+## S2-04 — 09:34-13:00 what the examination found
 _Tier B, 5s_
 
 **Attach as reference image(s):** S2-01
@@ -173,7 +173,7 @@ _Tier B, 5s_
 **Still**
 
 ```
-A row of small dental radiographs clipped side by side to a backlit viewing panel in an otherwise dark room, the little grey shapes abstracted and held slightly out of focus, a gloved fingertip resting under one of them. The rooms are green-grey tile to waist height and cream above, stainless steel fittings, no daylight anywhere, and a hard even fluorescent that leaves shadows nowhere to go. 85mm at f/1.4, camera close and off-axis with the lit panel filling the left of frame and darkness to the right. The viewing panel is the only source, lighting the hand from the front. Shot on Kodak Vision3 500T rated at 320 and processed normal, scanned flat and graded down. The whole episode is one continuous wet grey day in late autumn, some time in the recent past: rain falling or just fallen, no sun anywhere, no blue in the sky, standing water on every horizontal surface, and the same soaked flat light indoors and out. Interiors carry the same cold cyan in the shadows and the same open blacks as the forest, so a cut from the wood to a tiled room does not jar. Palette: soaked forest greens desaturated towards grey, wet black bark, the grey-white of sodden ash, one cold cyan sitting in the shadows, and amber only where a real flame is putting it there. Lenses: 35mm, 50mm and 85mm spherical primes worked near wide open, nothing wider than 28mm and nothing longer than 135mm. Fine 35mm grain, faint halation on the highlights, a trace of lens breathing, focus falling off fast. Framed 16:9 for broadcast, composed with clear space on one side for lower-thirds. Negative: no recognisable human face, no portrait, no eye contact with camera; no depiction of a body, no wounds, no blood, no gore; no legible text, no signage, no logos, no brand marks, no watermarks; no news-graphic or true-crime-poster styling; not symmetrical, not centred, not a hero composition; no HDR glow, no bloom, no lens flare, no rim-light halo; no glossy plastic surfaces, no over-clean textures; no drone or god's-eye viewpoint; no crushed blacks, no orange-and-teal grade.
+A row of small radiographs clipped side by side to a backlit viewing panel in an otherwise dark room, the little grey shapes abstracted and held slightly out of focus, a gloved fingertip resting under one of them. The rooms are green-grey tile to waist height and cream above, stainless steel fittings, no daylight anywhere, and a hard even fluorescent that leaves shadows nowhere to go. 85mm at f/1.4, camera close and off-axis with the lit panel filling the left of frame and darkness to the right. The viewing panel is the only source, lighting the hand from the front. Shot on Kodak Vision3 500T rated at 320 and processed normal, scanned flat and graded down. The whole episode is one continuous wet grey day in late autumn, some time in the recent past: rain falling or just fallen, no sun anywhere, no blue in the sky, standing water on every horizontal surface, and the same soaked flat light indoors and out. Interiors carry the same cold cyan in the shadows and the same open blacks as the forest, so a cut from the wood to a tiled room does not jar. Palette: soaked forest greens desaturated towards grey, wet black bark, the grey-white of sodden ash, one cold cyan sitting in the shadows, and amber only where a real flame is putting it there. Lenses: 35mm, 50mm and 85mm spherical primes worked near wide open, nothing wider than 28mm and nothing longer than 135mm. Fine 35mm grain, faint halation on the highlights, a trace of lens breathing, focus falling off fast. Framed 16:9 for broadcast, composed with clear space on one side for lower-thirds. Negative: no recognisable human face, no portrait, no eye contact with camera; no depiction of a body, no wounds, no blood, no gore; no legible text, no signage, no logos, no brand marks, no watermarks; no news-graphic or true-crime-poster styling; not symmetrical, not centred, not a hero composition; no HDR glow, no bloom, no lens flare, no rim-light halo; no glossy plastic surfaces, no over-clean textures; no drone or god's-eye viewpoint; no crushed blacks, no orange-and-teal grade.
 ```
 
 **Motion**
@@ -363,5 +363,20 @@ The steps of a courthouse in rain seen from across the street through passing tr
 
 ```
 Animate the supplied frame. A car passes through the near foreground and briefly wipes the frame. Everything else in frame is still. Camera: 135mm at f/4 from across the street, heavy compression, steps small and central, foreground traffic passing out of focus, moving only as described. Duration 5s, single continuous take, no cut. Preserve the grade and grain of the supplied frame exactly. Negative: no new objects entering frame; no morphing; no added people; no camera shake beyond a slow handheld drift; no recognisable human face, no portrait, no eye contact with camera; no depiction of a body, no wounds, no blood, no gore; no legible text, no signage, no logos, no brand marks, no watermarks; no news-graphic or true-crime-poster styling.
+```
+
+## X-01 — extra — the decision that felt brutal
+_Tier B, 5s_
+
+**Still**
+
+```
+A bundle of the next morning's newspapers dropped on a wet pavement outside a shuttered kiosk, still bound with plastic strapping, the top copy lying printed side down so the whole front page is pressed against the ground. 50mm at f/2, camera down at kerb height on the pavement, the bundle right of centre with the shop front out of focus behind. Early, before anyone is about; standing water on the paving stones. Shot on Kodak Vision3 500T rated at 320 and processed normal, scanned flat and graded down. The whole episode is one continuous wet grey day in late autumn, some time in the recent past: rain falling or just fallen, no sun anywhere, no blue in the sky, standing water on every horizontal surface, and the same soaked flat light indoors and out. Interiors carry the same cold cyan in the shadows and the same open blacks as the forest, so a cut from the wood to a tiled room does not jar. One dominant, motivated source per frame and nothing else: flat grey daylight filtered down through a soaked canopy outdoors, hard 4000K fluorescent in institutional rooms, firelight where something is actually burning. Shadows stay open and blacks lift to charcoal. Palette: soaked forest greens desaturated towards grey, wet black bark, the grey-white of sodden ash, one cold cyan sitting in the shadows, and amber only where a real flame is putting it there. Lenses: 35mm, 50mm and 85mm spherical primes worked near wide open, nothing wider than 28mm and nothing longer than 135mm. Fine 35mm grain, faint halation on the highlights, a trace of lens breathing, focus falling off fast. Framed 16:9 for broadcast, composed with clear space on one side for lower-thirds. Negative: no recognisable human face, no portrait, no eye contact with camera; no depiction of a body, no wounds, no blood, no gore; no legible text, no signage, no logos, no brand marks, no watermarks; no news-graphic or true-crime-poster styling; not symmetrical, not centred, not a hero composition; no HDR glow, no bloom, no lens flare, no rim-light halo; no glossy plastic surfaces, no over-clean textures; no drone or god's-eye viewpoint; no crushed blacks, no orange-and-teal grade.
+```
+
+**Motion**
+
+```
+Animate the supplied frame. Rain lands on the plastic strapping and beads along it. Everything else in frame is still. Camera: 50mm at f/2, camera down at kerb height on the pavement, the bundle right of centre with the shop front out of focus behind, moving only as described. Duration 5s, single continuous take, no cut. Preserve the grade and grain of the supplied frame exactly. Negative: no new objects entering frame; no morphing; no added people; no camera shake beyond a slow handheld drift; no recognisable human face, no portrait, no eye contact with camera; no depiction of a body, no wounds, no blood, no gore; no legible text, no signage, no logos, no brand marks, no watermarks; no news-graphic or true-crime-poster styling.
 ```
 

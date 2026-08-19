@@ -15,8 +15,8 @@ gets built until six frames have been judged on a television.
 
 | Piece | State |
 |---|---|
-| The case identified from Lasse's notes and public sources | done |
-| Five segments turned into a shot list, 22 shots | done |
+| Episode identified and confirmed against the show's own feed | done |
+| Five segments turned into a shot list, 23 shots | done |
 | Production-grade prompts for every shot, still + motion | done |
 | Visual grammar and style bible | done |
 | Reference-anchoring, so a location holds across shots | done |
@@ -27,12 +27,16 @@ gets built until six frames have been judged on a television.
 | Editorial and legal rails | done |
 | **Frames actually generated** | **not done — blocked** |
 
+**The episode.** "Det Brændende Lig", *Danske Drabssager* s6e5, 29 March 2022,
+44:37 — confirmed against the show's own feed, which Lukas exported to Drive.
+The audio is at
+`bauernordic-pods.sharp-stream.com/dk/1103/dd_s6_ep5_det_brndende_lig_913db409_normal.mp3`.
+
 **What blocks the frames.** Two things, both small, neither solvable from this
-session. The episode audio has not reached a machine that can read it — this
-session's network policy blocks the podcast hosts and the feed at
-`rss.podplaystudio.com/1103.xml` alike — so there is no transcript, and the
-shot descriptions are built from the identified case plus Lasse's notes on each
-timecode rather than from what is said. And there is no image or video
+session. This session's network policy blocks that audio host, so the file has
+to be fetched by hand and dropped in Drive before there can be a transcript —
+until then the shot descriptions come from the episode's own published
+description, not from what is said in it. And there is no image or video
 generation account attached to this work, so nothing can be rendered. See
 [docs/WORKFLOW.md](docs/WORKFLOW.md#what-is-needed-to-run-the-first-pass).
 

@@ -14,12 +14,18 @@ was opened, and nothing here is worth a repo until the format is proven.
 
 - [x] Reference episode and Lasse's five timecodes located (two mails,
       19 Aug 2026, `le@bullhouse.dk`)
-- [x] **The case identified** — children find a bonfire burning in a forest in
-      the rain with a body in it; Rejseholdet investigator lives nearby;
-      forensic odontologist identifies her by the teeth; emptied lighter-fluid
-      bottle in the fire; tyre track in the forest floor; victim a woman. Same
-      case as *Dødens detektiver* ep. 1, "Liget i bålet". Sourced, not
-      transcribed — confirm against the audio
+- [x] **Episode identified and confirmed** — "Det Brændende Lig", s6e5,
+      29 Mar 2022, 44:37. Lukas exported the show's feed to Drive; of 219
+      episodes it is the only one whose length and description fit the five
+      timecodes. Its description gives the case directly, and its four
+      contributors — Isager-Nielsen, Hytholm Jensen, Hougen, Stürup — are
+      exactly Lasse's five markers
+- [x] Fact, art direction and guess separated in the docs. The weather is a
+      choice, not a source. The dental-identification detail is from *Dødens
+      detektiver* and is marked as unconfirmed
+- [x] X-01 added: the newspaper bundle, printed side down. The episode turns on
+      a photograph of the dead woman's face being published — the one image we
+      will never generate, and the best possible demonstration of the rule
 - [x] Continuity frozen and enforced — one wet grey autumn day across every
       scene, with a check that rejects a shot fighting it. Caught a real error:
       the tyre print had been written with low sun and now takes its relief
@@ -35,18 +41,18 @@ was opened, and nothing here is worth a repo until the format is proven.
       shot in the same location; prompt pack is ordered anchors-first
 - [x] Style bible, POC plan with a five-model bake-off, cost model, approval
       workflow, legal and editorial rails — all under `docs/`
-- [x] 207 tests green
+- [x] 211 tests green
 
 ## Blocked — needs Lukas
 
 Neither is solvable from a cloud session; both are small.
 
-1. **The episode audio.** The feed is `https://rss.podplaystudio.com/1103.xml`,
-   but this session's network policy blocks it and every podcast host besides,
-   so there is no transcript. Subject lines are built from the identified case
-   plus Lasse's notes, not from what is said. **Open that feed in a browser,
-   save the episode's mp3, and drop it in Google Drive** — a session can read it
-   from there.
+1. **The episode audio.** Known exactly now:
+   `https://bauernordic-pods.sharp-stream.com/dk/1103/dd_s6_ep5_det_brndende_lig_913db409_normal.mp3`
+   — this session's network policy blocks that host, so it has to be fetched by
+   hand. **Open that link, save the mp3, drop it in Google Drive.** Subject
+   lines currently come from the episode's published description, not from what
+   is said in it.
 2. **A generation account.** No image or video model is reachable from here and
    none of Lukas's keys are attached. Google AI Studio covers both Nano Banana
    Pro and Veo with one key. Budget for the whole POC: about 1,000 DKK for the

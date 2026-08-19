@@ -1,24 +1,47 @@
 """The test episode: look, world registry and shot list.
 
-The case
---------
-Identified 19 Aug 2026 from Lasse's timecode notes plus public sources. Two
-children find a bonfire burning in a forest in the rain; there is a body in it.
-An investigator from Rejseholdet lives a few hundred metres away and is on the
-scene fast. The forensic pathologist works on a partly burnt body and calls in a
-forensic odontologist, and the teeth turn out to be decisive. An emptied
-lighter-fluid bottle is left in the fire and a tyre track is pressed into the
-forest floor. The victim is a woman.
+The episode
+-----------
+*Danske Drabssager*, season 6 episode 5, "Det Brændende Lig", 29 March 2022,
+44:37. Confirmed 19 Aug 2026 against the show's own feed, which Lukas exported
+to Drive. It is the only episode in 219 whose length and description match
+Lasse's five timecodes.
 
-The same case is episode one of *Dødens detektiver*, "Liget i bålet" (True Crime
-Agency, 2020), which is where most of the corroboration comes from.
+The feed's own description, verbatim:
 
-**This is the case, not the transcript.** Every visual fact below is sourced;
-the wording of the narration is not, because the audio has not reached this
-machine (see README.md). The match is strong — bonfire, lighter fluid, tyre
-track, children, forensic pathologist and prosecutor all line up with Lasse's
-five notes — but it should be confirmed against the episode before anything is
-built on it.
+    To børn fik deres livs chok, og leg blev vendt til gru, da de i et bål fandt
+    en bylt, som indeholdt de jordiske rester af et menneske. Ugenkendelig,
+    dræbt, forbrændt og efterladt. Du hører om en tom flaske tændvæske
+    efterladt i et bål, et dækspor i skovbunden og et billede i avisen af en
+    afdød kvindes maltrakterede ansigt. Og om beslutninger, der skal træffes,
+    selv om de kan virke brutale.
+
+Contributors, and they are what Lasse's five timecodes are: former murder chief
+**Bent Isager-Nielsen**, forensic technician **Bent Hytholm Jensen**, professor
+of forensic medicine **Hans Petter Hougen**, and former prosecutor **Anne
+Birgitte Stürup**. Host: crime reporter **Stine Bolther**. These are also the
+people who would be on camera if the programme keeps its talking heads.
+
+What is fact and what is art direction
+--------------------------------------
+**Fact**, from the description above: two children at play; a bundle in a
+bonfire; remains unrecognisable and burnt; an emptied bottle of lighter fluid
+left in the fire; a tyre track in the forest floor; a newspaper photograph of
+the dead woman's battered face; a decision that felt brutal to make.
+
+**Chosen, not known**: the weather, the season and the hour. A wet grey day is
+an art-direction decision — it suits the material, it is unmistakably Danish,
+and it gives the episode one continuous world to sit in. It is not sourced, and
+it should be checked against the audio before the look is locked.
+
+**Not confirmed for this episode**: the forensic odontologist and the dental
+identification. That detail comes from *Dødens detektiver* ep. 1, "Liget i
+bålet", which appears to cover the same case — but appears is not is. S2-04 is
+written so it works either way.
+
+The narration itself is still untranscribed: the feed carries the mp3, not a
+transcript, and this machine cannot reach the audio host. Subject lines are
+built from the description above, not from what is said.
 
 The five segments are the timecodes Lasse picked. Each gets a hero shot — the
 frame he asked to see — plus the shots around it, because one frame proves the
@@ -261,10 +284,10 @@ SHOTS = (
     ),
     Shot(
         id="S2-04",
-        segment="09:34-13:00 the teeth are what identify her",
+        segment="09:34-13:00 what the examination found",
         subject=(
-            "A row of small dental radiographs clipped side by side to a backlit viewing "
-            "panel in an otherwise dark room, the little grey shapes abstracted and held "
+            "A row of small radiographs clipped side by side to a backlit viewing panel "
+            "in an otherwise dark room, the little grey shapes abstracted and held "
             "slightly out of focus, a gloved fingertip resting under one of them"
         ),
         camera=(
@@ -500,8 +523,36 @@ SHOTS = (
         motion="A car passes through the near foreground and briefly wipes the frame",
         motion_tier="B",
     ),
+
+    # ---- Extra — not one of Lasse's five timecodes ------------------------
+    # The description's hardest line: "et billede i avisen af en afdød kvindes
+    # maltrakterede ansigt … beslutninger, der skal træffes, selv om de kan
+    # virke brutale." The most charged image in the whole case is a photograph
+    # of a dead woman's face, printed to get her identified. We will never
+    # generate that photograph. This is what it looks like withheld — and it is
+    # the strongest possible demonstration of the rule, because the episode is
+    # itself about the ethics of showing a face.
+    Shot(
+        id="X-01",
+        segment="extra — the decision that felt brutal",
+        subject=(
+            "A bundle of the next morning's newspapers dropped on a wet pavement outside "
+            "a shuttered kiosk, still bound with plastic strapping, the top copy lying "
+            "printed side down so the whole front page is pressed against the ground"
+        ),
+        camera=(
+            "50mm at f/2, camera down at kerb height on the pavement, the bundle right of "
+            "centre with the shop front out of focus behind"
+        ),
+        atmosphere="Early, before anyone is about; standing water on the paving stones",
+        motion="Rain lands on the plastic strapping and beads along it",
+        motion_tier="B",
+        seconds=5,
+    ),
 )
 
 # The frame Lasse asked to see for each timecode. Segment 3 gets two, because
 # his note named two distinct things (the accelerant and the tyre print).
-HEROES = ("S1-01", "S2-01", "S3-01", "S3-04", "S4-01", "S5-01")
+# X-01 is not one of the five, but it is the frame that proves the rule on the
+# hardest subject in the case, so it renders with them.
+HEROES = ("S1-01", "S2-01", "S3-01", "S3-04", "S4-01", "S5-01", "X-01")
