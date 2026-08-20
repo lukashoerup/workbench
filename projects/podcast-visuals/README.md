@@ -68,6 +68,7 @@ by hand today.
 | [docs/APPROACH.md](docs/APPROACH.md) | Why this will not look like AI slop |
 | [docs/STYLE-BIBLE.md](docs/STYLE-BIBLE.md) | The locked look — Lasse's steering wheel |
 | [docs/STORYBOARD.md](docs/STORYBOARD.md) | The five segments, shot by shot |
+| [docs/SCENEOVERSIGT.md](docs/SCENEOVERSIGT.md) | The Danish scene list handed to Lasse — timecodes and file names |
 | [docs/PROMPT-PACK.md](docs/PROMPT-PACK.md) | The exact prompts, photographic look (generated) |
 | [docs/PROMPT-PACK-DRAWN.md](docs/PROMPT-PACK-DRAWN.md) | The same shots, charcoal-and-ink look (generated) |
 | [docs/COSTS.md](docs/COSTS.md) | What a full episode costs |
