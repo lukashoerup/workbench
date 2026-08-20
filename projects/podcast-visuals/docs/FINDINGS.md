@@ -139,6 +139,29 @@ describing it.** Where the model has a strong prior about what a named object
 looks like — a cast, lighter fluid, dental films — the prior wins. Describing
 the physical object as if to someone who has never seen one wins back.
 
+## What it actually cost, with the waste in
+
+The number that matters is not what the kept frames cost. It is what the whole
+pass cost, failures included:
+
+| | |
+|---|---|
+| Images generated | **86** |
+| Images kept | 24 |
+| Waste factor | **3.6×** |
+| Clips generated / kept | 5 / 4 |
+| **Total machine time** | **~100 kr** |
+
+Scaled with the same waste, a 45-minute episode at roughly 324 shots is about
+**2,400 kr of machine time**. That is generation only — no edit, no grade, no
+human hours; those are the producer's numbers, not ours.
+
+The 3.6× is high because this was the first pass: the look was being invented
+while it ran, and seven shots needed a second attempt because the model
+delivered a tractor tyre instead of a car tyre, motor oil instead of lighter
+fluid, and a log instead of a plaster cast. Once the look is fixed the factor
+drops; half of it is a fair expectation from episode two.
+
 ## What full coverage would actually cost
 
 Worth stating because it changes the budget conversation. Lasse's five segments
