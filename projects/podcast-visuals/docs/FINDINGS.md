@@ -97,6 +97,55 @@ still wants one more notch tighter, which is free at the edit stage.
 If that frame works on a television, the thesis holds and consistent characters
 never become an expense in this format.
 
+## The coverage audit, 20 Aug
+
+Lukas asked whether everything Lasse described was actually in the material.
+It was not, and the gap was in the first note.
+
+His first timecode reads **"legede børn og bål og beredskab på gerningsstedet"**
+— three things. Only the bonfire had been generated. The children and the fire
+brigade existed as lines in the shot list and as nothing else. Same in the third
+note: the tyre print was there, the lighter fluid was not. Eight of twenty-four
+shots existed; seven of them happened to be the ones chosen as heroes.
+
+The lesson is dull and worth writing down anyway: **a hero frame per timecode is
+not coverage of that timecode.** Lasse's notes are not shot requests, they are
+lists of what he heard, and each one has to be answered element by element.
+
+All 24 now exist. Seven needed a second pass after the first contact sheet, and
+they are a useful catalogue of what these models get wrong:
+
+- **The children were standing at a burnt-out fire** rather than the burning one
+  from the previous shot — a continuity break the model invented on its own,
+  because "children find a bonfire" reads as aftermath.
+- **Danish police tape came back yellow and black**, which is hazard tape. It is
+  blue and white here.
+- **Dental X-rays came back as vials on a light box.** Fixed by describing the
+  object rather than naming it: "a little rectangle of grey and black showing a
+  handful of teeth in silhouette".
+- **The plaster cast came back as a log**, twice, until it was described as
+  physical matter: "a flat rectangular slab of chalk-white plaster of Paris,
+  about the size and thickness of a paving stone".
+- **Lighter fluid came back as motor oil**, twice, for the same reason — a shelf
+  of bottles in a petrol station is overwhelmingly motor oil in the training
+  data. Naming the shape and the contents beat naming the product.
+- **The stacked wood was already alight** in the shot that exists to show it
+  before it was lit.
+- **The prosecutor had a readable profile.** That is a rails breach, not a note.
+  Fixed by pushing the figure to "closer to a silhouette than to a person".
+
+Four of those seven are the same failure: **naming a thing is weaker than
+describing it.** Where the model has a strong prior about what a named object
+looks like — a cast, lighter fluid, dental films — the prior wins. Describing
+the physical object as if to someone who has never seen one wins back.
+
+## What full coverage would actually cost
+
+Worth stating because it changes the budget conversation. Lasse's five segments
+run 11:19 in total. At a five-second average a finished cut of just those five
+would need roughly **135 shots**. We have made 24 — enough to show what each
+sequence would be, not a finished cut of them. `docs/../stills/` holds all 24.
+
 ## What was not tested
 
 Motion in the drawn look. The 30:00–44:37 segment, so the prosecutor's frames

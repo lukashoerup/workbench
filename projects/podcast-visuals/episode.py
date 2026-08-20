@@ -208,7 +208,9 @@ SHOTS = (
         segment="03:30-06:00 the children",
         subject=(
             "Two children seen from behind at forty metres, small dark shapes stopped "
-            "still on the wet forestry track, a bicycle lying on its side beside them"
+            "dead still on the wet forestry track with a bicycle dropped on its side "
+            "beside them, and beyond them the bonfire burning hard with high flames down "
+            "in its hollow, exactly as big and as lit as it was in the shot before"
         ),
         camera=(
             "85mm at f/4 from further down the track, heavy compression, the figures "
@@ -267,7 +269,8 @@ SHOTS = (
         source="direction",
         segment="03:30-06:00 the scene is closed",
         subject=(
-            "Police tape strung between two spruce trunks across the forestry track, "
+            "Blue and white Danish police tape — never yellow, never striped like hazard "
+            "tape — strung between two spruce trunks across the forestry track, "
             "beaded with rain and sagging under the weight of it, thrown out of focus at "
             "the near edge"
         ),
@@ -355,10 +358,12 @@ SHOTS = (
         source="audio",
         segment="09:34-13:00 the teeth are what identify her",
         subject=(
-            "A row of small dental radiographs clipped side by side to a backlit viewing "
-            "panel in an otherwise dark room, and beside them a paper dental chart held "
-            "just out of focus, a gloved fingertip resting under one of the little grey "
-            "shapes"
+            "A row of small dental X-ray films clipped side by side to a backlit viewing "
+            "panel in an otherwise dark room — each film a little rectangle of grey and "
+            "black showing a handful of teeth in silhouette, roots and crowns just "
+            "readable as shapes — with a gloved fingertip resting under one of them. "
+            "Nothing else is clipped to the panel, and there are no bottles, vials, "
+            "instruments or papers anywhere in the frame"
         ),
         camera=(
             "85mm at f/1.4, camera close and off-axis with the lit panel filling the left "
@@ -396,9 +401,12 @@ SHOTS = (
         source="audio",
         segment="15:30-17:09 bought along the way",
         subject=(
-            "A shelf of identical lighter-fluid bottles in a late-nineties petrol station "
-            "shop, seen at an angle so the labels turn away, one gap in the row where "
-            "several have been taken"
+            "A single wire shelf in a small late-nineties petrol station shop holding one "
+            "row of small clear plastic bottles of colourless liquid with bright plastic "
+            "caps — barbecue lighter fluid, the size of a milk carton, not motor oil and "
+            "not in dark or metal containers — every label turned away from the lens. One "
+            "obvious gap sits in the row where several bottles have just been lifted out, "
+            "and the shelf is otherwise empty either side of them"
         ),
         camera=(
             "50mm at f/2, camera at shelf height and slightly below, the gap sitting just "
@@ -458,9 +466,13 @@ SHOTS = (
         source="audio",
         segment="15:30-17:09 the cast",
         subject=(
-            "A set plaster cast being lifted clear of the ground, wet loam and needles "
-            "still clinging to its underside where the tread has come away in reverse, two "
-            "gloved hands under it"
+            "A flat rectangular slab of chalk-white plaster of Paris, about the size and "
+            "thickness of a paving stone and clearly a poured cast rather than anything "
+            "natural, held up by two gloved hands. Its underside is turned towards the "
+            "lens and carries the tyre tread in reverse: raised white ridges of plaster "
+            "standing where the rubber cut grooves into the mud. Wet loam and pine "
+            "needles cling to the white surface, and the empty rectangular hole it was "
+            "lifted out of is visible in the ground below"
         ),
         camera=(
             "50mm at f/2, camera low at ground level, the cast lifting towards the lens "
@@ -561,8 +573,10 @@ SHOTS = (
         source="audio",
         segment="20:17-21:05 the fire is built",
         subject=(
-            "Cut branches and firewood stacked ready and unlit in a natural hollow in the "
-            "forest at night, rain falling on it, torchlight coming in low from one side"
+            "Cut branches and firewood stacked ready in a natural hollow in the forest at "
+            "night with rain falling on it, torchlight coming in low from one side. "
+            "Nothing is burning: no flame, no ember, no smoke and no glow anywhere in the "
+            "frame — the wood is cold and has not been lit"
         ),
         camera=(
             "35mm at f/2, camera down in the hollow at the level of the stacked wood, the "
@@ -619,8 +633,9 @@ SHOTS = (
         segment="36:40-39:36 the prosecutor speaks (segment not yet transcribed)",
         subject=(
             "A dark-suited shoulder and the back of a head at a lectern in the near "
-            "foreground, thrown completely out of focus into a soft dark mass, with the "
-            "sharp empty bench beyond"
+            "foreground, so far out of focus that it is nothing but a soft dark shape — "
+            "no profile, no jawline, no hairline, no feature of any kind readable in it, "
+            "closer to a silhouette than to a person — with the sharp empty bench beyond"
         ),
         camera=(
             "85mm at f/1.8, camera behind and to one side so the figure fills the left "
