@@ -60,7 +60,9 @@ by hand today.
 | Document | What it answers |
 |---|---|
 | [docs/FINDINGS.md](docs/FINDINGS.md) | **What the first pass showed — read this first** |
+| [docs/REVIEW-LASSE.md](docs/REVIEW-LASSE.md) | **The pitch reviewed in character as Lasse, and what it cost us** |
 | [stills/](stills) | The frames themselves |
+| [clips/](clips) | Four clips, Veo 3.1 Fast, first-frame-conditioned |
 | [docs/START-HERE.md](docs/START-HERE.md) | Which programs, what to paste, in what order |
 | [docs/POC.md](docs/POC.md) | The test itself — which models, how to judge |
 | [docs/APPROACH.md](docs/APPROACH.md) | Why this will not look like AI slop |

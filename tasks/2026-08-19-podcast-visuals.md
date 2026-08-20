@@ -64,6 +64,22 @@ was opened, and nothing here is worth a repo until the format is proven.
 - [x] Motion grammar gained a no-net-change clause after the first clip ended
       with the bonfire swallowed by a smoke plume
 
+## Reviewed in character, 20 Aug
+
+- [x] A model in Lasse's role — producer, not technical, twenty minutes before a
+      budget meeting — read the pitch and was harsh. It was right
+- [x] Pitch rebuilt to his own running order: pictures first and full width,
+      then the two looks side by side, then one page of money, then the rails,
+      then the chain in five steps. Prose cut by roughly two thirds
+- [x] Four clips embedded and playing in place. His sharpest note: he was given
+      two stills and "6 seconds later" where the whole question is whether it
+      moves
+- [x] Three gaps he found that were not style problems: nobody is
+      journalistically accountable for the research, nobody has the rights to
+      the podcast, and nobody has an answer about the victim's three daughters.
+      All three now stated plainly on the page as open questions
+- [x] Everything cut is in `docs/` where it belongs — see `docs/REVIEW-LASSE.md`
+
 ## Blocked — needs Lukas
 
 Neither is solvable from a cloud session; both are small.

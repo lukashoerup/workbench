@@ -70,7 +70,16 @@ def main(argv=None):
     prompt = build_motion_prompt(shot, look)
     frame = Path(args.frame)
 
-    params = {"aspectRatio": "16:9", "durationSeconds": int(shot.seconds)}
+    # Veo accepts only a few discrete lengths, whatever its error message says:
+    # it rejects 5 while claiming to allow "between 4 and 8". So the shot's
+    # intended length is snapped to the nearest one it will take, and the clip
+    # is trimmed back to the intended length in the edit.
+    ALLOWED = (4, 6, 8)
+    want = int(shot.seconds)
+    dur = min(ALLOWED, key=lambda a: (abs(a - want), a))
+    if dur != want:
+        print(f"  ({want}s not offered by {args.model}; rendering {dur}s, trim in the edit)")
+    params = {"aspectRatio": "16:9", "durationSeconds": dur}
     if "lite" not in args.model and "fast" not in args.model:
         params["generateAudio"] = False
 
@@ -81,7 +90,8 @@ def main(argv=None):
                 "prompt": prompt,
                 "image": {
                     "bytesBase64Encoded": base64.b64encode(frame.read_bytes()).decode(),
-                    "mimeType": "image/png",
+                    "mimeType": "image/jpeg" if frame.suffix.lower() in (".jpg", ".jpeg")
+                                else "image/png",
                 },
             }],
             # generateAudio is rejected outright by some Veo tiers rather than
