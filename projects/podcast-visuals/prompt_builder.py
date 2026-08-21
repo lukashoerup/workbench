@@ -105,6 +105,13 @@ class Look:
     # photograph.
     anti_tells: tuple[str, ...] = PHOTO_TELLS
 
+    #: When true the video pass is told the camera is bolted to a tripod, and
+    #: the negative list stops making an exception for handheld drift. The
+    #: move is then added in post on the finished frame. A camera that moves
+    #: in ways no camera moves is one of the three motion tells viewers name,
+    #: and it is the one we can simply decline to generate.
+    camera_locked: bool = False
+
     # Words that contradict the continuity above. Checked against every shot
     # before a prompt is built, so a stray "low sun" cannot survive to the
     # render. Cheaper than noticing it on a television three weeks later.
@@ -338,15 +345,26 @@ def build_motion_prompt(shot: Shot, look: Look) -> str:
         raise ValueError(f"{shot.id}: motion tier {shot.motion_tier} needs a motion description")
 
     grammar = f"{look.motion_grammar.strip()} " if look.motion_grammar else ""
+
+    if look.camera_locked:
+        camera = "Camera: locked off on a tripod, motionless for the whole clip. "
+        camera_negative = (
+            "no camera movement of any kind — no push, pull, pan, tilt, drift, "
+            "sway, parallax or lens breathing; "
+        )
+    else:
+        camera = f"Camera: {shot.camera.strip().rstrip('.')}, moving only as described. "
+        camera_negative = "no camera shake beyond a slow handheld drift; "
+
     return (
         f"Animate the supplied frame. {shot.motion.strip().rstrip('.')}. "
         f"Everything else in frame is still. "
         f"{grammar}"
-        f"Camera: {shot.camera.strip().rstrip('.')}, moving only as described. "
+        f"{camera}"
         f"Duration {shot.seconds:g}s, single continuous take, no cut. "
         f"Preserve the grade and grain of the supplied frame exactly. "
         f"Negative: no new objects entering frame; no morphing; no added people; "
-        f"no camera shake beyond a slow handheld drift; no speed ramp; "
-        f"no time-lapse; no fast motion; "
+        f"{camera_negative}"
+        f"no speed ramp; no time-lapse; no fast motion; "
         + "; ".join(FORBIDDEN) + "."
     )
