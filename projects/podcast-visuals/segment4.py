@@ -47,6 +47,17 @@ show the fire. It shows the stream of fluid still falling, and lets the line
 land on it. Withholding the image the sentence promises is the whole thesis of
 this production in four seconds.
 
+No skin
+-------
+Pass one bent the withheld-frame rule for one shot: a neck and a forearm under
+a bare bulb, on the argument that a cropped body part is not a person. Both
+looks came back with an arm attached to nobody, and it is the shot Lasse
+stopped on. So the rule is no longer "less body" but *no bare skin at all* —
+enforced in code, not in judgement. Presence is carried by a shadow on a wall,
+a soaked collar, a drop landing on a floor. The opening shot of this segment is
+now that floor: sweat has been falling on it for a while, and one more drop
+lands. It says the same thing and there is nothing in it to get wrong.
+
 No hands
 --------
 Pass one put a gloved fingertip and a hand lowering an evidence bag in frame
@@ -96,6 +107,7 @@ LOOK_V2 = Look(
     medium_lead=LOOK.medium_lead,
     frame_lead=LOOK.frame_lead,
     camera_locked=True,
+    no_bare_skin=True,
 )
 
 _SEG = "20:17-21:05 bortskaffelsen"
@@ -106,22 +118,25 @@ SHOTS = (
         id="S4B-01",
         segment=_SEG,
         subject=(
-            "The back of a man's neck and the top of a damp shirt collar under a "
-            "single bare bulb, cropped off just above the hairline so that no part "
-            "of the head above the neck is anywhere in the picture; one bead of "
-            "sweat stands on the skin at the hairline and an older track of sweat "
-            "has already darkened the collar band"
+            "A bare grey concrete floor directly under a single hanging bulb, dry "
+            "everywhere except for five or six small dark round spots that have "
+            "fallen at different times and dried to different depths, and one "
+            "fresh wet spot still bright at its edge; nothing else at all is in "
+            "the picture — no feet, no legs, no shadow of anyone standing"
         ),
         camera=(
-            "85mm at f/2, very close, camera slightly below and behind, the bulb "
-            "out of frame above, focus on the skin at the hairline and the collar "
-            "falling off soft"
+            "50mm at f/2.8, camera looking straight down at the floor from "
+            "standing height, the pool of light from the bulb filling the middle "
+            "of the frame and falling off to black in the corners"
         ),
         light=(
-            "One bare tungsten bulb directly overhead and nothing else, so the "
-            "skin is lit from above and the shirt below the collar goes to charcoal"
+            "One bare tungsten bulb directly above and out of frame, and nothing "
+            "else"
         ),
-        motion="A single bead of sweat runs about two centimetres down the neck and stops",
+        motion=(
+            "One more drop falls into the lit pool and lands, and nothing else in "
+            "the picture changes"
+        ),
         motion_tier="B",
         seconds=5,
         source="audio",

@@ -92,8 +92,10 @@ impressive", but:
 
 ## What a pass looks like
 
-- **S4-01** — hands on the interview table — lands without a face in it. That
-  is the whole thesis, and it is the frame to show first.
+- **S4-02** — the duvet, the sleeping bag and the sack, laid out empty — lands
+  without a person in it. That is the whole thesis, and it is the frame to show
+  first. (S4-01 held this place until it was retired; see
+  [FINDINGS.md](FINDINGS.md#the-shot-that-broke-the-thesis-was-the-one-that-bent-the-rule).)
 - The six frames read as one programme rather than six pictures.
 - At least one clip is indistinguishable from a locked-off shot at TV size.
 

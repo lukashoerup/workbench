@@ -51,8 +51,8 @@ opposite grammar, completely different result. Worth reaching for whenever the
 model keeps supplying something the genre expects.
 
 **A reference image hijacks a tight subject shot.** Attaching the approved
-kiosk anchor to S4-01 — a close-up of a man's neck — produced the *kiosk*, with
-no man in it. References anchor a place beautifully when the new shot is also a
+kiosk anchor to a close-up (the retired S4-01, a man's neck) produced the
+*kiosk*, with no man in it. References anchor a place beautifully when the new shot is also a
 view of that place (S3-04's forest matched its anchor exactly), and they
 overwrite the subject when it is a close-up. So: anchor wides, and let
 close-ups run free.
@@ -67,8 +67,8 @@ fixed it outright. First and last frames of both attempts are in `stills/`.
 
 ## The rails caught me twice, which is the system working
 
-X-01 was written as a newspaper lying "face-down"; S4-01 as "no part of the
-face is anywhere in the picture". Both were rejected by the face check, which
+X-01 was written as a newspaper lying "face-down"; the retired S4-01 as "no
+part of the face is anywhere in the picture". Both were rejected by the face check, which
 does not read context. Both cost a rewording. That is the trade the check was
 designed for, and it is the right one.
 
@@ -87,12 +87,34 @@ needed. If it is chosen, budget more supervision per frame, not less.
 The case for it is unchanged and still strong: a drawing cannot be mistaken for
 archive, which removes most of the regulatory weight in one move.
 
-## The frame to look at first
+## The shot that broke the thesis was the one that bent the rule
 
-**S4-01.** A man under pressure, sweating, and there is no identifiable person
-in the picture. It took three passes — the first was too warm with crushed
-blacks, the second showed too much of the head, the third is right. The crop
-still wants one more notch tighter, which is free at the edit stage.
+**S4-01 is retired.** It was billed here as the frame to look at first: a
+forearm and the back of a neck under a bare bulb, a man under pressure with no
+identifiable person in the picture. Lasse stopped on it, and he was right to.
+The forearm across the lower right of the frame does not attach to a shoulder
+or to anything else — it reads as a second person's arm laid over him. The
+sweat is running off the whole neck rather than beading. **The charcoal version
+has the identical fault**, from the identical prompt: the same arm, the same
+absence of a body to hang it on.
+
+That last part is the finding. Two different looks, two different renders, one
+shared failure — so it is not a bad roll, it is the shot. And what made it the
+shot is that it was **the only frame in the set that bent the withheld-frame
+rule**. Every other shot shows a place or an object; this one showed skin, on
+the argument that a cropped body part is not a person. Models are worst at
+bodies, viewers are quickest at bodies, and the one place we allowed one is the
+one place it broke.
+
+So the rule is no longer a matter of judgement. `check_skin` refuses bare skin
+outright for any look that asks for it, and doctrine v2 asks for it. Presence
+is carried by a shadow on a wall, a soaked collar, a drop landing on a floor.
+Segment four now opens on that floor: sweat has been falling on it for a while,
+and one more drop lands. It says exactly what the narration says, and there is
+nothing in it to get wrong.
+
+**The frame to look at first is now S4-02** — the duvet, the sleeping bag and
+the sack, laid out flat and empty in the order they are going to be used.
 
 If that frame works on a television, the thesis holds and consistent characters
 never become an expense in this format.

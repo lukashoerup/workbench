@@ -9,10 +9,10 @@ Drive copy from here if the shot list changes.
 ---
 
 ## Våd aske — sceneoversigt
-24 scener til Det Brændende Lig (s6e5). Til Lasse.
+23 scener til Det Brændende Lig (s6e5). Til Lasse.
 
 ### SÅDAN BRUGER DU DEN
-Sæt afsnittet på og spol til tidskoden. Scenerne står i den rækkefølge, lyden bringer dem. Filnavnet står sidst i hver linje, så du kan finde billedet i mappen. Fire scener bevæger sig — de ligger som .mp4 og afspilles direkte i Drive uden at hente noget.
+Sæt afsnittet på og spol til tidskoden. Scenerne står i den rækkefølge, lyden bringer dem. Filnavnet står sidst i hver linje, så du kan finde billedet i mappen. Tre scener bevæger sig — de ligger som .mp4 og afspilles direkte i Drive uden at hente noget.
 
 ### REGLEN BAG DET HELE
 Vi viser aldrig et ansigt, aldrig kroppen, aldrig selve handlingen. Kameraet står, hvor et menneske ville have stået — tredive meter nede ad skovvejen, ved siden af bordet, uden for døren. Det er dét, der gør, at billederne holder: der er ingen figur, der skal ligne sig selv fra scene til scene, og det, modellerne er dårligst til, kommer aldrig i billedet.
@@ -42,7 +42,6 @@ To beviser. Alt er set, som en tekniker ville se det, med hans egen arbejdslampe
 
 ### 20:17–21:05 — NATTEN, HVOR LIGET BLIVER KØRT UD
 Ikke en afhøring. Det er bortskaffelsen — to mænd, der arbejder om natten.
-- S4-01  Nakken og underarmen under en nøgen pære. Sveden løber ned i kraven.  [BEVÆGER SIG]  (S4-01_photo_1.mp4)
 - S4-02  En dyne, en sovepose og en stor sæk lagt fladt ud — tomme, i den rækkefølge de skal bruges.  [langsom kamerapan i klip]  (S4-02-photo.jpg)
 - S4-03  Bagklappen åben på en hatchback om natten i regn. Kabinelyset det eneste lys.  (S4-03-photo.jpg)
 - S4-04  Tankstationens forplads om natten. Én bil ved en stander, ingen ved den.  (S4-04-photo.jpg)
@@ -60,21 +59,19 @@ To billeder, der ikke hører til ét sted i lyden. Åndehuller.
 - X-02  Gulvbrædder skuret tynde. Et rent rektangel, hvor et skab er trukket væk.  [langsom kamerapan i klip]  (X-02-photo.jpg)
 
 ### DET DER BEVÆGER SIG
-Fire scener er lavet som video. Bevægelsen er med vilje næsten ingenting: regnen falder, flammen læner sig én gang, sveden løber. Sidste billede skal kunne genkendes som det første — ellers driver det væk fra det, du godkendte.
+Tre scener er lavet som video. Bevægelsen er med vilje næsten ingenting: regnen falder, flammen læner sig én gang, sveden løber. Sidste billede skal kunne genkendes som det første — ellers driver det væk fra det, du godkendte.
 - S1-01 — S1-01_photo_1.mp4
 - S3-04 — S3-04_photo_1.mp4
-- S4-01 — S4-01_photo_1.mp4
 - X-01 — X-01_photo_1.mp4
 
 ### ALTERNATIV STIL — KUL OG BLÆK
-Samme fire hjørner af historien, tegnet groft i kul og blæk i retstegningens tradition. Ét forslag, ikke et halvt.
+Samme tre hjørner af historien, tegnet groft i kul og blæk i retstegningens tradition. Ét forslag, ikke et halvt.
 - S1-01 — S1-01-drawn.jpg
 - S2-01 — S2-01-drawn.jpg
-- S4-01 — S4-01-drawn.jpg
 - X-02 — X-02-drawn.jpg
 
 ### Maskintid
-100 kr. for alt herover: 86 billeder genereret for at beholde 24, plus fem klip for at beholde fire. Spildet er talt med.
+100 kr. for alt herover: 86 billeder genereret for at beholde 23, plus fem klip for at beholde fire. Spildet er talt med.
 Cirka 2.400 kr. for et helt afsnit på 45 minutter — omkring 324 indstillinger — med samme spild som her.
 Det er kun maskintid. Klipperens og din egen tid er ikke med i tallene.
 

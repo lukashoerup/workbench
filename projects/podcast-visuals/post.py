@@ -113,7 +113,7 @@ def from_still(src: Path, dest: Path, seconds: float, kind: str, travel: float) 
 
 
 def from_clip(src: Path, dest: Path, seconds: float, kind: str, travel: float,
-              slow: float = 1.6) -> None:
+              slow: float = 2.2) -> None:
     """A generated clip is slowed, trimmed to its calm middle, then given the
     same move and the same grain as the stills.
 

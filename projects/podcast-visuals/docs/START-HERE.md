@@ -34,7 +34,7 @@ All four anchors happen to be in the hero set, so the order falls out neatly:
 | **S5-01** | the courtroom |
 
 **Then, with the approved anchor attached as a reference image:**
-S3-01 and S3-04 (attach S1-01), S4-01 (attach X-02), X-01 (no anchor needed).
+S3-01 and S3-04 (attach S1-01), X-01 (no anchor needed).
 
 `docs/PROMPT-PACK.md` is already in this order and says, per shot, which frame
 to attach.
@@ -103,6 +103,10 @@ is a broadcast deliverable. Each frame held for its full intended length, and
 played against the actual podcast audio. The rubric is in
 [POC.md](POC.md#how-to-judge--the-rubric).
 
-The frame to look at first is **S4-01** — the forearm and the neck under the
-bare bulb. If that lands without an identifiable person in it, the whole thesis
-holds, and consistent characters never become an expense in this format.
+The frame to look at first is **S4-02** — the duvet, the sleeping bag and the
+sack laid out flat and empty, in the order they are going to be used. It is the
+worst moment in the case with nothing in it, and it is the version of the
+thesis that held: presence carried by objects, not by a body.
+
+S4-01, which used to stand here, was the forearm and the neck under a bare
+bulb. It has been retired — see [FINDINGS.md](FINDINGS.md#the-shot-that-broke-the-thesis-was-the-one-that-bent-the-rule).

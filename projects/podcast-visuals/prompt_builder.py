@@ -112,6 +112,10 @@ class Look:
     #: and it is the one we can simply decline to generate.
     camera_locked: bool = False
 
+    #: When true, no bare human skin may appear in a shot built against this
+    #: look. See _SKIN_PATTERNS for why.
+    no_bare_skin: bool = False
+
     # Words that contradict the continuity above. Checked against every shot
     # before a prompt is built, so a stray "low sun" cannot survive to the
     # render. Cheaper than noticing it on a television three weeks later.
@@ -207,6 +211,25 @@ _FACE_PATTERNS = (
     r"\bclose-?up of (?:a |the )?(?:man|woman|boy|girl|child|suspect|victim)\b",
 )
 
+# Phrases that put bare human skin in frame. Pass one allowed a neck and a
+# forearm on the argument that a cropped body part is not a person, and the
+# model produced an arm attached to nobody — in both looks, from the same
+# prompt. Skin is where generative image models break, and it breaks in a way
+# a viewer reads instantly as fake even when they cannot say why. So under
+# doctrine v2 the answer is not "less skin", it is none: presence is carried by
+# a shadow, a soaked collar, a drop on the floor. Scoped to what is in the
+# picture, not to the camera position — "camera at chest height" is a place to
+# stand, not a body in frame.
+_SKIN_PATTERNS = (
+    r"\bskin\b", r"\bflesh\b",
+    r"\bneck\b", r"\bnape\b", r"\bthroat\b", r"\bjaw", r"\bchin\b", r"\bcheek",
+    r"\bears?\b", r"\bearlobe\b", r"\bhairline\b", r"\bscalp\b", r"\bforehead\b",
+    r"\btemple\b", r"\bbrow\b", r"\bstubble\b", r"\bbeard\b",
+    r"\bforearm\b", r"\belbow\b", r"\bwrist\b", r"\bknuckle", r"\bthumb\b",
+    r"\bshoulders?\b", r"\btorso\b", r"\bthigh\b", r"\bcalf\b", r"\bankle\b",
+    r"\bhands?\b", r"\bfinger", r"\bpalm\b", r"\barms?\b",
+)
+
 _BODY_PATTERNS = (
     r"\bthe body\b", r"\bcorpse\b", r"\bdead body\b", r"\bwound\b",
     r"\bblood\b", r"\bbruis", r"\bautopsy incision\b",
@@ -283,6 +306,24 @@ def check_continuity(shot: Shot, look: Look) -> None:
             )
 
 
+def check_skin(shot: Shot, look: Look) -> None:
+    """Refuse a shot that puts bare human skin in the picture.
+
+    Only enforced for looks that ask for it: pass one's shot list was approved
+    under the older, looser rule and has to keep reproducing.
+    """
+    if not look.no_bare_skin:
+        return
+    text = f"{shot.subject} {shot.motion}".lower()
+    for pattern in _SKIN_PATTERNS:
+        if re.search(pattern, text):
+            raise UnsafeShot(
+                f"{shot.id}: puts bare skin in frame (matched /{pattern}/). "
+                f"Carry the person with a shadow, a soaked collar, a drop on "
+                f"the floor — not with a body part. See docs/RAILS.md."
+            )
+
+
 def _entity_block(shot: Shot, registry: dict[str, Entity]) -> str:
     missing = [e for e in shot.entities if e not in registry]
     if missing:
@@ -311,6 +352,7 @@ def build_image_prompt(shot: Shot, look: Look, registry: dict[str, Entity] | Non
     frozen look, then what must not appear."""
     check_shot(shot)
     check_continuity(shot, look)
+    check_skin(shot, look)
     registry = registry or {}
 
     parts = [shot.subject.strip().rstrip(".") + "."]
@@ -341,6 +383,7 @@ def build_motion_prompt(shot: Shot, look: Look) -> str:
     """
     check_shot(shot)
     check_continuity(shot, look)
+    check_skin(shot, look)
     if not shot.motion:
         raise ValueError(f"{shot.id}: motion tier {shot.motion_tier} needs a motion description")
 

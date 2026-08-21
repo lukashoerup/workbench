@@ -1,5 +1,6 @@
 """Segment 4, pass two: the rebuild under motion doctrine v2."""
 
+import pathlib
 import sys
 from pathlib import Path
 
@@ -31,6 +32,78 @@ def test_the_rails_hold():
         pb.check_shot(shot)
         pb.check_continuity(shot, segment4.LOOK_V2)
         pb.check_source(shot, transcript_exists=True)
+
+
+def test_no_bare_skin_anywhere():
+    """The rail, exercised on the real shot list rather than on a fixture.
+
+    Pass one's S4-01 put a neck and a forearm under a bare bulb and both looks
+    came back with an arm attached to nobody. That shot is retired and this is
+    the guard that stops the next one.
+    """
+    for shot in segment4.SHOTS:
+        pb.check_skin(shot, segment4.LOOK_V2)
+
+
+def test_the_skin_rail_actually_catches_the_shot_that_failed():
+    """The exact wording that got through pass one must not get through now."""
+    bad = pb.Shot(
+        id="X-BAD",
+        segment="test",
+        subject=(
+            "A bare forearm and the back of a neck under a bare bulb, sweat "
+            "standing on the skin"
+        ),
+        camera="85mm at f/2",
+        motion="A bead of sweat runs down",
+        motion_tier="B",
+        source="audio",
+    )
+    with pytest.raises(pb.UnsafeShot):
+        pb.check_skin(bad, segment4.LOOK_V2)
+
+
+def test_the_skin_rail_does_not_fire_on_a_camera_position():
+    """'Camera at chest height' is a place to stand, not a body in frame. If
+    the rail cannot tell those apart it will be switched off, and then it
+    protects nothing."""
+    fine = pb.Shot(
+        id="X-OK",
+        segment="test",
+        subject="A steel shelf unit and a clean rectangle in the dust",
+        camera="35mm at f/2.8, camera at chest height, knee height for the insert",
+        motion_tier="A",
+        source="audio",
+    )
+    pb.check_skin(fine, segment4.LOOK_V2)
+
+
+def test_pass_one_keeps_reproducing_under_the_older_rule():
+    """The rail is opt-in. Pass one's approved shots were made under the looser
+    rule and their prompts must still build, or the two passes cannot be
+    compared."""
+    import episode
+    for shot in episode.SHOTS:
+        pb.check_skin(shot, episode.LOOK)
+
+
+def test_the_shot_lasse_stopped_on_is_gone_for_good():
+    import episode
+    assert not any(s.id == "S4-01" for s in episode.SHOTS)
+    assert "S4-01" not in episode.HEROES
+    stills = pathlib.Path(__file__).resolve().parents[1] / "projects" / "podcast-visuals" / "stills"
+    clips = stills.parent / "clips"
+    assert not list(stills.glob("S4-01*"))
+    assert not list(clips.glob("S4-01*"))
+
+
+def test_the_opening_shot_carries_sweat_without_a_body():
+    """'Sveden løber fra panden' with nobody in frame: the floor under the bulb,
+    where it has been landing for a while."""
+    first = segment4.SHOTS[0]
+    assert "concrete floor" in first.subject
+    assert "no feet, no legs" in first.subject
+    assert first.motion.startswith("One more drop falls")
 
 
 def test_no_hands_anywhere():

@@ -487,29 +487,6 @@ SHOTS = (
     # "Sveden løber fra panden, mens de arbejder. Løfter den døde, pakker hende
     #  ind, gemmer hende væk." — the disposal, not an interrogation.
     Shot(
-        id="S4-01",
-        source="audio",
-        segment="20:17-21:05 the men working",
-        subject=(
-            "The back of a man's neck and one bare forearm, seen from directly behind "
-            "while he works at something below and out of frame. Sweat stands on the skin "
-            "of the neck and runs down into the collar of a soaked work shirt. The top "
-            "edge of the frame cuts the head off cleanly above the hairline, so no ear, "
-            "no jaw, no cheek and nothing of the head below that cut line appears "
-            "anywhere in the picture — only neck, shoulder and arm"
-        ),
-        camera=(
-            "85mm at f/1.8, camera close and directly behind at the height of the "
-            "shoulders and slightly below, the neck and shoulder filling the left of "
-            "frame and the forearm entering low from the right, empty unlit room to the "
-            "right for a lower-third"
-        ),
-        light="One bare bulb overhead, hard and close, nothing else lit at all",
-        motion="A bead of sweat runs down into the collar; the shoulder shifts once",
-        motion_tier="B",
-    ),
-    # "bliver lagt i en dyne, en sovepose og en stor sæk"
-    Shot(
         id="S4-02",
         source="audio",
         segment="20:17-21:05 what she was wrapped in",
@@ -795,4 +772,4 @@ LOOKS = {"photo": LOOK, "drawn": LOOK_DRAWN}
 
 # The frame Lasse asked to see for each timecode, plus the two extras. Segment 3
 # gets two because his note named two distinct things.
-HEROES = ("S1-01", "S2-01", "S3-01", "S3-04", "S4-01", "S5-01", "X-01", "X-02")
+HEROES = ("S1-01", "S2-01", "S3-01", "S3-04", "S4-02", "S5-01", "X-01", "X-02")

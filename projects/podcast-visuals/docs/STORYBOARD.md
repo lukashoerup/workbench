@@ -204,16 +204,19 @@ pakker hende ind, gemmer hende væk."*
 
 | | Shot | Src | Tier |
 |---|---|---|---|
-| **★ S4-01** | **A bare forearm and the back of a neck under a bare bulb, sweat standing on the skin and running into the collar, the head cropped away above, the room behind gone to black.** | audio | **B, 5s** |
-| S4-02 | A duvet, a sleeping bag and a large woven sack laid out flat and empty on bare floorboards, in the order they will be used | audio | A, 6s |
+| **★ S4-02** | **A duvet, a sleeping bag and a large woven sack laid out flat and empty on bare floorboards, in the order they will be used** | audio | **A, 6s** |
 | S4-03 | The open boot of a late-nineties hatchback at night in rain, interior bulb the only light, boot floor bare | audio | B |
 | S4-04 | A petrol station forecourt at night in heavy rain from across the road, one car at a pump, nobody at it | audio | B, 6s |
 | S4-05 | Cut branches and firewood stacked ready and unlit in the hollow, rain falling on it, torchlight low from one side | audio | B |
 
-S4-01 is the proof of the thesis, and it survived the rebuild intact: two men
-under pressure with no identifiable person in frame, and stronger than a face
-would have been. S4-02 is the withheld version of the worst moment in the case —
-the three things laid out empty, in order, before they are used.
+S4-02 is the proof of the thesis: the withheld version of the worst moment in
+the case, the three things laid out empty, in order, before they are used. No
+person, and stronger for it.
+
+There was a sixth shot here — S4-01, a forearm and the back of a neck under a
+bare bulb. It was billed as the proof and it was the failure. It is retired;
+[FINDINGS.md](FINDINGS.md#the-shot-that-broke-the-thesis-was-the-one-that-bent-the-rule)
+says why, and the rule it broke is now enforced in code.
 
 ---
 
@@ -258,7 +261,7 @@ In review order, because this is what decides whether the format works:
 1. **Do the six heroes look like the same day?** Not just the same grade — the
    same weather, the same hour, the same wet. If a cut from the wood to the
    mortuary jars, that is the continuity block failing, not the model.
-2. **Does S4-01 land without a face?** If it does, the thesis holds and
+2. **Does S4-02 land without a person?** If it does, the thesis holds and
    character consistency never becomes a cost.
 3. **Does S2-03 survive a 5-second hold?** Generated stills often fall apart on
    a hold; this sets the cutting rhythm for the whole format.
