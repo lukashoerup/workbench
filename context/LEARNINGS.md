@@ -31,6 +31,21 @@ heartbeat commit must not trigger CI. It multiplies every provider hiccup by the
 frequency, and alerts that fire when nothing is wrong are the ones that get ignored when
 something is.
 
+## 2026-09-05 — A data migration that names a production row breaks every fresh database
+erhvervsklubben's `adhoc_fines` migration (2026-08-08) inserted a fine against meeting
+record id 30 and then asserted the result. Production had the row, so it ran clean there.
+CI rebuilds the database from scratch on every run, has no record 30, and died on the
+foreign key at `supabase start` — before a single test ran — on every push for four weeks.
+Nobody noticed because the next two commits were documents and the site itself, deployed
+by Vercel from `main`, never blinked. Found only when someone asked whether everything
+was running.
+
+Two lessons. A migration that writes rows must say what to do when the rows it depends
+on are absent (the repo already had the pattern: check the club's own totals, `raise
+notice`, `return`) — and a green production run proves nothing about a fresh stack. And
+"is CI green on main" belongs in any "is everything OK" check, because a red CI with a
+live site is exactly the failure that stays quiet.
+
 ## 2026-07-22 — Machine is Wi-Fi only, no ethernet
 `lenovo` has no wired connection at its home location. Wi-Fi power save is disabled via a
 systemd unit because an idle headless box otherwise drops its link. The watchdog retries
