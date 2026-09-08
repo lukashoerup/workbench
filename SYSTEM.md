@@ -3,6 +3,8 @@
 Read this if you are a Claude (phone app, cloud session, any machine) meeting
 this system for the first time. It is the half-page version of everything.
 Owner: Lukas (Copenhagen). Hobby projects, optimized for minimal human time.
+Shared review and critical project-partner rules: `docs/WORKBENCH.md`.
+Rules adopted 2026-09-08; running integrations tracked in `docs/workflow-rollout.md`.
 
 ## What runs where
 
@@ -66,8 +68,8 @@ He does not program, so an update he cannot read is not an update.
 **In chat: plain language** — no file paths, no jargon, no code.
 **In the repo: technical as usual** — the split is by channel, not a lowering
 of standards anywhere.
-**Interrupt him only** for a decision genuinely his (money, security, access,
-taste), or when the machine's behaviour changes.
+**Interrupt him** for meaningful decisions, operational changes, and occasional
+useful project reflection under the shared workflow; avoid repeated nagging.
 
 ## Repos
 

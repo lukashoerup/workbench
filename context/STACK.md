@@ -76,10 +76,9 @@ development work, regardless of harness.
 ## Autonomy model — decided 2026-07-26
 Two layers, because they have different costs and different risks.
 
-**Free layer, runs forever, zero cloud tokens.** CI on every push, the watchdog,
-the status publisher, and the §8 local-model jobs (nightly triage, weekly
-gardener). This is what actually delivers "keeps working without being
-prompted", and it is the only layer allowed to run unattended by default.
+**Operational layer, zero cloud tokens.** CI, watchdog and status publisher;
+the §8 local-model triage and gardener jobs remain planned. These monitor
+operations; they do not provide independent project judgment.
 
 **Agent layer, bounded.** Headless Claude work blocks on the box, off by
 default. Spec §1 warns against long autonomous cloud-agent runs because
@@ -92,6 +91,17 @@ pushes into the box.** Cloud sessions cannot reach `lenovo` (no ssh, no keys,
 no Tailscale, HTTPS-only egress) and inbound access is not wanted. GitHub is
 the meeting point, exactly as the 2026-07-24 deferral note put it: "cloud =
 Claude working, lenovo = scripts working, GitHub = meeting point."
+
+**Independent review and project partner — agreed 2026-09-08.**
+`docs/WORKBENCH.md` is the shared policy: Codex reviews substantial Claude
+plans and work; Codex-built work receives a different-model reviewer. Review
+includes whether the idea and working method are worthwhile, not just code.
+Agents initiate routine checks and scoped fixes without Lukas requesting them.
+Occasional project guidance may challenge priorities or suggest simplifying,
+experimenting, parking or finishing. These reviews are bounded agent work;
+their runtime/authentication and budget must be verified before scheduling.
+No background service is implied by writing the rule. Adoption and remaining
+integration work are tracked in `docs/workflow-rollout.md`.
 
 ## Scheduled jobs
 | Job | Cadence | Heartbeat marker |

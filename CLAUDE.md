@@ -41,6 +41,7 @@ publisher is broken — say so rather than reporting its contents as current.
 ## Document routing (read ONLY when needed)
 | Working on... | Read first |
 |---|---|
+| Shared review and project-partner workflow | `docs/WORKBENCH.md` |
 | The whole system, what runs where | `SYSTEM.md` |
 | What the machine is doing right now | `STATUS.md` |
 | The Claude Project setup (claude.ai) | `docs/claude-project-instructions.md` |
@@ -62,8 +63,14 @@ He does not program, so an update he cannot read is not an update.
 **In chat: plain language** — no file paths, no jargon, no code.
 **In the repo: technical as usual** — docs, commits and task files need the
 precision; the split is by channel, not a lowering of standards.
-**Interrupt him only** for a decision genuinely his (money, security, access,
-taste), or when the machine's behaviour changes.
+**Interrupt him** for meaningful decisions or operational changes, and for the
+occasional useful project reflection under `docs/WORKBENCH.md`; avoid nagging.
+
+## Code Review Rules
+- Read `docs/WORKBENCH.md` before substantial work; initiate independent review.
+- Check goal fit and needless complexity as well as correctness; cite evidence.
+- Flag data loss, unintended publication, or healthy claims without measurements.
+- Missing or stale independent review is pending, never approval.
 
 ## Docs duty
 Any change that invalidates a docs statement MUST fix it in the same commit.
