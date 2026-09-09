@@ -38,3 +38,7 @@ Codex authored this change; it has not received independent Claude review.
 - Policy copies are identical in both projects. Full Linux CI will run on the PR.
 - The full macOS suite was previously 81 passing / 6 Linux-command failures;
   this change does not claim those platform-specific watchdog tests passed locally.
+
+## Follow-up decision — 2026-09-09
+Lukas chose questioning whether a quiet project is still worth pursuing as the
+default. Policy version 2026-09-09.1 reflects that preference in both projects.

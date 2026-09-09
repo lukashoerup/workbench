@@ -114,3 +114,5 @@ Planned, not yet installed: `workbench-apply` (pull + self-install),
 
 Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check list from
 `~/.config/workbench/watchdog.conf`. Add a `heartbeat` line there for every new job.
+
+**Quiet-project guidance — agreed 2026-09-09.** Lukas chose: "Question whether it is still worth pursuing." Start with current value and priorities before proposing another task; inactivity alone does not establish lack of value.

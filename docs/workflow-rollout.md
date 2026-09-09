@@ -6,7 +6,9 @@ critical project partner that occasionally asks worthwhile questions. He
 explicitly requested updating the GitHub project rules now.
 
 ## Policy adoption
-Canonical policy: `docs/WORKBENCH.md`, version `2026-09-08.1`.
+Canonical policy: `docs/WORKBENCH.md`, version `2026-09-09.1`.
+On 2026-09-09 Lukas chose questioning whether a quiet project is still worth
+pursuing as the default, before suggesting another step.
 
 | Project | Local instructions | Policy path |
 |---|---|---|
