@@ -31,6 +31,18 @@ heartbeat commit must not trigger CI. It multiplies every provider hiccup by the
 frequency, and alerts that fire when nothing is wrong are the ones that get ignored when
 something is.
 
+## 2026-09-11 — A web session on two repositories reads neither repo's `.claude/settings.json`
+Lukas approved about twenty Supabase queries by hand in a session whose repo
+pre-approves them in `.claude/settings.json`. Claude Code on the web loads that file
+only from the session's **primary working directory**; a session started on two
+repositories has the parent directory (`/home/user`) as primary, so the allow-list in
+`erhvervsklubben/.claude/settings.json` is never read (docs: settings → "Settings in
+cloud sessions"; found via the claude-code-guide agent, not yet verified from inside a
+single-repo session). Two consequences: start a session on **one** repository when it
+will write to that project's database; and whatever the mode, batch reads into one
+`json_build_object` query so a prompt costs one approval, not a dozen — the
+`erhvervsklubben` `moede` skill is the recipe (three calls: read, migration, read-back).
+
 ## 2026-09-05 — A data migration that names a production row breaks every fresh database
 erhvervsklubben's `adhoc_fines` migration (2026-08-08) inserted a fine against meeting
 record id 30 and then asserted the result. Production had the row, so it ran clean there.
