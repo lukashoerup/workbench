@@ -1,5 +1,7 @@
 # Independent review — Codex policy PRs and the reliability repair plan
 
+_Addendum 2026-09-12: see `2026-09-12-direction-feasibility-addendum.md` for the phone-first direction review at PR 1 head `644d533`._
+
 Date: 2026-09-09. Reviewer: Claude Fable 5.1 (`claude-fable-5-1`, confirmed via the
 session record for both configured and last-served model). Requested by Lukas as a
 cross-model review of Codex-authored work. Read-only: nothing was edited, merged or
