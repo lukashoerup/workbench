@@ -34,8 +34,8 @@ one Default cloud environment; the session's rate-limit record shows no overage 
 A routine run cap is not a prerequisite: the pilot uses no routines.
 
 **Agent, reversible, authorized within this pilot:** subscribe the building session to
-its own PR; apply the labels below; keep one check-in scheduled on that session while the
-PR is open (used on PR #2 today; delivery survives container restarts).
+its own PR; apply the labels below. No polling check-in and no routine, by Lukas's
+instruction of 2026-09-12; the one check-in scheduled earlier that day was deleted.
 
 **Lukas only:**
 1. **Claude GitHub App on `lukashoerup/workbench`.** github.com/apps/claude → Configure;
@@ -52,17 +52,18 @@ PR is open (used on PR #2 today; delivery survives container restarts).
 ## Labels: visible pilot state on the PR, not an automatic retry
 Each label names an owner and the next action in the PR comment that applies it, so a
 missed event never quietly hands coordination back to Lukas.
-- `needs-review`. Owner: the reviewer named in `docs/roles.md`, via Lukas until the
-  integration is verified. Next action: review the exact head named in the comment. Remove
-  only after inspecting that head and the verdict; keep it while findings are unresolved or
-  the head has moved since the review.
+- `astra-review` (renamed from `needs-review` on 2026-09-12 to match the trigger the Work
+  task listens for). Owner: Astra through the Work task once `docs/astra-work-setup.md` is
+  done, via Lukas until then. Next action: review the exact head named in the comment.
+  Remove only after inspecting that head and the verdict; keep it while findings are
+  unresolved or the head has moved since the review.
 - `needs-claude`. Owner: the building session. Next action: the scoped repair plus tests.
   Remove only after both are complete and pushed.
 - `review-pending`. Owner: Lukas. Next action and retry date in the comment. Stays until a
   review lands or Lukas explicitly overrides.
-After a missed event (rejected run, dropped webhook): the owner's next action is the
-building session's scheduled check-in re-reading the PR, or Lukas's next prompt; the
-comment says which. Labels are created on first use; nothing automated depends on them.
+After a missed event (rejected run, dropped webhook): the label stays, and the next action
+is Lukas's next prompt to the building session, which re-reads the PR. No polling check-in
+exists by design. Labels are created on first use; nothing automated depends on them.
 
 ## Scope
 **May change:** this task, `docs/roles.md`, `tests/test_roles.py`, the pilot PR's one
@@ -83,21 +84,39 @@ one pointer from `docs/workbench-direction.md` and `docs/workflow-rollout.md` to
 ## Size check
 One PR, one review round, one repair. Under a day of wall time; zero purchases.
 
-## Return leg evidence (2026-09-12)
-A `pull_request_review` event at head `c433fdc` reached the building session through its
-PR subscription at 17:01Z; the acknowledgment was posted on the PR from the session. The
-review was Codex-authored and posted under Lukas's account, so the posting side was
-hand-carried and the receiving side was automatic. Proven: GitHub review → Claude, one
-direction, using only the existing subscription and no OpenAI run.
+## Event path, configured 2026-09-12: the per-PR subscription
+The building session is subscribed to PR #2's GitHub activity through the existing
+per-PR watcher. No routine was created; none is needed. Evidence that it wakes an idle
+session (all times UTC, from the GitHub API and the session's wake record):
+
+| Step | Time |
+|---|---|
+| Codex review 5187283580 submitted at head `c433fdc`, under Lukas's account | 17:01:15 |
+| Wake queued to the idle session | 17:01:17 |
+| `review-event received` acknowledgment posted from the session | 17:03:07 |
+| Corrections pushed as `37f4fc6`; consolidated handoff posted | 17:05:19 |
+
+Posting side was hand-carried; receiving side was automatic; no OpenAI run was used.
+
+Rules the session follows on every wake:
+- Ignore events that echo its own comments (the ones ending in the Claude Code footer,
+  IDs recorded below) and repeated deliveries of the same event.
+- Ignore a review whose ID is in the handled list, or that names a head already handled,
+  unless it is a new review with a new finding.
+- Per new actionable review: acknowledge with `review-event received` and the head, apply
+  at most one scoped repair, run the tests, push, update the labels. A review with no
+  actionable finding gets the acknowledgment only; nothing is manufactured.
+- Missing or unavailable review stays pending under its label; never approval.
+
+Handled: review 5187283580 at `c433fdc` → `37f4fc6`. Own comments: 5647369119, 5647381593.
 
 ## Next native-cloud setup step (prepared, not executed)
-1. Lukas confirms the Claude GitHub App covers this repository (step 1 above) and pastes
-   the evidence into this file.
-2. When the OpenAI allowance resets: one bounded ChatGPT Work event-task test. Astra
-   selected, GitHub plugin attached, trigger on a PR labelled `needs-review`. Record the
-   served model, whether a GitHub review is posted, and whether the event fired without a
-   human. If the surface cannot post a review, record that as the gap; do not substitute
-   a model or a paid route.
+1. Astra side, by Lukas, once: `docs/astra-work-setup.md`, step 1 (read-only check) then
+   step 2 (create the label-triggered task) only if step 1 shows Astra, review posting and
+   a label trigger. Record the answers under Working notes. Not while the OpenAI allowance
+   is exhausted.
+2. Claude side: ready. An external test is a pull request review (not a plain comment) on
+   PR #2 at its current head with at least one concrete finding about this PR's files.
 
 ## Review evidence
 Reviewer: Codex, scoped review at `c433fdc`, delivered through the subscription on
@@ -114,12 +133,16 @@ head under `needs-review`. Independent review of the corrected head: pending, no
    the "Product direction — clarified 2026-09-12" paragraph in `context/STACK.md`, and the
    "Current desired roles" bullet in `docs/claude-project-instructions.md`. Not edited here
    to avoid a parallel change to that branch.
-3. Agree or amend the Work event-task test plan above before the allowance resets, so it
-   runs once, not repeatedly.
+3. Agree or amend the two prompts in `docs/astra-work-setup.md` before the allowance
+   resets, so the setup runs once, not repeatedly.
 
 ## Working notes (agent fills in)
 - 2026-09-12: created by Claude Fable 5.1 on the PR #2 branch. The subscription probe
   above was the only account action taken; it is reversible. No pilot step has run.
 - 2026-09-12, later: Codex review at `c433fdc` arrived through the subscription;
-  acknowledged on the PR from the session; corrections applied; `needs-review` applied to
-  PR #2 with owner and next action in the handoff comment.
+  acknowledged on the PR from the session; corrections applied in `37f4fc6`.
+- 2026-09-12, evening: Lukas confirmed the allocation (Claude implements and runs routine
+  checks; Astra reviews milestones only). Label renamed to `astra-review`; the polling
+  check-in deleted; `docs/astra-work-setup.md` written; event path documented above and
+  announced on the PR as ready for an external review-event test. PR #3 at `b231f26`
+  passed Astra's targeted re-review per Lukas; nothing here touches it.
