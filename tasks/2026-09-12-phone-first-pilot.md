@@ -52,11 +52,15 @@ instruction of 2026-09-12; the one check-in scheduled earlier that day was delet
 ## Labels: visible pilot state on the PR, not an automatic retry
 Each label names an owner and the next action in the PR comment that applies it, so a
 missed event never quietly hands coordination back to Lukas.
-- `astra-review` (renamed from `needs-review` on 2026-09-12 to match the trigger the Work
-  task listens for). Owner: Astra through the Work task once `docs/astra-work-setup.md` is
-  done, via Lukas until then. Next action: review the exact head named in the comment.
-  Remove only after inspecting that head and the verdict; keep it while findings are
-  unresolved or the head has moved since the review.
+- `astra-review` (renamed from `needs-review` on 2026-09-12). The label is the visible
+  pending state only; the dispatch is a request comment whose first line is
+  `astra-review-request <head sha>`, posted by the building session or Lukas, because a
+  repair push never re-adds a label and a label-added trigger would miss the repaired
+  head. Owner: Astra through the Work task once `docs/astra-work-setup.md` is done, via
+  Lukas until then. Next action: review the head named in the latest request. Remove only
+  after inspecting that head and the verdict; keep it while findings are unresolved or the
+  head has moved since the review. Cost bound for the pilot: one initial request and one
+  repair follow-up.
 - `needs-claude`. Owner: the building session. Next action: the scoped repair plus tests.
   Remove only after both are complete and pushed.
 - `review-pending`. Owner: Lukas. Next action and retry date in the comment. Stays until a
@@ -108,7 +112,9 @@ Rules the session follows on every wake:
   actionable finding gets the acknowledgment only; nothing is manufactured.
 - Missing or unavailable review stays pending under its label; never approval.
 
-Handled: review 5187283580 at `c433fdc` → `37f4fc6`. Own comments: 5647369119, 5647381593.
+Handled: review 5187283580 at `c433fdc` → `37f4fc6`; review 5187405154 at `53640e9` →
+the commit carrying this line. Own comments: 5647369119, 5647381593, 5647407550,
+5647637766.
 
 ## Next native-cloud setup step (prepared, not executed)
 1. Astra side, by Lukas, once: `docs/astra-work-setup.md`, step 1 (read-only check) then
@@ -117,6 +123,9 @@ Handled: review 5187283580 at `c433fdc` → `37f4fc6`. Own comments: 5647369119,
    is exhausted.
 2. Claude side: ready. An external test is a pull request review (not a plain comment) on
    PR #2 at its current head with at least one concrete finding about this PR's files.
+3. After Lukas confirms the task exists: the building session posts the initial
+   `astra-review-request` comment at the then-current head, once. After the one scoped
+   repair, one follow-up request at the repaired head. Nothing else triggers a review.
 
 ## Review evidence
 Reviewer: Codex, scoped review at `c433fdc`, delivered through the subscription on
@@ -128,11 +137,11 @@ head under `needs-review`. Independent review of the corrected head: pending, no
 ## Handoff for Astra: one consolidated review at the corrected head, at most three items
 1. Confirm the corrected F1 wording (unverified, not impossible) and the label rules above
    match the intent of the `c433fdc` review; name the single line to change if not.
-2. On the PR #1 branch, route the active assignment sentences to `docs/roles.md` and mark
-   the rest historical: the "Current assignment" bullet in `docs/workbench-direction.md`,
-   the "Product direction — clarified 2026-09-12" paragraph in `context/STACK.md`, and the
-   "Current desired roles" bullet in `docs/claude-project-instructions.md`. Not edited here
-   to avoid a parallel change to that branch.
+2. PR #1 role routing: done by Claude on that branch at Lukas's instruction of 2026-09-12
+   evening (the "Current assignment" bullet in `docs/workbench-direction.md`, the roles
+   sentence in `context/STACK.md`'s product-direction paragraph, the "Current desired
+   roles" bullet in `docs/claude-project-instructions.md`, a rollout note, and identical
+   copies of the role file, the setup prompts and their test). Confirm coherence only.
 3. Agree or amend the two prompts in `docs/astra-work-setup.md` before the allowance
    resets, so the setup runs once, not repeatedly.
 
@@ -146,3 +155,10 @@ head under `needs-review`. Independent review of the corrected head: pending, no
   check-in deleted; `docs/astra-work-setup.md` written; event path documented above and
   announced on the PR as ready for an external review-event test. PR #3 at `b231f26`
   passed Astra's targeted re-review per Lukas; nothing here touches it.
+- 2026-09-12, 17:49Z: second Codex review (5187405154, at `53640e9`) arrived through the
+  subscription two seconds after submission and was acknowledged from the session. Two
+  setup defects fixed: the read-only check now names PR #2's branch for unmerged policy
+  files and reports the model only from a visible setting; dispatch is now a request
+  comment with a head SHA under a label filter, with head capture and recheck,
+  deduplication by repository, PR and head, one bounded retry, and a one-plus-one cost
+  bound. PR #1 role routing taken over on that branch.

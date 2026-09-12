@@ -15,7 +15,8 @@ sentences. Once routed, a swap is an edit to this table and the Changed line.
 | Fallback | none | none authorized | Missing review stays pending, never approval |
 
 Reviewer setup, once, by Lukas: `docs/astra-work-setup.md`. Daily use afterwards: Claude
-applies the `astra-review` label; nobody relays anything.
+applies the `astra-review` label and posts one request comment naming the head; nobody
+relays anything.
 
 ## What the allocation means in practice
 - Claude does not wait for Astra to research, plan or prepare routine steps.
