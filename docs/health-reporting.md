@@ -44,32 +44,51 @@ that fails to measure never invents an explanation ("no scrapers are running")
   directory is not a git checkout, or a `git` probe failed.
 
 **watchdog** — the box's own alarm, read from the last 40 lines of
-`~/logs/watchdog.log`.
-- `ok`: activity within 45 min and the last `run complete` line says
-  `0 failing`.
-- `failed`: silent for more than 45 min (three missed runs), or the last
-  completed run has failing checks. Both can hold at once.
-- `unknown`: no log, empty, unreadable or unparseable log; the watchdog runs
-  but has no config (it checks nothing); recent activity with no completed
-  run in the window.
+`~/logs/watchdog.log`. **Freshness is measured from the last completed run**
+(`run complete: N failing`). Any other log line is activity, never health
+evidence, and cannot refresh an old success.
+- `ok`: the last completed run is within 45 min and says `0 failing`. Lines
+  after it that are neither alerts nor a `no config` exit are reported as
+  activity, "not yet a completed run".
+- `failed`: no completed run for more than 45 min (three missed runs); the
+  last completed run has failing checks; or an `ALERT`/`STILL-FAILING` line
+  after it — a check is failing in a run that has not finished. Several can
+  hold at once and all are named.
+- `unknown`: no log, empty, unreadable or unparseable log; no completed run in
+  the window; a `no config` exit after the last completed run (the watchdog
+  now checks nothing); a clean completed run dated in the future (see clock
+  skew below).
 
 **notifications** — read from `~/logs/notify.log`. **The last entry decides,
 whatever its age.**
 - `ok`: the last entry is `SENT`.
 - `failed`: the last entry is `FAILED(...)` or `NOCHANNEL`. It stays failed
   until a later `SENT` proves the channel back — a failure used to age out
-  after an hour, so a channel dead since last week read as fine.
+  after an hour, so a channel dead since last week read as fine. A
+  future-dated failure is still a failure.
 - `unknown`: no log, empty, unreadable or unparseable; an unrecognised status
-  (which is never echoed).
+  (which is never echoed); a `SENT` dated in the future.
 
-**heartbeats** — expectations come from the `heartbeat` lines of
-`~/.config/workbench/watchdog.conf`; the marker directory alone proves nothing.
-- `ok`: every expected marker exists and is within its limit.
+**heartbeats** — expectations come from the
+`heartbeat <label> <file> <max-age-secs>` lines of
+`~/.config/workbench/watchdog.conf`; the marker directory alone proves
+nothing. Ages and limits are compared in seconds, so a limit under a minute
+is not rounded to zero and 2454 s against 2400 s is stale.
+- `ok`: every expected marker exists and is no older than its limit.
 - `failed`: an expected marker is missing (the job never ran) or older than
   its limit.
-- `unknown`: the config cannot be read; a heartbeat line has no usable limit.
+- `unknown`: the config cannot be read; a line is malformed — missing path or
+  limit, or a limit that is not a positive integer of seconds — and is kept
+  and named rather than dropped; a marker dated in the future.
+- A failure outranks an unknown for the verdict, but every job is listed by
+  name either way.
 - Markers no line names are listed as *unwatched*. A config with no heartbeat
   lines yields no check — there is nothing to measure, and the page says so.
+
+**Clock skew.** Evidence dated more than 5 min ahead of the box's clock
+(`FUTURE_TOLERANCE_S`) is implausible: a clean watchdog run, a `SENT`, or a
+heartbeat marker from the future is `unknown`, never `ok`. Evidence of
+failure keeps its verdict regardless of its date.
 
 Setup gaps (SSH keys, tailnet, Telegram) are listed under "Needs you" as
 before. A `tailscale status` that cannot be read is reported as unverified,
@@ -99,7 +118,13 @@ Contains:
   spelled out.
 - `machine` — disk free/total/used %, memory available/total, uptime; each
   `null` and listed under unknown when not readable.
-- `tests_measured` (false under `--quick`) and `setup_pending` (a count).
+- `tests` — `suites` (the test checks this box is responsible for),
+  `measured` (those that reached a verdict by actually running: `ok` or
+  `failed`), `coverage` (`full`, `partial` or `none`) and `quick`.
+  `tests_measured` is true only for `full` coverage. External, quick,
+  no-runner, timeout and no-verdict suites are not measured, whatever was
+  requested. Markdown prints "N of M suite(s) (coverage)".
+- `setup_pending` — a count of one-time setup gaps.
 
 Never contains: log lines, notification text, task names, commit subjects,
 branch or file names, usernames, home paths, hostnames, setup instructions,

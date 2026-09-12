@@ -36,6 +36,8 @@ branch, and integrates this one.
 - [x] Tests that required the old unsafe behaviour replaced
 - [x] `docs/health-reporting.md` written — the contract for both outputs
 - [x] Complete Linux suite green before commit (87 → 141)
+- [x] Review round 1 (Codex, 2026-09-12, anchored at `ea8dd60`), three
+      findings fixed with regressions — see working notes
 
 ## Acceptance criteria — publisher side (Codex, separate branch)
 - [ ] Publisher, updater, installer and CI changes
@@ -104,3 +106,47 @@ mention `--public` — global docs are outside this branch's scope.
 - Validation: `uv run pytest tests/ -o addopts=""` → 141 passed
   (docs invariants, notify, watchdog, publish and install suites untouched
   and green). CLI smoke-tested in all three modes against an empty fake HOME.
+
+### Review round 1 — Codex, 2026-09-12, anchored at `ea8dd60`
+Three findings, four isolated probes; none used live Lenovo data. Each is
+now a named regression in `tests/test_status_generator.py`.
+1. **Watchdog freshness came from any activity.** An old `run complete: 0
+   failing` followed by a fresh `no config` or `ALERT` line returned ok,
+   because `silent_min` was measured from the last line of any kind. Now
+   freshness is measured from the last *completed* run; a later `no config`
+   exit makes the verdict unknown, a later `ALERT`/`STILL-FAILING` line is
+   failure evidence, and any other later line is reported as activity, "not
+   yet a completed run" — never as health. Tests:
+   `test_fresh_activity_does_not_refresh_an_old_completed_run` (three
+   cases), `test_a_no_config_exit_after_a_fresh_run_is_unknown`,
+   `test_an_alert_after_the_last_completed_run_is_failure_evidence`,
+   `test_a_run_in_progress_is_activity_not_health_evidence`.
+2. **Invalid heartbeat evidence vanished or passed.** `heartbeat apply` was
+   dropped by the parser, so the expected monitor left the assessment; a
+   marker dated a day ahead had a negative age and was ok; ages were
+   compared in whole minutes. Now malformed lines are kept with a `problem`
+   and assessed as unknown by name; limits must be positive integers of
+   seconds; ages and limits compare in seconds; a marker more than
+   `FUTURE_TOLERANCE_S` (300 s) in the future is unknown. The same skew
+   rule covers a clean watchdog run and a `SENT` from the future. Tests:
+   `test_read_watchdog_conf_keeps_malformed_lines_and_rejects_bad_limits`,
+   `test_a_malformed_heartbeat_line_stays_visible_as_unknown`,
+   `test_collect_heartbeats_with_a_marker_from_the_future` (real file),
+   `test_collect_heartbeats_stale_by_seconds_end_to_end` (real file),
+   `test_freshness_is_compared_in_seconds_not_rounded_minutes`,
+   `test_a_future_dated_completed_run_is_unknown_not_ok`,
+   `test_a_future_dated_delivery_is_unknown_not_ok`.
+3. **`tests_measured` meant "not `--quick`".** With `uv` missing the public
+   page still printed "Tests measured this run: yes". Now the summary
+   carries `tests: {suites, measured, coverage, quick}`, where measured
+   means a verdict from actually running (ok or failed) and coverage is
+   full / partial / none; `tests_measured` is true only for full. Markdown
+   prints "N of M suite(s) (coverage)". Tests:
+   `test_tests_measured_reflects_actual_verdicts` (six cases),
+   `test_quick_mode_measures_nothing_and_says_so_in_both_formats`.
+- Two existing tests changed with the contract: the silent-watchdog wording
+  is now "has not completed a run in N min", and the old mid-run test (an
+  `ALERT` after a fresh run stayed ok) is split into the recovery-line case
+  (ok, activity noted) and the alert case (failed).
+- Model for this round, per the session record: configured, running and
+  last-served `claude-fable-5-1`; no overage in use.

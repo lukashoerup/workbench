@@ -51,6 +51,7 @@ WATCHDOG_EVERY_MIN = 15
 WATCHDOG_SILENT_MIN = 45   # three missed runs
 LOG_LINES = 40             # read for assessment
 SHOW_LINES = 8             # shown on the page
+FUTURE_TOLERANCE_S = 300   # evidence dated further ahead than this is clock skew, not health
 
 OK, FAILED, UNKNOWN = "ok", "failed", "unknown"
 
@@ -219,7 +220,12 @@ def collect_timers() -> str:
 def read_watchdog_conf(path: Path | None = None) -> list[dict] | None:
     """The `heartbeat` lines of the watchdog config: which jobs are *expected*
     to prove they ran, and how fresh the proof must be. None when the file
-    cannot be read — different from a config that lists no heartbeats."""
+    cannot be read — different from a config that lists no heartbeats.
+
+    A malformed line is kept, with `problem` set, so the job it names stays
+    visible as an expectation that cannot be checked. Dropping it made the
+    monitor disappear from the assessment altogether.
+    """
     try:
         text = (path or WATCHDOG_CONF).read_text(encoding="utf-8", errors="replace")
     except OSError:
@@ -227,35 +233,48 @@ def read_watchdog_conf(path: Path | None = None) -> list[dict] | None:
     expected = []
     for line in text.splitlines():
         parts = line.split()
-        if len(parts) < 3 or parts[0] != "heartbeat":
+        if not parts or parts[0] != "heartbeat":
             continue
-        try:
-            max_s = int(parts[3]) if len(parts) > 3 else None
-        except ValueError:
-            max_s = None
-        expected.append({"name": parts[1], "path": Path(parts[2]).expanduser(), "max_s": max_s})
+        entry = {"name": parts[1] if len(parts) > 1 else "(unnamed)",
+                 "path": Path(parts[2]).expanduser() if len(parts) > 2 else None,
+                 "max_s": None, "problem": None}
+        if len(parts) < 4:
+            entry["problem"] = ("malformed line, expected "
+                                "`heartbeat <label> <file> <max-age-secs>`")
+        else:
+            try:
+                max_s = int(parts[3])
+            except ValueError:
+                max_s = 0
+            if max_s > 0:
+                entry["max_s"] = max_s
+            else:
+                entry["problem"] = "the freshness limit is not a positive number of seconds"
+        expected.append(entry)
     return expected
 
 
 def collect_heartbeats(now: datetime) -> dict:
     """Expected heartbeats measured against their markers, plus any marker
     nobody watches. A missing config or marker directory is reported as such;
-    it is not evidence that no job exists."""
+    it is not evidence that no job exists. Ages stay in seconds: a limit can
+    be shorter than a minute, and rounding to minutes hid a marker that was
+    54 s past its limit."""
     epoch = now.timestamp()
 
-    def age(p: Path) -> int | None:
+    def age_s(p: Path | None) -> int | None:
+        if p is None:
+            return None
         try:
-            return int((epoch - p.stat().st_mtime) / 60)
+            return int(epoch - p.stat().st_mtime)
         except OSError:
             return None
 
     expected = read_watchdog_conf()
     configured = None
     if expected is not None:
-        configured = [{"name": h["name"], "path": h["path"], "age_min": age(h["path"]),
-                       "limit_min": None if h["max_s"] is None else h["max_s"] // 60}
-                      for h in expected]
-    watched = {h["path"].resolve() for h in expected or []}
+        configured = [{**h, "age_s": age_s(h["path"])} for h in expected]
+    watched = {h["path"].resolve() for h in expected or [] if h["path"] is not None}
     unwatched, error = [], None
     try:
         markers = sorted(HEARTBEAT_DIR.iterdir()) if HEARTBEAT_DIR.is_dir() else []
@@ -263,7 +282,7 @@ def collect_heartbeats(now: datetime) -> dict:
         markers, error = [], type(exc).__name__
     for f in markers:
         if f.resolve() not in watched:
-            unwatched.append({"name": f.name, "age_min": age(f)})
+            unwatched.append({"name": f.name, "age_s": age_s(f)})
     return {"configured": configured, "unwatched": unwatched, "error": error}
 
 
@@ -431,13 +450,28 @@ def _log_problem(tail: str) -> str | None:
     return None
 
 
-def _age(now: datetime, then: datetime) -> str:
-    minutes = max(0, int((now - then).total_seconds() // 60))
+def _span(seconds: float) -> str:
+    """A duration for a human: "45 s", "5 min", "3 h", "4 days"."""
+    seconds = max(0, int(seconds))
+    if seconds < 120:
+        return f"{seconds} s"
+    minutes = seconds // 60
     if minutes < 120:
         return f"{minutes} min"
     if minutes < 48 * 60:
         return f"{minutes // 60} h"
     return f"{minutes // 1440} days"
+
+
+def _age(now: datetime, then: datetime) -> str:
+    return _span((now - then).total_seconds())
+
+
+def _future_s(now: datetime, then: datetime) -> int:
+    """How far ahead of this box's clock a timestamp is, if beyond tolerance;
+    0 otherwise. Evidence from the future is clock skew, not health."""
+    ahead = int((then - now).total_seconds())
+    return ahead if ahead > FUTURE_TOLERANCE_S else 0
 
 
 class Check(NamedTuple):
@@ -518,50 +552,87 @@ def _repo_check(r: dict) -> Check:
 
 
 _RUN_COMPLETE = re.compile(r"^run complete: (\d+) failing")
+_FAILURE_LINE = ("ALERT", "STILL-FAILING")   # what watchdog-check.sh logs for a failing check
 
 
 def _watchdog_check(tail: str, now: datetime) -> Check:
     """The watchdog is the box's own alarm. It fails Lukas three ways: it
     reports failures nobody reads, it stops running and everything looks
     quiet, or it has never left a log at all — which used to look identical
-    to "nothing wrong"."""
+    to "nothing wrong".
+
+    Freshness is measured from the last *completed* run. Other log activity
+    is not health evidence and must not refresh an old success: a later
+    "no config" exit means the watchdog now checks nothing, a later ALERT
+    means a check is failing right now, and an ordinary line from a run
+    underway is just activity. Each is reported for what it is.
+    """
     problem = _log_problem(tail)
     if problem:
         return Check("watchdog", UNKNOWN, f"no evidence ({problem})",
                      [f"**Watchdog has left no evidence** — {problem}. The box's own alarm is "
                       "not shown to be running, so nothing else here is being watched."])
     rows = _entries(tail)
-    last_t, last_fields = rows[-1]
-    silent_min = int((now - last_t).total_seconds() / 60)
-    completes = [(t, _RUN_COMPLETE.match(f[0])) for t, f in rows
-                 if f and _RUN_COMPLETE.match(f[0])]
-    notes, details = [], []
-    if silent_min > WATCHDOG_SILENT_MIN:
-        notes.append(f"has not run in {silent_min} min (fires every {WATCHDOG_EVERY_MIN})")
-        details.append(f"**Watchdog has not run in {silent_min} min** — its timer fires every "
-                       f"{WATCHDOG_EVERY_MIN}, so the box's own alarm is off.")
-    if completes:
-        done_t, m = completes[-1]
-        n = int(m.group(1))
-        if n > 0:
-            notes.append(f"{n} failing check(s) at the last completed run, "
-                         f"{_age(now, done_t)} ago")
-            details.append(f"**Watchdog reports {n} failing check(s)** — see the watchdog "
-                           "log at the bottom of this page.")
-    if details:
-        return Check("watchdog", FAILED, "; ".join(notes), details)
-    if not completes:
-        if last_fields and last_fields[0].startswith("no config"):
+    done = None
+    for i in range(len(rows) - 1, -1, -1):
+        m = _RUN_COMPLETE.match(rows[i][1][0]) if rows[i][1] else None
+        if m:
+            done = (i, rows[i][0], int(m.group(1)))
+            break
+    later = [f[0] for _, f in (rows[done[0] + 1:] if done else rows) if f]
+    no_config = any(msg.startswith("no config") for msg in later)
+    alerts = [msg for msg in later if msg.startswith(_FAILURE_LINE)]
+    activity = _age(now, rows[-1][0])
+    if done is None:
+        if no_config:
             return Check("watchdog", UNKNOWN, "runs, but has no check list, so it checks nothing",
                          ["**Watchdog has no config** — it runs on time but checks nothing, "
                           "so its silence proves nothing."])
         return Check("watchdog", UNKNOWN,
-                     f"active {silent_min} min ago but no completed run in the recent log",
+                     f"active {activity} ago but no completed run in the recent log",
                      [f"**Watchdog has not completed a run recently** — last activity "
-                      f"{silent_min} min ago, but no `run complete` line in the recent log, "
+                      f"{activity} ago, but no `run complete` line in the recent log, "
                       "so its verdict is unknown."])
-    done_t, _ = completes[-1]
-    return Check("watchdog", OK, f"last completed run {_age(now, done_t)} ago, 0 failing")
+    _, done_t, failing = done
+    ahead = _future_s(now, done_t)
+    if ahead and not failing and not alerts:
+        return Check("watchdog", UNKNOWN,
+                     f"last completed run is dated {_span(ahead)} in the future (clock skew?)",
+                     [f"**Watchdog evidence is from the future** — its last completed run is "
+                      f"dated {_span(ahead)} ahead of this box's clock, so it is not evidence "
+                      "of health."])
+    stale_min = int((now - done_t).total_seconds() / 60)
+    notes, details = [], []
+    if failing:
+        notes.append(f"{failing} failing check(s) at the last completed run, "
+                     f"{_age(now, done_t)} ago")
+        details.append(f"**Watchdog reports {failing} failing check(s)** — see the watchdog "
+                       "log at the bottom of this page.")
+    if alerts:
+        notes.append(f"{len(alerts)} alert(s) since the last completed run")
+        details.append(f"**Watchdog has raised {len(alerts)} alert(s) since its last completed "
+                       "run** — a check is failing right now and the run underway has not "
+                       "finished. See the log at the bottom of this page.")
+    if stale_min > WATCHDOG_SILENT_MIN:
+        notes.append(f"no completed run in {stale_min} min (fires every {WATCHDOG_EVERY_MIN}; "
+                     f"last activity {activity} ago)")
+        details.append(f"**Watchdog has not completed a run in {stale_min} min** — its timer "
+                       f"fires every {WATCHDOG_EVERY_MIN}, so the box's own alarm is off. "
+                       f"Last log activity {activity} ago is not a completed run.")
+    if no_config:
+        notes.append("has since run without a check list")
+        details.append("**Watchdog has lost its config** — since its last completed run it "
+                       "has exited without a check list, so it currently checks nothing.")
+    if failing or alerts or stale_min > WATCHDOG_SILENT_MIN:
+        return Check("watchdog", FAILED, "; ".join(notes), details)
+    if no_config:
+        return Check("watchdog", UNKNOWN,
+                     f"last completed run {_age(now, done_t)} ago, 0 failing, but it has "
+                     "since run without a check list", details)
+    note = f"last completed run {_age(now, done_t)} ago, 0 failing"
+    if later:
+        note += f"; activity since ({activity} ago), not yet a completed run"
+    return Check("watchdog", OK, note)
 
 
 _FAILED_STATUS = re.compile(r"^FAILED\(([A-Za-z0-9_=.-]+)\)$")
@@ -585,6 +656,12 @@ def _notify_check(tail: str, now: datetime) -> Check:
     status = fields[0] if fields else ""
     age = _age(now, t)
     if status == "SENT":
+        ahead = _future_s(now, t)
+        if ahead:
+            return Check("notifications", UNKNOWN,
+                         f"last delivery is dated {_span(ahead)} in the future (clock skew?)",
+                         [f"_The last notification delivery is dated {_span(ahead)} ahead of "
+                          "this box's clock — clock skew, not evidence that the channel works._"])
         return Check("notifications", OK, f"last delivery {age} ago")
     if status == "NOCHANNEL" or status.startswith("FAILED"):
         m = _FAILED_STATUS.match(status)
@@ -601,6 +678,9 @@ def _notify_check(tail: str, now: datetime) -> Check:
 
 
 def _heartbeat_check(hb: dict) -> Check | None:
+    """Every job the watchdog config expects, against its marker. A line that
+    cannot be evaluated (malformed, bad limit) and a marker from the future
+    are unknowns, listed by name — never dropped, never counted as fresh."""
     if hb.get("error"):
         return Check("heartbeats", UNKNOWN, "markers could not be read",
                      [f"**Heartbeat markers could not be read** — {hb['error']}."])
@@ -612,30 +692,32 @@ def _heartbeat_check(hb: dict) -> Check | None:
                       "heartbeat is unknown, so none of them is being checked here."])
     if not conf:
         return None
-    never = [h for h in conf if h["age_min"] is None]
-    stale = [h for h in conf if h["age_min"] is not None and h["limit_min"] is not None
-             and h["age_min"] > h["limit_min"]]
-    nolimit = [h for h in conf if h["age_min"] is not None and h["limit_min"] is None]
+    malformed = [h for h in conf if h.get("problem")]
+    valid = [h for h in conf if not h.get("problem")]
+    never = [h for h in valid if h["age_s"] is None]
+    future = [h for h in valid if h["age_s"] is not None and -h["age_s"] > FUTURE_TOLERANCE_S]
+    stale = [h for h in valid if h["age_s"] is not None and h not in future
+             and h["age_s"] > h["max_s"]]
+    fresh = [h for h in valid if h["age_s"] is not None and h not in future and h not in stale]
     details = [f"**Job `{h['name']}` has never run** — no heartbeat marker at `{h['path']}`."
                for h in never]
-    details += [f"**Job `{h['name']}` is stale** — last success {h['age_min']} min ago, "
-                f"limit {h['limit_min']} min." for h in stale]
-    if details:
-        bits = []
-        if never:
-            bits.append(f"{len(never)} never ran")
-        if stale:
-            bits.append(f"{len(stale)} stale")
-        return Check("heartbeats", FAILED,
-                     f"of {len(conf)} expected job(s): " + ", ".join(bits), details)
-    if nolimit:
-        return Check("heartbeats", UNKNOWN,
-                     f"{len(nolimit)} expected job(s) have no freshness limit",
-                     [f"**Job `{h['name']}` has a malformed heartbeat line** — no freshness "
-                      "limit, so staleness cannot be judged." for h in nolimit])
-    oldest = max(h["age_min"] for h in conf)
+    details += [f"**Job `{h['name']}` is stale** — last success {_span(h['age_s'])} ago, "
+                f"limit {_span(h['max_s'])}." for h in stale]
+    details += [f"**Job `{h['name']}` cannot be checked** — {h['problem']}." for h in malformed]
+    details += [f"**Job `{h['name']}` has a marker from the future** — dated "
+                f"{_span(-h['age_s'])} ahead of this box's clock; clock skew, not evidence "
+                "that it ran." for h in future]
+    bits = [f"{len(group)} {word}" for group, word in
+            ((never, "never ran"), (stale, "stale"), (malformed, "malformed"),
+             (future, "future-dated")) if group]
+    note = f"of {len(conf)} expected job(s): " + ", ".join(bits)
+    if never or stale:
+        return Check("heartbeats", FAILED, note, details)
+    if malformed or future:
+        return Check("heartbeats", UNKNOWN, note, details)
+    oldest = max(h["age_s"] for h in fresh)
     return Check("heartbeats", OK,
-                 f"{len(conf)} expected job(s) reporting, oldest {oldest} min ago")
+                 f"{len(conf)} expected job(s) reporting, oldest {_span(oldest)} ago")
 
 
 def assess(facts: dict) -> list[Check]:
@@ -739,20 +821,22 @@ def _heartbeat_table(hb: dict | None) -> str:
     conf = hb.get("configured")
     rows = []
     for h in conf or []:
-        if h["age_min"] is None:
+        limit = "—" if h.get("max_s") is None else _span(h["max_s"])
+        if h.get("problem"):
+            rows.append(f"| `{h['name']}` | — | {limit} | **cannot be checked**: "
+                        f"{h['problem']} |")
+            continue
+        age = h["age_s"]
+        if age is None:
             last, state = "never", "**never run**"
+        elif -age > FUTURE_TOLERANCE_S:
+            last, state = f"{_span(-age)} in the future", "unknown (clock skew?)"
         else:
-            last = f"{h['age_min']} min ago"
-            if h["limit_min"] is None:
-                state = "no limit (malformed line)"
-            elif h["age_min"] > h["limit_min"]:
-                state = "**stale**"
-            else:
-                state = "ok"
-        limit = "—" if h["limit_min"] is None else f"{h['limit_min']} min"
+            last = f"{_span(age)} ago"
+            state = "**stale**" if age > h["max_s"] else "ok"
         rows.append(f"| `{h['name']}` | {last} | {limit} | {state} |")
     for h in hb.get("unwatched", []):
-        last = "?" if h["age_min"] is None else f"{h['age_min']} min ago"
+        last = "?" if h["age_s"] is None else f"{_span(h['age_s'])} ago"
         rows.append(f"| `{h['name']}` | {last} | — | unwatched |")
     lines = []
     if conf is None:
@@ -894,9 +978,18 @@ def public_summary(facts: dict) -> dict:
         if machine[key] is None:
             unknown.append(f"{label} — not measured")
     overall = FAILED if failed else UNKNOWN if unknown else OK
+    # "Measured" means a verdict from actually running the suite (ok or
+    # failed). External, quick, no-runner, timeout and no-verdict are not.
+    suites = [c for c in checks if c.name.startswith("tests: ")]
+    measured = [c for c in suites if c.status in (OK, FAILED)]
+    coverage = ("none" if not measured
+                else "full" if len(measured) == len(suites) else "partial")
+    tests = {"suites": len(suites), "measured": len(measured), "coverage": coverage,
+             "quick": bool(facts.get("quick", False))}
     return {
         "collected_at": facts["now"].isoformat(timespec="seconds"),
-        "tests_measured": not facts.get("quick", False),
+        "tests_measured": coverage == "full",
+        "tests": tests,
         "overall": overall,
         "checks": [{"name": c.name, "status": c.status, "note": c.note} for c in checks],
         "failed": failed,
@@ -934,8 +1027,9 @@ def render_public(s: dict) -> str:
         "uptime not measured" if m["uptime_s"] is None else _uptime_line(m["uptime_s"]),
     ]
     out += ["", "Machine: " + "; ".join(bits) + "."]
-    out.append("Tests measured this run: "
-               + ("yes." if s["tests_measured"] else "no (quick mode)."))
+    t = s["tests"]
+    out.append(f"Tests measured this run: {t['measured']} of {t['suites']} suite(s) "
+               f"({t['coverage']}{'; quick mode' if t['quick'] else ''}).")
     if s["setup_pending"]:
         out.append(f"One-time setup items still pending: {s['setup_pending']} "
                    "(details on the local page).")

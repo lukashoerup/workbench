@@ -13,6 +13,7 @@ import os
 import subprocess
 import sys
 import textwrap
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -264,7 +265,7 @@ def healthy(**over):
         watchdog_tail=f"{ago(minutes=5)}\trun complete: 0 failing",
         notify_tail=f"{ago(hours=3)}\tSENT\troutine check",
         heartbeats={"configured": [{"name": "apply", "path": Path("/x/apply"),
-                                    "age_min": 5, "limit_min": 40}],
+                                    "age_s": 300, "max_s": 2400, "problem": None}],
                     "unwatched": [], "error": None},
     )
     base.update(over)
@@ -418,7 +419,7 @@ def test_a_silent_watchdog_is_escalated():
     """The alarm going quiet looks identical to everything being fine."""
     mod = load_status_mod()
     out = mod.collect_blockers(facts(watchdog_tail=f"{ago(hours=3)}\trun complete: 0 failing"))
-    assert any("has not run in 180 min" in b for b in out), out
+    assert any("has not completed a run in 180 min" in b for b in out), out
 
 
 def test_an_absent_watchdog_log_is_unknown_and_blocks_the_all_clear():
@@ -455,15 +456,77 @@ def test_a_watchdog_without_a_check_list_is_unknown_and_does_not_leak_the_path()
     assert "/home/" not in checks["watchdog"].note
 
 
-def test_the_last_completed_run_decides_even_mid_run():
+def check(mod, f, name):
+    return {c.name: c for c in mod.assess(f)}[name]
+
+
+def test_a_run_in_progress_is_activity_not_health_evidence():
     """The status timer and the watchdog fire in the same second, so the tail
-    can end in ALERT lines from a run still in progress."""
+    can end in lines from a run still underway. A recovery line mid-run does
+    not change the verdict of the last completed run — and does not become
+    evidence of health either."""
+    mod = load_status_mod()
+    f = healthy(watchdog_tail="\n".join([
+        f"{ago(minutes=16)}\trun complete: 0 failing",
+        f"{ago(seconds=3)}\tRECOVERED unit:ollama.service - ollama.service is active again",
+    ]))
+    c = check(mod, f, "watchdog")
+    assert c.status == "ok", c
+    assert "activity since" in c.note and "not yet a completed run" in c.note
+
+
+def test_an_alert_after_the_last_completed_run_is_failure_evidence():
     mod = load_status_mod()
     f = healthy(watchdog_tail="\n".join([
         f"{ago(minutes=16)}\trun complete: 0 failing",
         f"{ago(seconds=3)}\tALERT unit:ollama.service - ollama.service is failed",
     ]))
-    assert statuses(mod, f)["watchdog"] == "ok"
+    c = check(mod, f, "watchdog")
+    assert c.status == "failed", c
+    assert "1 alert(s) since the last completed run" in c.note
+
+
+@pytest.mark.parametrize("fresh_line,expect_note", [
+    ("no config at /missing/config", "has since run without a check list"),
+    ("ALERT hb:apply - apply has never run (no marker at /missing/marker)",
+     "1 alert(s) since the last completed run"),
+    ("RECOVERED unit:x - x is active again", "last activity"),
+])
+def test_fresh_activity_does_not_refresh_an_old_completed_run(fresh_line, expect_note):
+    """Review counterexample: a two-hour-old `run complete: 0 failing` followed
+    by a fresh line of any other kind returned OK, because freshness was
+    measured from whatever the last line was. Only a completed run is health
+    evidence; anything newer is reported for what it is."""
+    mod = load_status_mod()
+    f = healthy(watchdog_tail="\n".join([
+        f"{ago(hours=2)}\trun complete: 0 failing",
+        f"{ago(seconds=5)}\t{fresh_line}",
+    ]))
+    c = check(mod, f, "watchdog")
+    assert c.status == "failed", c
+    assert "no completed run in 120 min" in c.note, c
+    assert expect_note in c.note, c
+    assert "/missing" not in c.note
+
+
+def test_a_no_config_exit_after_a_fresh_run_is_unknown():
+    """The config vanished between runs: the last completed run is recent and
+    clean, but the watchdog now checks nothing."""
+    mod = load_status_mod()
+    f = healthy(watchdog_tail="\n".join([
+        f"{ago(minutes=16)}\trun complete: 0 failing",
+        f"{ago(minutes=1)}\tno config at /home/someone/.config/workbench/watchdog.conf",
+    ]))
+    c = check(mod, f, "watchdog")
+    assert c.status == "unknown", c
+    assert "without a check list" in c.note and "/home/" not in c.note
+
+
+def test_a_future_dated_completed_run_is_unknown_not_ok():
+    mod = load_status_mod()
+    future = (NOW + timedelta(days=1)).isoformat(timespec="seconds")
+    c = check(mod, healthy(watchdog_tail=f"{future}\trun complete: 0 failing"), "watchdog")
+    assert c.status == "unknown" and "future" in c.note, c
 
 
 # ---- notifications
@@ -513,6 +576,20 @@ def test_no_notification_evidence_is_unknown_not_ok():
     assert mod.collect_blockers(f), "an unexercised channel was reported as fine"
 
 
+def test_a_future_dated_delivery_is_unknown_not_ok():
+    mod = load_status_mod()
+    future = (NOW + timedelta(days=1)).isoformat(timespec="seconds")
+    c = check(mod, healthy(notify_tail=f"{future}\tSENT\tfrom tomorrow"), "notifications")
+    assert c.status == "unknown" and "future" in c.note, c
+
+
+def test_a_future_dated_failure_is_still_a_failure():
+    mod = load_status_mod()
+    future = (NOW + timedelta(days=1)).isoformat(timespec="seconds")
+    f = healthy(notify_tail=f"{future}\tNOCHANNEL\tfrom tomorrow")
+    assert statuses(mod, f)["notifications"] == "failed"
+
+
 def test_a_garbled_notification_status_is_not_echoed():
     """Whatever ends up in the status column is not ours to republish."""
     mod = load_status_mod()
@@ -528,8 +605,8 @@ def hb(configured, unwatched=(), error=None):
 
 def test_an_expected_heartbeat_that_never_ran_is_a_failure():
     mod = load_status_mod()
-    f = healthy(heartbeats=hb([{"name": "dba", "path": Path("/x/dba"), "age_min": None,
-                                "limit_min": 120}]))
+    f = healthy(heartbeats=hb([{"name": "dba", "path": Path("/x/dba"), "age_s": None,
+                                "max_s": 7200, "problem": None}]))
     out = mod.collect_blockers(f)
     assert any("has never run" in b for b in out), out
     assert statuses(mod, f)["heartbeats"] == "failed"
@@ -537,10 +614,108 @@ def test_an_expected_heartbeat_that_never_ran_is_a_failure():
 
 def test_a_stale_heartbeat_is_a_failure_and_a_fresh_one_is_not():
     mod = load_status_mod()
-    stale = healthy(heartbeats=hb([{"name": "apply", "path": Path("/x"), "age_min": 90,
-                                    "limit_min": 40}]))
+    stale = healthy(heartbeats=hb([{"name": "apply", "path": Path("/x"), "age_s": 5400,
+                                    "max_s": 2400, "problem": None}]))
     assert statuses(mod, stale)["heartbeats"] == "failed"
     assert statuses(mod, healthy())["heartbeats"] == "ok"
+
+
+def test_freshness_is_compared_in_seconds_not_rounded_minutes():
+    """2454 s against a 2400 s limit is stale; in whole minutes both were 40.
+    And a 45 s limit rounded to zero minutes."""
+    mod = load_status_mod()
+    just_over = healthy(heartbeats=hb([{"name": "apply", "path": Path("/x"), "age_s": 2454,
+                                        "max_s": 2400, "problem": None}]))
+    assert statuses(mod, just_over)["heartbeats"] == "failed"
+    short = healthy(heartbeats=hb([{"name": "tick", "path": Path("/x"), "age_s": 30,
+                                    "max_s": 45, "problem": None}]))
+    assert statuses(mod, short)["heartbeats"] == "ok"
+
+
+def test_a_malformed_heartbeat_line_stays_visible_as_unknown():
+    """Review counterexample: `heartbeat apply` with no path or limit was
+    dropped, so the expected monitor vanished from the assessment."""
+    mod = load_status_mod()
+    problem = "malformed line, expected `heartbeat <label> <file> <max-age-secs>`"
+    f = healthy(heartbeats=hb([{"name": "apply", "path": None, "age_s": None, "max_s": None,
+                                "problem": problem}]))
+    c = check(mod, f, "heartbeats")
+    assert c.status == "unknown", c
+    assert "1 malformed" in c.note
+    assert any("`apply`" in d and "cannot be checked" in d for d in c.details), c.details
+    assert "cannot be checked" in mod.render_detailed(full(f))
+
+
+def test_a_future_dated_marker_is_unknown_not_ok():
+    mod = load_status_mod()
+    f = healthy(heartbeats=hb([{"name": "apply", "path": Path("/x"), "age_s": -86400,
+                                "max_s": 2400, "problem": None}]))
+    c = check(mod, f, "heartbeats")
+    assert c.status == "unknown", c
+    assert "1 future-dated" in c.note
+    assert mod.collect_blockers(f), "a marker from tomorrow was reported as fine"
+
+
+def test_a_failure_outranks_a_malformed_line_but_both_stay_visible():
+    mod = load_status_mod()
+    f = healthy(heartbeats=hb([
+        {"name": "dba", "path": Path("/x/dba"), "age_s": None, "max_s": 7200, "problem": None},
+        {"name": "apply", "path": None, "age_s": None, "max_s": None,
+         "problem": "malformed line"},
+    ]))
+    c = check(mod, f, "heartbeats")
+    assert c.status == "failed"
+    assert "1 never ran" in c.note and "1 malformed" in c.note
+    assert any("`apply`" in d for d in c.details)
+
+
+def test_read_watchdog_conf_keeps_malformed_lines_and_rejects_bad_limits(tmp_path):
+    mod = load_status_mod()
+    conf = tmp_path / "watchdog.conf"
+    conf.write_text(textwrap.dedent(f"""
+        heartbeat apply
+        heartbeat nolimit {tmp_path}/m
+        heartbeat zero    {tmp_path}/m 0
+        heartbeat neg     {tmp_path}/m -5
+        heartbeat text    {tmp_path}/m soon
+        heartbeat good    {tmp_path}/m 45
+    """))
+    rows = {h["name"]: h for h in mod.read_watchdog_conf(conf)}
+    assert set(rows) == {"apply", "nolimit", "zero", "neg", "text", "good"}
+    for name in ("apply", "nolimit", "zero", "neg", "text"):
+        assert rows[name]["problem"] and rows[name]["max_s"] is None, (name, rows[name])
+    assert rows["good"]["problem"] is None and rows["good"]["max_s"] == 45
+
+
+def expected_marker(fake_home, name, mtime, limit_s):
+    """A real marker file with a chosen mtime, and a config line naming it."""
+    marker = fake_home / "hb" / name
+    marker.parent.mkdir(exist_ok=True)
+    marker.touch()
+    os.utime(marker, (mtime, mtime))
+    conf = fake_home / ".config" / "workbench" / "watchdog.conf"
+    conf.parent.mkdir(parents=True, exist_ok=True)
+    conf.write_text(f"heartbeat {name} {marker} {limit_s}\n")
+    return marker
+
+
+def test_collect_heartbeats_with_a_marker_from_the_future(fake_home, monkeypatch):
+    """The reviewer's probe: a real temp file with an mtime one day ahead
+    produced a negative age and an OK verdict."""
+    monkeypatch.setenv("HOME", str(fake_home))
+    mod = load_status_mod()
+    expected_marker(fake_home, "apply", time.time() + 86400, 2400)
+    got = mod.collect_heartbeats(datetime.now().astimezone())
+    assert got["configured"][0]["age_s"] < -80000
+    assert statuses(mod, healthy(heartbeats=got))["heartbeats"] == "unknown"
+
+
+def test_collect_heartbeats_stale_by_seconds_end_to_end(fake_home, monkeypatch):
+    monkeypatch.setenv("HOME", str(fake_home))
+    mod = load_status_mod()
+    expected_marker(fake_home, "tick", time.time() - 90, 60)
+    got = mod.collect_heartbeats(datetime.now().astimezone())
+    assert statuses(mod, healthy(heartbeats=got))["heartbeats"] == "failed"
 
 
 def test_an_unreadable_watchdog_config_makes_expectations_unknown():
@@ -573,8 +748,9 @@ def test_collect_heartbeats_reads_expectations_from_the_config(fake_home, monkey
     """))
     got = mod.collect_heartbeats(datetime.now().astimezone())
     by_name = {h["name"]: h for h in got["configured"]}
-    assert by_name["apply"]["age_min"] == 0 and by_name["apply"]["limit_min"] == 40
-    assert by_name["dba"]["age_min"] is None
+    assert 0 <= by_name["apply"]["age_s"] <= 5 and by_name["apply"]["max_s"] == 2400
+    assert by_name["apply"]["problem"] is None
+    assert by_name["dba"]["age_s"] is None
     assert [u["name"] for u in got["unwatched"]] == ["stray"]
     assert got["error"] is None
 
@@ -670,6 +846,39 @@ def test_public_summary_reports_failures_as_failures():
                            "nothing delivered since"]
 
 
+@pytest.mark.parametrize("suites,expect", [
+    ([{"state": "no-runner", "reason": "uv is not installed on this box"}], (1, 0, "none")),
+    ([{"state": "timeout", "reason": "no verdict within 300 s"}], (1, 0, "none")),
+    ([{"state": "external"}], (1, 0, "none")),
+    ([{"state": "pass", "passed": 87}, {"state": "external"}], (2, 1, "partial")),
+    ([{"state": "pass", "passed": 87}, {"state": "unknown", "reason": "no summary"}],
+     (2, 1, "partial")),
+    ([{"state": "pass", "passed": 87}, {"state": "fail", "failed": 1, "passed": 2}],
+     (2, 2, "full")),
+])
+def test_tests_measured_reflects_actual_verdicts(suites, expect):
+    """Review counterexample: tests_measured was `not quick`, so a run in which
+    uv was missing printed "Tests measured this run: yes". Measured means a
+    verdict from actually running the suite; anything else is not."""
+    mod = load_status_mod()
+    repos = [repo(f"r{i}", tests=t) for i, t in enumerate(suites)]
+    s = mod.public_summary(full(healthy(repos=repos)))
+    total, measured, coverage = expect
+    assert s["tests"] == {"suites": total, "measured": measured, "coverage": coverage,
+                          "quick": False}
+    assert s["tests_measured"] is (coverage == "full")
+    assert f"Tests measured this run: {measured} of {total} suite(s) ({coverage})." \
+        in mod.render_public(s)
+
+
+def test_quick_mode_measures_nothing_and_says_so_in_both_formats():
+    mod = load_status_mod()
+    s = mod.public_summary(full(healthy(quick=True, repos=[repo(tests=None)])))
+    assert s["tests"] == {"suites": 1, "measured": 0, "coverage": "none", "quick": True}
+    assert s["tests_measured"] is False
+    assert "0 of 1 suite(s) (none; quick mode)." in mod.render_public(s)
+
+
 def test_public_output_excludes_private_sentinels():
     """Everything the local page may show and the public one must not: raw
     logs, notification text, task names, commit subjects, usernames, home
@@ -698,8 +907,10 @@ def test_public_output_excludes_private_sentinels():
         ]),
         notify_tail=f"{ago(minutes=1)}\tFAILED(URLError)\t{S}-MESSAGE about {S}-HOST",
         heartbeats=hb([{"name": f"{S}-JOB", "path": Path(f"/home/{S}-USER/.local/x"),
-                        "age_min": None, "limit_min": 40}],
-                      unwatched=[{"name": f"{S}-UNWATCHED", "age_min": 3}]),
+                        "age_s": None, "max_s": 2400, "problem": None},
+                       {"name": f"{S}-BROKEN", "path": None, "age_s": None, "max_s": None,
+                        "problem": f"malformed line naming /home/{S}-USER"}],
+                      unwatched=[{"name": f"{S}-UNWATCHED", "age_s": 180}]),
         timers=f"NEXT LEFT {S}-TIMER.timer",
         toolchain=[f"| `uv` | /home/{S}-USER/.local/bin/uv |"],
         models=f"{S}-MODEL 6.6 GB",
