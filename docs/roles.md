@@ -1,10 +1,12 @@
 # Agent roles — who builds, who reviews
 
 Changed: 2026-09-12. Owner: Lukas. Reason: OpenAI usage limits are hit repeatedly, so
-Claude takes substantially more of the work and Astra less. This file is the only place
-the provider/model assignment lives; enduring rules stay in `CLAUDE.md` and, on the
-direction branch, `docs/WORKBENCH.md`. To swap roles, edit the table and the Changed line;
-no other file needs to change.
+Claude takes substantially more of the work and Astra less. This file is the record of the
+provider/model assignment; enduring rules stay in `CLAUDE.md` and, on the direction
+branch, `docs/WORKBENCH.md`. Until that branch routes its active assignment sentences
+here (`docs/workbench-direction.md`, `context/STACK.md`, `docs/claude-project-instructions.md`;
+listed in the pilot task's handoff), a swap must also update or mark historical those
+sentences. Once routed, a swap is an edit to this table and the Changed line.
 
 | Role | Provider and model | Paid for by | Cadence |
 |---|---|---|---|
@@ -33,4 +35,6 @@ no other file needs to change.
 ## Swap procedure
 1. Edit the table and the Changed line, with the reason.
 2. Run the tests; `tests/test_roles.py` checks the table is still complete and unpaid.
-3. Commit. Tell the next session in plain language. Project rules are unaffected.
+3. Until the pointers above are integrated, update the direction-branch sentences too.
+4. Commit with the reason. Tell the next session in plain language. Project rules are
+   unaffected.

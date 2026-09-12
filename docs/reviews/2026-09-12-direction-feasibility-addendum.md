@@ -27,11 +27,11 @@ account from this session. Assumption = neither.
 | Behaviour at Claude quota with usage credits off | Documented | "Without usage credits, additional runs are rejected until the window resets." GitHub webhook events over the hourly cap "are dropped". No replay is documented. |
 | Claude auto-fix reacts to review comments and CI on a PR; can be switched on from the mobile app | Documented; app install on this repo unverified | Web doc, Auto-fix section. Requires the Claude GitHub App on the repository. |
 | Proactive completion push to the phone | Documented in this account's tool surface, not exercised | Fresh-session routines accept `notifications: {push, email}`. Nothing is documented for ordinary sessions. |
-| Codex reviews a PR on `@codex review` or via Automatic reviews | Documented; **not connected here** | The PR 3 "Codex review" was submitted by `lukashoerup`, not a Codex bot: it was hand-carried. Mention trigger needs the commenter's GitHub linked to a Codex account. |
+| Codex reviews a PR on `@codex review` or via Automatic reviews | Documented; connection here unverified | The PR 3 "Codex review" was submitted by `lukashoerup`, not a Codex bot, so it was hand-carried. That shows no bot review exists yet, not that the integration is absent. Mention trigger needs the commenter's GitHub linked to a Codex account. |
 | Codex cloud review model is Astra | **Contradicted by docs** | Models page: the default model for Codex cloud cannot be changed; what's-new: Codex cloud "selects its model automatically", review powered by GPT-5.6 Sol for eligible customers. |
 | Astra on included usage | Documented, allowance-limited | Pricing: Plus includes Astra "in ChatGPT Work and Codex as it rolls out"; a model at its allowance "may be temporarily unavailable until the allowance resets". |
 | Astra selectable non-interactively | Documented for a machine with saved ChatGPT login | `codex exec` reuses saved CLI auth; `--model` selects. The GitHub Action path needs an API key, which is not authorized. |
-| ChatGPT Work event-triggered task picks Astra and posts a GitHub review on Plus | Assumption | Scheduled-task doc says the selected model applies and GitHub events can trigger on "eligible plans"; Plus eligibility and review-posting ability are not established. |
+| ChatGPT Work event-triggered task picks Astra and posts a GitHub review on Plus | Assumption; UI availability observed | Scheduled-task doc says the selected model applies and GitHub events can trigger on "eligible plans". Codex's read-only observation on 2026-09-12: the signed-in Work UI shows GPT-6 Astra selectable and GitHub in the plugin picker. That is UI availability only; repository and test permissions, event-triggered model selection, automatic return and served model remain unverified. |
 | Claude custom connectors from mobile | Documented, not needed for the pilot | Support article via search: connects from Anthropic's cloud; mobile can use already-configured connectors (beta). |
 | ChatGPT developer-mode MCP on mobile | Documented as web-only | Optional entry point; not a pilot blocker. |
 
@@ -41,19 +41,23 @@ verification on 2026-09-12 is the record.
 
 ## Findings (three, consequential)
 
-### F1 — decision: the no-cost, no-relay hosted reviewer does not run Astra
+### F1 — unverified, then a decision: no documented surface yet gives a hosted, included, event-triggered, Astra-pinned reviewer
 - Evidence: the table rows on Codex cloud. The direction document's preferred route names
   "an Astra review executor" without saying which surface can be both hosted, included in
-  the subscription, mention- or event-triggered, and model-pinned. No documented surface is.
-- Consequence: "Fable builds, Astra reviews, cloud, no extra cost, no relay" cannot all
-  hold today. Something gives, and it is Lukas's call which.
+  the subscription, mention- or event-triggered, and model-pinned. No documented surface is;
+  the ChatGPT Work event-triggered route is untested, not ruled out.
+- Consequence: "Fable builds, Astra reviews, cloud, no extra cost, no relay" is not
+  established today, and not shown impossible either. Corrected 2026-09-12 after Codex's
+  review of `c433fdc`: the earlier wording "cannot all hold" overstated the evidence.
 - Options, all within existing subscriptions: (a) accept Codex cloud's auto-selected model
   for routine PR review and reserve Astra for idea and architecture reviews on a machine;
   (b) pin Astra with `codex exec --model` on Lenovo or a Mac, which makes that machine the
   reviewer, not a fallback, and depends on a saved login that expires; (c) test whether a
   ChatGPT Work GitHub-event task on Plus can select Astra and post a GitHub review.
-- Suggested response: run the pilot with (a) and record the served model on every review.
-  It answers whether the native path is already good enough before any Astra plumbing.
+- Suggested response: when the OpenAI allowance allows, one bounded test of (c) first,
+  recording served model and whether a GitHub review is posted; until then run the Claude
+  leg of the pilot with a human review comment. Do not ask Lukas to give up Astra on
+  today's evidence.
 
 ### F2 — correction: at quota Claude rejects or drops; nothing queues
 - Evidence: routines doc quoted above. The direction document asks for "visibly pending"
@@ -131,20 +135,23 @@ a webhook receiver or a public endpoint.
 - B3: corrected above in F3.
 
 ## Verdict
-Direction document at `644d533`: proceed, with F1 made an explicit open decision in the
-document and F2 reworded so "pending" means a label on GitHub, not a retry the vendor does
-not offer. Execution: hosted first, as Lukas prefers, with the reviewer model recorded
+Direction document at `644d533`: proceed, with F1 recorded in the document as unverified
+rather than impossible, a decision only after the one Work-task test, and F2 reworded so
+"pending" means a label on GitHub with an owner and next action, not a retry the vendor
+does not offer. Execution: hosted first, as Lukas prefers, with the reviewer model recorded
 rather than assumed. Lenovo is not needed for the pilot.
 
-Open product decisions, deliberately left visible: which of F1's three options Lukas
-wants; whether an auto-selected review model is acceptable for routine PRs; whether a
-review pending for a long time should ever reach him by push rather than wait for his
-next prompt.
+Open product decisions, deliberately left visible: which F1 route to test first when the
+allowance allows; whether an auto-selected review model would be acceptable for routine
+PRs if Astra cannot be event-triggered; whether a review pending for a long time should
+ever reach him by push rather than wait for his next prompt.
 
 ## Limitations
 - The sandbox egress policy blocks `learn.chatgpt.com`, `developers.openai.com` and
   `support.claude.com`. Those claims rest on search snippets of the official pages, not
   full page reads. The two Claude Code documentation pages were read in full.
 - Not verified: Claude GitHub App installation on the repository, Codex account linking,
-  Plus eligibility for GitHub-event Work tasks, and the credits toggle itself.
+  Plus eligibility for GitHub-event Work tasks, and the credits toggle itself. Codex reports
+  the full scheduled-tasks page documents Work connected tools and GitHub-event tasks on
+  eligible plans; from this sandbox it was reachable only as a search snippet.
 - No pilot step was executed; every "falsifier" above is untested.
