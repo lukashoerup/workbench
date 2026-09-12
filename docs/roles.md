@@ -14,6 +14,9 @@ sentences. Once routed, a swap is an edit to this table and the Changed line.
 | Reviewer | OpenAI, GPT-6 Astra, via ChatGPT Work or Codex | ChatGPT subscription included usage; near exhaustion on 2026-09-12 | One short review per meaningful acceptance point, not per edit |
 | Fallback | none | none authorized | Missing review stays pending, never approval |
 
+Reviewer setup, once, by Lukas: `docs/astra-work-setup.md`. Daily use afterwards: Claude
+applies the `astra-review` label; nobody relays anything.
+
 ## What the allocation means in practice
 - Claude does not wait for Astra to research, plan or prepare routine steps.
 - Routine changes are grouped into one PR. Deterministic checks run first: pytest,
