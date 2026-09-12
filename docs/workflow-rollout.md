@@ -21,6 +21,11 @@ For a policy revision, update registered copies and their versions together;
 never silently replace a project's explicit goals or permission exceptions.
 Automated update PRs and policy-drift checking are not installed yet.
 
+Role record, added 2026-09-12 evening: `docs/roles.md` holds the builder/reviewer
+assignment; `docs/astra-work-setup.md` holds Lukas's one-time reviewer setup, not yet run.
+The GitHub review → Claude return leg was demonstrated twice on PR #2 through the per-PR
+watcher, with no relay on the receiving side. The Astra side remains unconfigured.
+
 ## What has not been established
 - Codex automatic GitHub review settings have not been inspected or enabled
   by this change. Existing reviews, if any, are not evidence of these settings.

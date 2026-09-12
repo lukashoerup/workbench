@@ -15,10 +15,13 @@ one phone conversation, not more scripts, agent activity or documentation.
   between providers without Lukas acting as messenger.
 - No requirement to keep two desktop windows open or carry messages between
   agents. Work should run elsewhere while Lukas's Mac is closed.
-- Current assignment: Claude Fable 5.1 builds using Claude Max; GPT-6 Astra
-  reviews ideas, architecture, code and the way the project is being pursued.
-- Provider/model assignments must be changeable when subscriptions change.
-  Store the role assignment separately from enduring project instructions.
+- Roles live in `docs/roles.md`, apart from these enduring requirements. As of the
+  evening of 2026-09-12: Claude implements and runs routine checks; GPT-6 Astra gives
+  short milestone reviews only, requested by a comment on the PR (see
+  `docs/astra-work-setup.md`). The earlier same-day wording, Fable builds and Astra
+  reviews ideas, architecture, code and process, is historical.
+- Provider/model assignments must be changeable when subscriptions change; changing
+  them is an edit to `docs/roles.md`.
 - Keep a current overview, decisions and useful cross-project lessons. Offer
   concrete next steps when helpful. After inactivity, first consider whether
   the project is still worth pursuing. Enjoyment and learning count as value.

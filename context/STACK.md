@@ -124,8 +124,9 @@ Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check l
 
 **Product direction — clarified 2026-09-12.** One phone app is enough,
 preferably Claude: it should engage Astra and receive the review without two
-open desktop apps. Current roles are Fable 5.1 builder / Astra reviewer, using
-existing allowances where supported; roles must be changeable. Cloud without
+open desktop apps. Roles live in `docs/roles.md` and must stay changeable; the
+same-day split (Claude implements and runs routine checks, Astra reviews milestones
+only) is recorded there, not here. Cloud without
 extra cost is preferred. Investigate native cloud jobs first, with Lenovo as
 fallback; it is off and no OS change was chosen. No additional server, API or
 overage spending is authorized. At quota limits, keep work pending rather

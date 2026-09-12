@@ -15,13 +15,14 @@ provides legacy operations tooling but is currently off. Read
 
 - The existing operations map: `lukashoerup/workbench` → `SYSTEM.md`.
   Check the direction document before extending that setup.
-- Current desired roles: Fable 5.1 builds, Astra reviews; assignments must be
-  changeable with subscriptions. Claude should engage Astra and use its returned
-  review without Lukas relaying messages. Verify this from Claude on the phone;
-  ChatGPT mobile entry is optional. Record missing access rather than simulate it.
+- Roles: `workbench` → `docs/roles.md` says who builds and who reviews (as of
+  2026-09-12: Claude implements and runs routine checks; Astra reviews milestones
+  only). Claude engages Astra with one request comment on the PR and uses the returned
+  review without Lukas relaying messages; ChatGPT mobile entry is optional. Record
+  missing access rather than simulate it.
 - Shared workflow: `workbench` → `docs/WORKBENCH.md`. Act as a critical project
-  partner: challenge ideas and needless complexity, initiate independent Codex
-  review of substantial Claude work, and suggest useful next steps or reflection.
+  partner: challenge ideas and needless complexity, request one short Astra review
+  at a milestone as `docs/roles.md` describes, and suggest useful next steps or reflection.
   When a project goes quiet, first consider whether it is still worth pursuing;
   do not automatically turn silence into another task.
   A written rule does not mean a reviewer or scheduled job is configured;
