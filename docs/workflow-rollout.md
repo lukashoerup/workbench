@@ -32,8 +32,18 @@ Automated update PRs and policy-drift checking are not installed yet.
 - The paste-ready Claude Project instructions are updated in this repository;
   that does not update the separately stored claude.ai Project settings.
 
-The September policy changes were authored by Codex and have not received an
-independent Claude review. Do not present them as independently approved.
+Claude Fable 5.1 reviewed Workbench `6b21c8c` and Erhvervsklubben `44981f9`;
+see [PR #2](https://github.com/lukashoerup/workbench/pull/2) and Codex's response.
+That review was conditional and does not cover later revisions. The dispatching
+agent owns pending review: record the exact revision, access/quota blocker and
+next retry in the task. Continue unrelated work; no automatic 48-hour approval.
+
+Lukas clarified the phone-first, interchangeable-model goal on
+2026-09-12. Read `docs/workbench-direction.md` before more infrastructure work.
+Lenovo is powered off (confirmed by Lukas). Both Lenovo and hosted execution
+are candidates; neither has passed the proposed end-to-end mobile pilot.
+Final clarification: one phone app is enough, preferably Claude. ChatGPT mobile
+entry is optional; automatic handoff of work/results between agents remains key.
 
 ## Next implementation acceptance checks
 1. Confirm actual review access/settings and select a bounded execution

@@ -1,7 +1,7 @@
 # System map
 
-Read this if you are a Claude (phone app, cloud session, any machine) meeting
-this system for the first time. It is the half-page version of everything.
+This maps the existing/legacy operations setup. For the current product goal,
+read `docs/workbench-direction.md` first; the new execution path is unverified.
 Owner: Lukas (Copenhagen). Hobby projects, optimized for minimal human time.
 Shared review and critical project-partner rules: `docs/WORKBENCH.md`.
 Rules adopted 2026-09-08; running integrations tracked in `docs/workflow-rollout.md`.
@@ -10,11 +10,11 @@ Rules adopted 2026-09-08; running integrations tracked in `docs/workflow-rollout
 
 | Piece | Role |
 |---|---|
-| `lenovo` (always-on Ubuntu box) | The ops box, **never a workspace**: scheduled jobs, watchdog, STATUS.md publisher, local LLM (Ollama). Nobody logs in day-to-day. |
+| `lenovo` (Ubuntu; powered off as of 2026-09-12) | Existing ops setup: scheduled jobs, watchdog, STATUS.md publisher, local LLM. Its future executor role is under review. |
 | GitHub (`lukashoerup/*`) | **Single source of truth** for all code, docs, tasks, decisions. The shared memory between every Claude and every device. |
 | Anthropic cloud (dispatched sessions) | Repo work while Lukas's Macs are off: dispatch from phone/desktop, results return as commits/PRs. |
 | Macs (desktop app / VS Code) | Optional interactive dev. Nothing depends on them being on. |
-| Phone (Claude app, GitHub app, Telegram) | Where Lukas monitors and decides. |
+| Phone (Claude, ChatGPT, GitHub, Telegram) | Where Lukas monitors and decides. Bidirectional model dispatch is a target, not an active integration. |
 | Supabase | Project data (erhvervsklubben). Prod is sacred; staging is disposable. |
 
 ## The three channels
@@ -68,8 +68,8 @@ He does not program, so an update he cannot read is not an update.
 **In chat: plain language** — no file paths, no jargon, no code.
 **In the repo: technical as usual** — the split is by channel, not a lowering
 of standards anywhere.
-**Interrupt him** for meaningful decisions, operational changes, and occasional
-useful project reflection under the shared workflow; avoid repeated nagging.
+**Interrupt him** for money, security, access, taste or operational changes;
+also for useful reflection under `docs/WORKBENCH.md`, respecting its limits.
 
 ## Repos
 
