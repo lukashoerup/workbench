@@ -1,8 +1,8 @@
 # Workbench
 
-Shared tooling for the always-on home server `lenovo`: notifications, watchdog,
-status publishing, and the setup scripts that built the machine. Consumed by
-every project repo on this box.
+Project coordination for Lukas. Current code provides Lenovo notifications,
+watchdog, status publishing and setup. The phone-first, interchangeable-agent
+target and its unverified integrations are in `docs/workbench-direction.md`.
 
 ## Read this first if you are answering "what is going on?"
 
@@ -41,6 +41,7 @@ publisher is broken — say so rather than reporting its contents as current.
 ## Document routing (read ONLY when needed)
 | Working on... | Read first |
 |---|---|
+| Shared workflow and product direction | `docs/WORKBENCH.md`, `docs/workbench-direction.md` |
 | The whole system, what runs where | `SYSTEM.md` |
 | What the machine is doing right now | `STATUS.md` |
 | The Claude Project setup (claude.ai) | `docs/claude-project-instructions.md` |
@@ -48,6 +49,7 @@ publisher is broken — say so rather than reporting its contents as current.
 | Reusable recipes | `context/PATTERNS.md` |
 | Dated gotchas | `context/LEARNINGS.md` |
 | Why the setup is shaped this way | `workbench-setup-spec.md` |
+| Who builds, who reviews, past reviews | `docs/roles.md`, `docs/reviews/` |
 
 ## How Lukas reaches this system
 | From | Path | Role |
@@ -62,8 +64,14 @@ He does not program, so an update he cannot read is not an update.
 **In chat: plain language** — no file paths, no jargon, no code.
 **In the repo: technical as usual** — docs, commits and task files need the
 precision; the split is by channel, not a lowering of standards.
-**Interrupt him only** for a decision genuinely his (money, security, access,
-taste), or when the machine's behaviour changes.
+**Interrupt him** for money, security, access, taste or operational changes;
+also for useful reflection under `docs/WORKBENCH.md`, respecting its limits.
+
+## Code Review Rules
+- Read `docs/WORKBENCH.md` before substantial work; initiate independent review.
+- Check goal fit and needless complexity as well as correctness; cite evidence.
+- Flag data loss, unintended publication, or healthy claims without measurements.
+- Missing or stale independent review is pending, never approval.
 
 ## Docs duty
 Any change that invalidates a docs statement MUST fix it in the same commit.

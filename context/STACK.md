@@ -1,6 +1,8 @@
 # Stack — standard choices
 
-Cross-project defaults. Deviating from these needs a reason recorded in the project's PROJECT.md.
+Cross-project defaults. Deviations need a reason in the project's PROJECT.md.
+The 2026-09-12 direction below supersedes older assumptions about entry points
+and where agent work must run; hardware details describe the existing setup.
 
 ## Machine
 | | |
@@ -75,11 +77,13 @@ development work, regardless of harness.
 
 ## Autonomy model — decided 2026-07-26
 Two layers, because they have different costs and different risks.
+Historical boundary: only the free layer was allowed unattended by default.
+The later partner workflow proposes bounded subscription-backed work; it does
+not itself enable that work or authorize metered API spending.
 
-**Free layer, runs forever, zero cloud tokens.** CI on every push, the watchdog,
-the status publisher, and the §8 local-model jobs (nightly triage, weekly
-gardener). This is what actually delivers "keeps working without being
-prompted", and it is the only layer allowed to run unattended by default.
+**Operational layer, zero cloud tokens.** CI, watchdog and status publisher;
+the §8 local-model triage and gardener jobs remain planned. These monitor
+operations; they do not provide independent project judgment.
 
 **Agent layer, bounded.** Headless Claude work blocks on the box, off by
 default. Spec §1 warns against long autonomous cloud-agent runs because
@@ -93,6 +97,17 @@ no Tailscale, HTTPS-only egress) and inbound access is not wanted. GitHub is
 the meeting point, exactly as the 2026-07-24 deferral note put it: "cloud =
 Claude working, lenovo = scripts working, GitHub = meeting point."
 
+**Independent review and project partner — agreed 2026-09-08.**
+`docs/WORKBENCH.md` is the shared policy: Codex reviews substantial Claude
+plans and work; Codex-built work receives a different-model reviewer. Review
+includes whether the idea and working method are worthwhile, not just code.
+Agents initiate routine checks and scoped fixes without Lukas requesting them.
+Occasional project guidance may challenge priorities or suggest simplifying,
+experimenting, parking or finishing. These reviews are bounded agent work;
+their runtime/authentication and budget must be verified before scheduling.
+No background service is implied by writing the rule. Adoption and remaining
+integration work are tracked in `docs/workflow-rollout.md`.
+
 ## Scheduled jobs
 | Job | Cadence | Heartbeat marker |
 |---|---|---|
@@ -104,3 +119,18 @@ Planned, not yet installed: `workbench-apply` (pull + self-install),
 
 Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check list from
 `~/.config/workbench/watchdog.conf`. Add a `heartbeat` line there for every new job.
+
+**Quiet-project guidance — agreed 2026-09-09.** Lukas chose: "Question whether it is still worth pursuing." Start with current value and priorities before proposing another task; inactivity alone does not establish lack of value.
+
+**Product direction — clarified 2026-09-12.** One phone app is enough,
+preferably Claude: it should engage Astra and receive the review without two
+open desktop apps. Roles live in `docs/roles.md` and must stay changeable; the
+same-day split (Claude implements and runs routine checks, Astra reviews milestones
+only) is recorded there, not here. Cloud without
+extra cost is preferred. Investigate native cloud jobs first, with Lenovo as
+fallback; it is off and no OS change was chosen. No additional server, API or
+overage spending is authorized. At quota limits, keep work pending rather
+than silently paying more or replacing the required reviewer.
+Prove mobile dispatch, exact models and returned results before building more
+server machinery. See `docs/workbench-direction.md`; these are requirements,
+not a claim of working integrations or permission to expand paid usage.

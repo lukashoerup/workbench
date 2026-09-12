@@ -11,12 +11,16 @@ set -euo pipefail
 NAME="${1:-}"
 DESC="${2:-}"
 ROOT="$HOME/projects/${NAME}"
+SCRIPT="$(readlink -f "${BASH_SOURCE[0]}")"
+WORKFLOW="$(dirname "$SCRIPT")/../docs/WORKBENCH.md"
 
 [ -n "$NAME" ] || { echo "usage: new-project.sh <name> \"<description>\"" >&2; exit 1; }
 [ -e "$ROOT" ] && { echo "$ROOT already exists" >&2; exit 1; }
+[ -r "$WORKFLOW" ] || { echo "shared Workbench policy missing: $WORKFLOW" >&2; exit 1; }
 
 mkdir -p "$ROOT"/{docs,tasks/done,tests/fixtures,scrapers}
 cd "$ROOT"
+cp "$WORKFLOW" docs/WORKBENCH.md
 
 cat >CLAUDE.md <<EOF
 # ${NAME}
@@ -39,10 +43,16 @@ ${DESC:-[What it does, who/what consumes it.]}
 - Definition of done: tests green + lint clean + affected docs updated + task
   file moved to \`tasks/done/\`.
 
+## Code Review Rules
+- Read \`docs/WORKBENCH.md\` before substantial work; initiate independent review.
+- Check goal fit, needless complexity and consequential defects with evidence.
+- Missing or stale independent review is pending, never approval.
+
 ## Document routing (read ONLY when needed)
 | Working on...            | Read first                        |
 |--------------------------|-----------------------------------|
 | Goals, scope, priorities | docs/PROJECT.md                   |
+| Shared review and project partner | docs/WORKBENCH.md         |
 | Architecture, dataflow   | docs/ARCHITECTURE.md              |
 | Setup, deploy, secrets   | docs/SETUP.md                     |
 | Known pitfalls           | docs/LEARNINGS.md                 |
@@ -126,6 +136,10 @@ cat >tasks/TEMPLATE.md <<'EOF'
 
 ## Docs affected
 [Which docs files must be updated? Write "none" deliberately, never as default.]
+
+## Review evidence
+[For substantial work: goal/plan and code revision, builder/reviewer pairing,
+scope, material findings and resolution. Missing independent review is pending.]
 
 ## Size check
 [Must fit one focused session, ~30–60 min of agent work. Bigger → split it.]
