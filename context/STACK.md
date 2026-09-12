@@ -125,8 +125,11 @@ Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check l
 **Product direction — clarified 2026-09-12.** One phone app is enough,
 preferably Claude: it should engage Astra and receive the review without two
 open desktop apps. Current roles are Fable 5.1 builder / Astra reviewer, using
-existing allowances where supported; roles must be changeable. Investigate
-both Lenovo and hosted execution. Lenovo is off; no OS change was chosen.
+existing allowances where supported; roles must be changeable. Cloud without
+extra cost is preferred. Investigate native cloud jobs first, with Lenovo as
+fallback; it is off and no OS change was chosen. No additional server, API or
+overage spending is authorized. At quota limits, keep work pending rather
+than silently paying more or replacing the required reviewer.
 Prove mobile dispatch, exact models and returned results before building more
 server machinery. See `docs/workbench-direction.md`; these are requirements,
 not a claim of working integrations or permission to expand paid usage.

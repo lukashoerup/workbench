@@ -4,8 +4,10 @@
 Lukas's final 2026-09-12 clarification: one phone app is enough, preferably
 Claude. It should dispatch Astra and retrieve results without
 two open desktop windows or copied messages. Fable 5.1 builds; Astra reviews;
-the assignment must remain changeable with subscriptions. Investigate both
-Lenovo (currently powered off) and hosted execution. No OS change was chosen.
+the assignment must remain changeable with subscriptions. Cloud without extra
+cost is preferred; investigate native subscription-backed jobs first and use
+Lenovo (currently powered off) as fallback. No OS change was chosen. Quota
+exhaustion leaves work pending; no added server/API/overage spending is authorized.
 
 ## Changes
 Added `docs/workbench-direction.md`: goals, candid assessment, official-source

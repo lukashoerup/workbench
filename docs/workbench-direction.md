@@ -22,8 +22,10 @@ one phone conversation, not more scripts, agent activity or documentation.
 - Keep a current overview, decisions and useful cross-project lessons. Offer
   concrete next steps when helpful. After inactivity, first consider whether
   the project is still worth pursuing. Enjoyment and learning count as value.
-- Compare BOTH Lenovo and hosted execution. Lukas confirmed Lenovo is powered
-  off. It runs Ubuntu; no decision to reinstall or replace it has been made.
+- Prefer cloud if it works within existing subscriptions without extra cost.
+  Investigate both options, but use Lenovo as a fallback if native cloud jobs
+  cannot meet the requirements. Lenovo is powered off and runs Ubuntu; no
+  decision to reinstall or replace it has been made.
 
 The final mobile clarification supersedes the earlier requirement for BOTH
 phone apps. The home server is an execution option, not the product's centre.
@@ -60,24 +62,31 @@ Checked against official documentation on 2026-09-12:
 | Codex can run without an open window, with a chosen model | [Non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode), [model selection](https://learn.chatgpt.com/docs/models), and [headless account sign-in](https://learn.chatgpt.com/docs/auth) are documented. Astra access must be verified on the actual executor. |
 | Native Codex GitHub review can remove manual dispatch | [GitHub review](https://learn.chatgpt.com/docs/third-party/github) supports automatic reviews. It is not proof of an Astra run; the Codex cloud default model is not freely selectable. |
 | Another hosted OpenAI path may be smaller | [ChatGPT Work and scheduled/event tasks](https://learn.chatgpt.com/docs/automations) can use connected tools on eligible accounts. Test Astra, repository/test access and return delivery in that surface separately from Codex cloud. |
+| Included OpenAI usage is available, but not unlimited | [Pricing](https://learn.chatgpt.com/docs/pricing) includes Work/Codex in Plus, lists cloud integrations and Astra usage allowances, and shares usage across local/cloud work. This does not prove Astra can be selected in the required event-triggered review surface. |
 | Claude can call a custom connector from mobile | [Remote connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) connect from Anthropic's cloud; the server must be internet-reachable and authenticated. A private Tailscale address alone does not satisfy this. |
 | Optional ChatGPT mobile entry | **Unverified, not a pilot blocker.** [Developer-mode MCP](https://developers.openai.com/api/docs/guides/developer-mode) documents web read/write tools, not native mobile support. Verify that separately if adding this entry point later. |
 
-Subscription allowance is not general API credit. A paid API route must be
-identified explicitly with its own budget; never silently switch billing when
-a subscription hits a limit. CLI account authentication can expire. This
+For this pilot, use included subscription allowance only. No additional server,
+API, overage or credit purchase is authorized. Verify billing settings before
+enabling background runs; do not assume metered overage is disabled. At a quota
+limit, leave work visibly pending and resume within a bounded retry policy;
+never silently switch billing or the required reviewer model. Claude routines
+can reject excess runs until reset, so automatic replay must be tested, not
+assumed. Subscription allowance is not general API credit.
+
+CLI account authentication can expire. This
 actually blocked our direct Claude cloud follow-up on 2026-09-12, after the
 installed CLI was updated to 2.1.269. The feedback exists on GitHub; no cloud
 follow-up was successfully dispatched by that attempt.
 
-## Two execution options to investigate
+## Execution options: cloud first, Lenovo fallback
 
 | | Lenovo | Hosted execution |
 |---|---|---|
-| What runs there | A small task executor using supported provider clients; heavy model inference remains with the providers | Prefer vendor cloud jobs; add a small hosted executor only for missing handoff/model-control capabilities |
+| What runs there | A small task executor using supported provider clients; heavy model inference remains with the providers | Prefer native vendor cloud jobs; an extra hosted worker is outside the first pilot |
 | Existing allowances | Prefer supported Claude/ChatGPT account sign-in; confirm both selected models | Claude cloud can use Max. OpenAI hosted Work eligibility or hosted CLI account sign-in must be verified; APIs bill separately |
 | Availability | Requires power, internet, restart recovery and remote access | Removes the home power dependency; vendor limits, hosting failures and authentication still matter |
-| Operating cost | Electricity and maintenance; owning it does not make upkeep free | Native jobs may fit existing allowances; an extra executor has hosting costs and still needs maintenance |
+| Operating cost | Electricity and maintenance; owning it does not make upkeep free | Target no added charge within current subscriptions; quota exhaustion waits rather than buying more usage |
 | Main uncertainty | Can it recover and deliver results without Lukas tending it? | Can the required models, Claude mobile entry and return delivery work without a custom platform? |
 
 Ubuntu is not itself a reason to start over: a headless executor fits this
@@ -92,9 +101,11 @@ has been authorized or performed by this document.
 
 Preferred first route: Claude Code in the phone app → a scoped GitHub task/PR
 → an Astra review executor → a GitHub review → Claude's PR Auto-fix → result
-in Claude. Use a hosted OpenAI task if the account exposes the required model
-and tools; otherwise compare a small supported CLI executor on Lenovo versus
-a hosted worker. This route may avoid a custom public dispatch server entirely.
+in Claude. First test native hosted jobs under existing allowances with both
+personal machines off. If the required Astra model, tools or handoff are missing,
+document the specific gap and evaluate Lenovo next. Do not add a paid worker
+or API as an implicit fallback. This route may avoid a custom public dispatch
+server entirely.
 Use a short proposal artifact for material idea reviews; small fixes do not
 need an extra proposal stage. None of this chain is yet verified end to end.
 

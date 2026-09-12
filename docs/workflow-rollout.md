@@ -40,14 +40,17 @@ next retry in the task. Continue unrelated work; no automatic 48-hour approval.
 
 Lukas clarified the phone-first, interchangeable-model goal on
 2026-09-12. Read `docs/workbench-direction.md` before more infrastructure work.
-Lenovo is powered off (confirmed by Lukas). Both Lenovo and hosted execution
-are candidates; neither has passed the proposed end-to-end mobile pilot.
+Cloud within existing subscription allowances, without extra cost, is Lukas's
+preferred route; Lenovo is the fallback and is currently powered off. Neither
+has passed the proposed end-to-end mobile pilot. No added hosting, API or
+overage spending is authorized; quota exhaustion must leave work pending.
 Final clarification: one phone app is enough, preferably Claude. ChatGPT mobile
 entry is optional; automatic handoff of work/results between agents remains key.
 
 ## Next implementation acceptance checks
-1. Confirm actual review access/settings and select a bounded execution
-   environment and budget. Do not rely on Lenovo while its report is stale.
+1. Confirm native cloud access, exact Astra selection, return delivery and
+   included-usage billing settings. Test quota exhaustion without paid fallback.
+   Evaluate Lenovo only if cloud cannot meet the requirements without extra cost.
 2. Enable and verify one Codex review of a Claude-authored PR without Lukas
    manually requesting it; verify relevant fixes receive a fresh review.
 3. Connect dedicated idea/project review and a trusted current-revision
