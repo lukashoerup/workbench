@@ -48,6 +48,7 @@ publisher is broken — say so rather than reporting its contents as current.
 | Reusable recipes | `context/PATTERNS.md` |
 | Dated gotchas | `context/LEARNINGS.md` |
 | Why the setup is shaped this way | `workbench-setup-spec.md` |
+| Who builds, who reviews, past reviews | `docs/roles.md`, `docs/reviews/` |
 
 ## How Lukas reaches this system
 | From | Path | Role |
