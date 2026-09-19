@@ -3,12 +3,13 @@
 Read this if you are a Claude (phone app, cloud session, any machine) meeting
 this system for the first time. It is the half-page version of everything.
 Owner: Lukas (Copenhagen). Hobby projects, optimized for minimal human time.
+Who builds, which model, when Astra reviews: `docs/roles.md`.
 
 ## What runs where
 
 | Piece | Role |
 |---|---|
-| `lenovo` (always-on Ubuntu box) | The ops box, **never a workspace**: scheduled jobs, watchdog, STATUS.md publisher, local LLM (Ollama). Nobody logs in day-to-day. |
+| `lenovo` (Ubuntu box, **paused 2026-09-19**, off) | Was the ops box: scheduled jobs, watchdog, STATUS.md publisher, local LLM. Dormant until Lukas un-pauses it; `STATUS.md` is frozen. |
 | GitHub (`lukashoerup/*`) | **Single source of truth** for all code, docs, tasks, decisions. The shared memory between every Claude and every device. |
 | Anthropic cloud (dispatched sessions) | Repo work while Lukas's Macs are off: dispatch from phone/desktop, results return as commits/PRs. |
 | Macs (desktop app / VS Code) | Optional interactive dev. Nothing depends on them being on. |

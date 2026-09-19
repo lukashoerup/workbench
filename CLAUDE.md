@@ -6,13 +6,10 @@ every project repo on this box.
 
 ## Read this first if you are answering "what is going on?"
 
-**[STATUS.md](STATUS.md)** — regenerated every 30 minutes by the machine itself
-and pushed here. It leads with anything that needs a human, then repo and test
-state, scheduled jobs, and machine health. It is measured at generation time,
-never remembered.
-
-If STATUS.md's timestamp is more than an hour old, the box is offline or the
-publisher is broken — say so rather than reporting its contents as current.
+**Lenovo is paused (2026-09-19, Lukas's decision) and `STATUS.md` is frozen at
+07 Aug.** Answer from open PRs and `tasks/` instead. When the box is un-paused,
+STATUS.md is regenerated every 30 minutes and is measured, never remembered; a
+timestamp over an hour old then means the box is offline — say so.
 
 ## Commands
 - Test: `uv run pytest tests/ -o addopts=""`
@@ -41,6 +38,7 @@ publisher is broken — say so rather than reporting its contents as current.
 ## Document routing (read ONLY when needed)
 | Working on... | Read first |
 |---|---|
+| Who builds, which model, when Astra reviews | `docs/roles.md` (read every session) |
 | The whole system, what runs where | `SYSTEM.md` |
 | What the machine is doing right now | `STATUS.md` |
 | The Claude Project setup (claude.ai) | `docs/claude-project-instructions.md` |
@@ -48,6 +46,7 @@ publisher is broken — say so rather than reporting its contents as current.
 | Reusable recipes | `context/PATTERNS.md` |
 | Dated gotchas | `context/LEARNINGS.md` |
 | Why the setup is shaped this way | `workbench-setup-spec.md` |
+| Past independent reviews | `docs/reviews/` |
 
 ## How Lukas reaches this system
 | From | Path | Role |

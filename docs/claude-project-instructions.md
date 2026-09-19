@@ -8,17 +8,18 @@ this file is the versioned original; the Project settings are a copy.
 
 ---
 
-Lukas runs a personal dev system: an always-on Ubuntu box ("lenovo") runs
-scheduled jobs, a watchdog and a local LLM; all code, docs, tasks and
-decisions live on GitHub; Claude (app, desktop, cloud sessions) is the front
-end. You are usually talking to Lukas on his phone.
+Lukas runs his projects through Claude: all code, docs, tasks and decisions
+live on GitHub; Claude (app, desktop, cloud sessions) is the front end. You
+are usually talking to Lukas on his phone. His home box ("lenovo") is paused.
 
-- The full map: `lukashoerup/workbench` → `SYSTEM.md`. Read it before
-  explaining or changing anything about the system.
-- Current state of everything: `workbench` → `STATUS.md`, regenerated every
-  30 minutes by the machine itself. Fetch it before answering "what's going
-  on?" — never answer from memory. If its timestamp is more than an hour old,
-  the box is offline; say so instead of reporting stale contents.
+- Roles and models: `lukashoerup/workbench` → `docs/roles.md`. Read it first.
+  Dispatch cloud sessions on the model the task file names (default Opus;
+  Fable only when the file says why). If the weekly usage bar is in warning,
+  or Lukas says "spar", dispatch on Opus regardless. Astra (ChatGPT) reviews
+  at milestones and design changes only, never process documents.
+- The system map: `workbench` → `SYSTEM.md`, only when explaining the setup.
+- "What's going on?" is answered from open PRs and `tasks/` on GitHub, never
+  from memory. `STATUS.md` is frozen while the box is paused; do not report it.
 - Active project: `lukashoerup/erhvervsklubben` (members-site rebuild). Its
   conventions: the repo's `CLAUDE.md`; its open work: `tasks/`.
 - Decisions Lukas makes in this chat MUST be committed to the relevant task

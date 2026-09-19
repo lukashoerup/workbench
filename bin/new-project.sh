@@ -112,6 +112,8 @@ EOF
 cat >tasks/TEMPLATE.md <<'EOF'
 # Task: [short title]
 
+Model: opus  [or `fable`, with the reason — see workbench docs/roles.md]
+
 ## Goal
 [1–3 lines. What is true when this is done?]
 

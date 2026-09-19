@@ -1,3 +1,5 @@
+> **PARKED 2026-09-19** — Lenovo paused by Lukas's decision. Status: finished on branch `claude/naeste-trin-yjpv8y` (04 Aug, never merged); rebase when the box returns.
+
 # Task: bootstrap lenovo so the repo can reach the box
 
 **Run this from a Mac desktop Claude Code session** (SSH over Tailscale). A

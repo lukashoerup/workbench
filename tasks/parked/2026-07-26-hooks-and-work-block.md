@@ -1,3 +1,5 @@
+> **PARKED 2026-09-19** — Lenovo paused by Lukas's decision. Status: not started; needs the box.
+
 # Task: guardrail hooks, then the bounded work-block runner
 
 Depends on: the box being able to pull, and `reports/` publishing existing

@@ -9,8 +9,9 @@ Do not re-investigate: the findings are below and were measured on 2026-09-19.
 2. Most work runs in Claude. **Opus for simpler code, Fable 5.1 for complex code.**
 3. **Save on Fable when the weekly window is above 60% or near its limit.** Opus then
    takes everything it can.
-4. Astra (ChatGPT) reviews **only the important things, occasionally**. No review
-   rounds on documents about process.
+4. Astra (ChatGPT) reviews **only the important things**: milestones, design changes,
+   whatever the development flow calls for. No weekly cap. No review rounds on
+   documents about process.
 5. All of it should be automatic, not chosen per session by Lukas.
 
 ## What was found (so nobody has to look again)
@@ -48,8 +49,8 @@ Content, nothing more:
   otherwise. Until a session can read the percentage, the warning flag *is* the 60%
   rule. Lukas sees the exact bar in the app; the word "spar" from him means the same.
 - Scheduled work (routines) is always pinned to Opus.
-- Reviewer: Astra, at most once a week, only at a milestone: a PR with real code ready
-  to merge, or a decision with money or data consequences. Never on process docs,
+- Reviewer: Astra, when the flow calls for it: a milestone, a PR with real code ready
+  to merge, a design or direction change, a decision with money or data consequences. Never on process docs,
   never on Fable's or Opus's reviews of each other.
 - How Astra is engaged, simplest first: Lukas opens ChatGPT, picks Astra, pastes the PR
   link. The one-paste automation test in `docs/astra-work-setup.md` (kept on the closed
@@ -121,4 +122,8 @@ One Opus session. If it runs long, split after step 4 and open the PR then.
 
 ## Working notes (agent fills in)
 - 2026-09-19: written by the investigating session on `claude/zen-knuth-z2xyd4` after
-  Lukas paused Lenovo. Nothing merged, closed, enabled or purchased. 87 tests green.
+  Lukas paused Lenovo.
+- 2026-09-19, later: Lukas: "you do it, I do nothing; Astra needs no weekly cap, it
+  follows milestones and design changes." Executed by the same session on its own
+  branch (the designated one), not a `task/` branch. PR #3 merged at `cbde9c1`.
+  Steps 2–6 done in this commit; step 7 (close #1 and #2) after this PR merges.

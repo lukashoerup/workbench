@@ -73,7 +73,16 @@ if the 9B's wall-clock becomes a problem at real volume.
 **Hard rule:** local models do bounded structured tasks only. They never do open-ended
 development work, regardless of harness.
 
-## Autonomy model — decided 2026-07-26
+## Who builds, which model, when Astra reviews — decided 2026-09-19
+`docs/roles.md`, and only there. Opus by default, Fable 5.1 only for tasks whose file
+says why, save mode on the weekly warning flag, Astra at milestones and design changes.
+
+## Lenovo — paused 2026-09-19
+Lukas: the box is unnecessary for now. Everything below about it is dormant, not wrong.
+The finished August work (notify outbox, deterministic triage, Claude gardener, bootstrap
+close-out) lives on `claude/naeste-trin-yjpv8y`; the task files are in `tasks/parked/`.
+
+## Autonomy model — decided 2026-07-26 (dormant while Lenovo is paused)
 Two layers, because they have different costs and different risks.
 
 **Free layer, runs forever, zero cloud tokens.** CI on every push, the watchdog,
@@ -93,14 +102,15 @@ no Tailscale, HTTPS-only egress) and inbound access is not wanted. GitHub is
 the meeting point, exactly as the 2026-07-24 deferral note put it: "cloud =
 Claude working, lenovo = scripts working, GitHub = meeting point."
 
-## Scheduled jobs
+## Scheduled jobs — ALL PAUSED 2026-09-19 (the box is off)
 | Job | Cadence | Heartbeat marker |
 |---|---|---|
 | `workbench-status.timer` | 30 min | _watched as a unit, not a heartbeat_ |
 | `workbench-watchdog.timer` | 15 min | _watched as a unit, not a heartbeat_ |
+| `workbench-apply.timer` | 10 min | pull + self-install |
 
-Planned, not yet installed: `workbench-apply` (pull + self-install),
-`workbench-triage` (nightly 03:15), `workbench-gardener` (Sunday 04:30).
+Built but never merged: `workbench-triage` and `workbench-gardener`, on branch
+`claude/naeste-trin-yjpv8y` (04 Aug). Rebase when the box returns.
 
 Watchdog (`~/bin/watchdog-check.sh`, user timer, every 15 min) reads its check list from
 `~/.config/workbench/watchdog.conf`. Add a `heartbeat` line there for every new job.

@@ -1,5 +1,8 @@
 # Task: honest health reporting
 
+> **Done 2026-09-19 (generator half).** PR #3 merged at `b231f26`. The publisher half
+> is parked with Lenovo (`tasks/parked/`, decision of 2026-09-19).
+
 ## Goal
 STATUS.md answers "what is going on?" for a reader who cannot check. It was
 answering with more confidence than it had measured: a real pytest failure
