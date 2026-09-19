@@ -1,97 +1,124 @@
-# Task: put the work back in Claude, cut the review carousel, route models by cost
+# Task: put the work back in Claude, pause Lenovo, cut the review carousel
 
-## Decision — Lukas, 2026-09-19 (chat, recorded here verbatim in substance)
-- Most work runs in Claude. Astra (ChatGPT) is used **only** to review the more
-  important things, occasionally, in review sessions that are spun up automatically.
-- Inside Claude: **Opus for simpler code, Fable 5.1 for more complex code.**
-- **When weekly Claude usage is above 60%, economise on Fable.** When the Fable
-  limit is close, economise on Fable too — Opus takes everything it can.
-- All of this should run automatically, not by Lukas choosing per session.
-- Lukas's own read of the situation, which this investigation confirms: the setup
-  had drifted onto a side track.
+Model: opus. Everything here is docs, task hygiene and GitHub clicks; nothing needs Fable.
+Do not re-investigate: the findings are below and were measured on 2026-09-19.
 
-## What the investigation found (measured 2026-09-19, main at `6ab5193`)
-| Fact | Evidence |
-|---|---|
-| The box has been dark for six weeks | `STATUS.md` on `main` was generated 07 Aug 05:05; Lukas confirmed lenovo powered off on 2026-09-12 (PR #2 comments). The page still says "Nothing. All clear." |
-| `main` has not moved since 5 Sep | 87 tests green locally today. Nothing merged since. |
-| Three PRs open, all stalled since 12 Sep | #1 (workflow + direction docs, 689 lines), #2 (reviews of reviews + Astra setup, 720 lines, docs only), #3 (honest health reporting, real code, reviewed and accepted 12 Sep, CI green, **mergeable, never merged**) |
-| An August branch with finished work was never merged | `claude/naeste-trin-yjpv8y` (04 Aug): notify outbox, deterministic nightly triage, gardener, bootstrap close-out — 2,396 lines with tests. It moves three task files to `done/` that `main` still lists as open. |
-| 12 Sep was a review carousel, not development | Four review rounds on PR #2 in one afternoon (Codex → Claude fix → Codex → Claude fix), every one reading ~1,400 lines of process docs. Zero product code changed. |
-| Every "Codex review" ran through Lukas's own account and Mac | All reviews and comments on #1–#3 are authored by `lukashoerup`; the task file records the posting side as hand-carried. The thing Lukas did not want — being the messenger — was the mechanism. |
-| The automatic Astra review has never run | `docs/astra-work-setup.md` (PR #2) is an untested ChatGPT Work event task. No Astra review has ever reached a PR by automation. OpenAI allowance was "near exhaustion" on 12 Sep — spent on reviewing policy documents. |
-| Claude's weekly window is already in warning | This session's rate-limit record: type `seven_day_overage_included`, status `allowed_warning`, resets 2026-09-22 14:00 UTC. The percentage is not exposed to a session; the warning flag is. |
-| The one earlier independent review said so | `docs/reviews/2026-09-09-…` (Claude, on PR #2): "the policy must give overview and occasional guidance, not ceremony"; recommended ~30 lines instead of 99 and warned that every substantial change would wait on a hand-carried review round. The disposition kept the 99 lines. |
+## Decisions — Lukas, 2026-09-19 (chat; recorded here so other sessions read them)
+1. **Lenovo is unnecessary for now. That track is paused.** Nothing is built for or
+   repaired on the box until Lukas un-pauses it.
+2. Most work runs in Claude. **Opus for simpler code, Fable 5.1 for complex code.**
+3. **Save on Fable when the weekly window is above 60% or near its limit.** Opus then
+   takes everything it can.
+4. Astra (ChatGPT) reviews **only the important things, occasionally**. No review
+   rounds on documents about process.
+5. All of it should be automatic, not chosen per session by Lukas.
 
-Verdict: the *direction* (phone-first, Claude builds, occasional independent review)
-is sound. The *execution* built a review bureaucracy before there was anything to
-review, and then spent both subscriptions reviewing the bureaucracy.
+## What was found (so nobody has to look again)
+- `STATUS.md` on `main` is from 07 Aug; the box was confirmed off on 12 Sep. The page
+  still says "Nothing. All clear."
+- `main` (`6ab5193`) untouched since 5 Sep, 87 tests green. PR #1, #2, #3 open and
+  stalled since 12 Sep. #3 is real code, reviewed and accepted, CI green, never merged.
+  #1 and #2 are 1,400 lines of process docs, produced by four review rounds in one
+  afternoon between Codex and Claude. That afternoon exhausted both subscriptions.
+- Every "Codex review" on those PRs was posted from Lukas's own account via his Mac. The
+  automated Astra review (`docs/astra-work-setup.md` on PR #2) has never run once.
+- Branch `claude/naeste-trin-yjpv8y` (04 Aug) holds finished, tested Lenovo work
+  (notify outbox, deterministic triage, gardener, bootstrap close-out) never merged.
+- A session can see its own weekly rate-limit state (`rateLimitType`
+  `seven_day_overage_included`, `status` `allowed` / `allowed_warning`) but not the
+  percentage. On 2026-09-19 the status was already `allowed_warning`.
 
-## Proposed plan — smallest change that lands the value
-1. **Merge PR #3.** Real defects fixed, reviewed, CI green. Nothing else needs to
-   land first; `main` has no branch protection.
-2. **Collapse PR #1 and PR #2 into one file of ≤30 lines**, `docs/roles.md`, holding:
-   who builds, which model when, when Astra reviews, what "pending" means, and "a
-   written rule is not a running job". Keep `docs/reviews/` as history under
-   `docs/reviews/` (excluded from every session's required reading). Drop the
-   99-line `docs/WORKBENCH.md`, its per-project copies and the generator copy step.
-   Do not merge the direction doc's rewrites of `CLAUDE.md` / `SYSTEM.md` /
-   `STACK.md` as they stand; they widen the interrupt rule the 2026-07-26 decision
-   made concrete (finding A2 of the 09-09 review, never fixed).
-3. **Model routing, written as a rule and measurable by a session:**
-   - Task files carry `Model: opus | fable`. Default `opus`. `fable` only where the
-     task file says why (architecture, cross-cutting refactor, an ambiguous bug,
-     anything where a wrong answer is expensive to detect).
-   - A session reads its own rate-limit status at start. `allowed_warning` on the
-     seven-day window = **save mode**: run on Opus regardless of the task's model
-     line unless Lukas overrides in the dispatch message. Until a session can read
-     the actual percentage, the warning flag *is* the 60% rule; Lukas sees the exact
-     bar in the app and one word ("spar") from him flips the default.
-   - Scheduled work (routines) is pinned to Opus, always.
-   - Reviews of documents never use Fable, and never use Astra.
-4. **Astra cadence and mechanism.** At most one Astra review per week, only at a
-   milestone: a PR with real code ready to merge, or a direction decision with
-   money/data consequences. Never on docs-about-process. Mechanism, simplest first:
-   (a) Codex Automatic reviews on GitHub if Lukas wants routine PR review at all
-   (auto-selected model, included in Plus, zero relay);
-   (b) for the milestone review, the ChatGPT Work event task from
-   `docs/astra-work-setup.md` — one paste by Lukas, once, after the allowance
-   resets; if step 1 of that file says the trigger or Astra is unavailable, stop
-   there and fall back to (c);
-   (c) Lukas opens ChatGPT, picks Astra, pastes the PR link. One minute, a few
-   times a month. Not automatic, but honest and free of machinery.
-5. **Lenovo: decide, then act.** It is off. Either someone turns it on and the
-   August branch is rebased and merged (it is the box's own reliability work), or
-   the box is parked in writing, the three Lenovo task files are moved to a parked
-   state, and `STATUS.md` stops being the answer to "what is going on" until it is
-   back. The current state — a six-week-old "all clear" — is the worst of both.
-6. **Docs diet.** Every session currently loads CLAUDE.md (79/80 lines) + SYSTEM.md +
-   STACK.md, and the branches add direction (150) + WORKBENCH (99) + rollout (71) +
-   roles (44). Cut what a session must read to CLAUDE.md, roles.md and the task
-   file; everything else on demand. This is where the Fable spend actually goes.
+## Plan — one branch from `main`, one PR, merge when CI is green
+Work on `task/2026-09-19-model-allocation-and-simplify`. Steps 1 and 7 are GitHub
+actions, the rest are edits. Do them in this order.
 
-## Needs Lukas (decisions genuinely his)
-- Merge PR #3 now? (Recommended: yes.)
-- Close PR #1 and PR #2 in favour of the 30-line roles file? (Recommended: yes.)
-- Lenovo: back on, or parked?
-- Routine PR review by Codex's auto-selected model: wanted, or Astra-only by hand?
+### 1. Merge PR #3 into `main`
+Real defects fixed, reviewed, CI green at `b231f26`. Merge it first so this branch
+starts from it. Then move `tasks/2026-09-09-honest-health-reporting.md` to
+`tasks/done/` with one line: generator half done; the publisher half is parked with
+Lenovo (decision 1).
+
+### 2. Write `docs/roles.md` — at most 30 lines, the only place roles live
+Content, nothing more:
+- Builder: Claude. Default model **Opus**. **Fable** only when the task file says
+  `Model: fable` and gives the reason (architecture, cross-cutting refactor, an
+  ambiguous bug, anything where a wrong answer is expensive to detect).
+- **Save mode:** a session that sees `allowed_warning` on its seven-day window runs on
+  Opus regardless of the task's model line, unless Lukas's dispatch message says
+  otherwise. Until a session can read the percentage, the warning flag *is* the 60%
+  rule. Lukas sees the exact bar in the app; the word "spar" from him means the same.
+- Scheduled work (routines) is always pinned to Opus.
+- Reviewer: Astra, at most once a week, only at a milestone: a PR with real code ready
+  to merge, or a decision with money or data consequences. Never on process docs,
+  never on Fable's or Opus's reviews of each other.
+- How Astra is engaged, simplest first: Lukas opens ChatGPT, picks Astra, pastes the PR
+  link. The one-paste automation test in `docs/astra-work-setup.md` (kept on the closed
+  PR #2 branch) may be tried once when the OpenAI allowance has reset; if its step 1
+  says the trigger or Astra is unavailable, stop there for good.
+- Missing review is "unreviewed", written on the PR. It never blocks a merge Lukas wants.
+- A written rule is not a running job. Nothing here starts a scheduler.
+
+### 3. Task template and dispatch
+- `bin/new-project.sh`'s task template and this repo's task files gain a first line
+  `Model: opus | fable` with the reason when `fable`. Default `opus`.
+- `docs/claude-project-instructions.md`: replace the SYSTEM.md-first paragraph with:
+  read `docs/roles.md`; dispatch cloud sessions with the model the task file names;
+  save mode as above; Astra only as roles.md says. Keep the plain-language rules.
+- `CLAUDE.md`: add the routing row "Who builds, which model, when Astra reviews →
+  `docs/roles.md`". Required reading for any session is CLAUDE.md, roles.md and the
+  task file; everything else on demand. Stay under 80 lines.
+
+### 4. Pause Lenovo in writing
+- `STATUS.md`: hand-edit a banner as the first lines: "PAUSED 2026-09-19 — the box is
+  off by decision; this page is frozen at 07 Aug and is not current." The publisher is
+  off, so nothing will overwrite it.
+- `CLAUDE.md` "Read this first" section: the box is paused; STATUS.md is frozen; "what
+  is going on" is answered from open PRs and task files until it is un-paused.
+- `SYSTEM.md` lenovo row: paused 2026-09-19, everything on it is dormant.
+- `context/STACK.md` scheduled-jobs table: mark paused. Add one dated line under the
+  autonomy model: Lenovo paused 2026-09-19; the finished August work lives on branch
+  `claude/naeste-trin-yjpv8y`, to be rebased when the box returns. Mark the
+  2026-09-08 "independent review and project partner" paragraph superseded by
+  `docs/roles.md`; do not delete it.
+- Move to `tasks/parked/` (new directory; add it to `EXCLUDED_PREFIXES` in
+  `tests/test_docs_invariants.py` next to `tasks/done/`): `2026-07-26-bootstrap-lenovo.md`,
+  `2026-07-26-hooks-and-work-block.md`, `2026-07-26-local-model-jobs.md`,
+  `2026-07-26-notify-retry-outbox.md`. One line at the top of each: parked 2026-09-19,
+  finished work on the August branch where that applies.
+
+### 5. Keep the history, drop the ceremony
+Copy verbatim from branch `claude/codex-review-reliability-9wc44k` into `docs/reviews/`:
+`2026-09-09-codex-policy-and-reliability-plan.md` and
+`2026-09-12-direction-feasibility-addendum.md`. Nothing else from PR #1 or #2 is
+merged: not `docs/WORKBENCH.md`, not the per-project copy step in `new-project.sh`, not
+the rewrites of CLAUDE.md, SYSTEM.md and STACK.md, not the direction and rollout docs.
+
+### 6. Tests
+Run the full suite: `uv run pytest tests/ -o addopts=""`. The docs invariants cover
+line caps and dead references. Add one small test: `docs/roles.md` exists, is ≤30
+lines, and names both `opus` and `fable`.
+
+### 7. Close PR #1 and PR #2
+After this branch's PR is merged: close both with one comment each: superseded by
+`docs/roles.md` per Lukas's 2026-09-19 decision; branches kept for history. Do not
+delete the branches. Move this file to `tasks/done/`.
 
 ## Scope
-**May change:** `docs/roles.md`, `CLAUDE.md` routing row, `tasks/`, `context/STACK.md`
-(mark the 2026-09-08 workflow paragraph superseded, do not delete it).
-**Must NOT touch:** `bin/`, `setup/`, `.github/`, billing, credentials, Lenovo, PR #3's
-generator work.
+**May change:** `docs/roles.md`, `docs/reviews/`, `docs/claude-project-instructions.md`,
+`CLAUDE.md`, `SYSTEM.md`, `STATUS.md` (banner only), `context/STACK.md`, `tasks/`,
+`bin/new-project.sh` (template line only), `tests/test_docs_invariants.py`
+(exclusion list), one new test file.
+**Must NOT touch:** anything else in `bin/`, `setup/`, `.github/`, billing, credentials,
+the August branch, Lenovo. No new dependencies. No routine, no scheduler, no Astra
+machinery.
 
 ## Docs affected
-`context/STACK.md` (model routing decision, dated), `CLAUDE.md` (routing row to
-`docs/roles.md`), `docs/claude-project-instructions.md` (roles sentence).
+Listed per step above. Everything a session must read afterwards: CLAUDE.md,
+docs/roles.md, the task file.
 
 ## Size check
-One session for steps 2, 3 and 6 once Lukas has answered the four questions. Steps 1
-and 5 are clicks and a power button.
+One Opus session. If it runs long, split after step 4 and open the PR then.
 
 ## Working notes (agent fills in)
-- 2026-09-19: created by the investigating Claude session on `claude/zen-knuth-z2xyd4`.
-  Nothing merged, closed, enabled or purchased. 87 tests green on `main` and on this
-  branch. The erhvervsklubben repository could not be attached from this session, so
-  its CI and PR state were not checked.
+- 2026-09-19: written by the investigating session on `claude/zen-knuth-z2xyd4` after
+  Lukas paused Lenovo. Nothing merged, closed, enabled or purchased. 87 tests green.
