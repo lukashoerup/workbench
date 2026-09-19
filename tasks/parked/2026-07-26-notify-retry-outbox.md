@@ -1,3 +1,5 @@
+> **PARKED 2026-09-19** — Lenovo paused by Lukas's decision. Status: finished on branch `claude/naeste-trin-yjpv8y` (04 Aug, never merged); rebase when the box returns.
+
 # Task: notify.py must survive a Wi-Fi blip
 
 ## Goal

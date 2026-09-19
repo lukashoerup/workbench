@@ -18,10 +18,11 @@ REPO = Path(__file__).resolve().parent.parent
 #   workbench-setup-spec.md — carries a historical banner (:3-9), deliberately
 #     not kept current
 #   tasks/done/ — a record of what was true when the task was completed
+#   tasks/parked/ — Lenovo work paused 2026-09-19; frozen until the box returns
 #   STATUS.md — generated output, rewritten by the box every 30 minutes. Its
 #     *generator* (bin/workbench-status.py) is authored and is checked, which
 #     is where the footer bug that motivated this test actually lived.
-EXCLUDED_PREFIXES = ("tasks/done/",)
+EXCLUDED_PREFIXES = ("tasks/done/", "tasks/parked/")
 EXCLUDED_FILES = ("workbench-setup-spec.md", "STATUS.md")
 
 

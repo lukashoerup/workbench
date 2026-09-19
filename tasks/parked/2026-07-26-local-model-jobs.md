@@ -1,3 +1,5 @@
+> **PARKED 2026-09-19** — Lenovo paused by Lukas's decision. Status: finished on branch `claude/naeste-trin-yjpv8y` (04 Aug, never merged; triage went deterministic, gardener to Claude); rebase when the box returns.
+
 # Task: the §8 zero-token autonomy layer (triage + gardener)
 
 Depends on: `2026-07-26-notify-retry-outbox.md` (a 03:15 message lost to a blip

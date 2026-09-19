@@ -1,5 +1,9 @@
 # Workbench status
 
+> **PAUSED 2026-09-19.** `lenovo` is off by Lukas's decision and nothing publishes
+> here. Everything below is frozen at 07 Aug and is **not current**. What is going
+> on is answered from open PRs and `tasks/` until the box is un-paused.
+
 _Generated Friday 07 August 2026, 05:05 CEST on `lenovo`._
 _Regenerated automatically every 30 minutes. Everything below is measured, not remembered._
 
