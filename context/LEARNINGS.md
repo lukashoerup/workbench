@@ -17,6 +17,34 @@ marking almost everything relevant with a score of 0. Structural validation cann
 this; only human-labelled samples can. Confirms the spec's insistence on a weekly
 spot-check, and the reason the benchmark measures agreement rather than just tok/s.
 
+## 2026-09-27 — An AI judge optimises whatever its brief says, including the wrong thing
+In the re-enactment fix loop (generate → Gemini judge → retry with the judge's own fix),
+the bundle reference image was sent with a shot that comes *before* the bundle is shown.
+The judge failed a good take for lacking the bundle, its "fix" went into the next
+prompt, and the next take put the bundle in — worse than the one rejected. An automatic
+loop amplifies a wrong brief. Give every item its own brief and only the references that
+apply to it; keep a human-readable log of each verdict and fix so a bad loop is visible.
+
+## 2026-09-27 — Vision-model judges are useful, stochastic, and blind below a threshold
+Gemini 3.1 Pro watching a 22 s cut found 6 of 7 story-level defects blind (< 1 kr);
+3.5 Flash found 2. The same judge on the fixed cut raised issues it had not mentioned
+before and made one false claim. It missed small continuity (boot colour, heights) and
+everything measurable (timing drift, exposure jumps, audio holes) — code caught those.
+Gemini samples video at 1 fps unless `fps` is set. Pattern: code checks for anything
+measurable; the model for meaning; run it several times or pairwise; compare against
+the best alternative rather than a fixed score (a 4/10 take was still the best one).
+
+## 2026-09-27 — Gemini API video quota is per model per day, and it bites early
+After 10 Veo 3.1 Lite videos the project got `429 exceeded your current quota` for the
+rest of the day while Veo Fast and text models still worked. Credit balance was not the
+issue. Anything at episode scale needs Vertex AI or a higher tier. Danish credit moves by
+list price × 1.25 (VAT).
+
+## 2026-09-27 — The GitHub MCP connector still cannot create repositories
+`create_repository` → 403 "Resource not accessible by integration", same as the write
+failures in July. `add_repo` with push access works for repos that already exist, so a
+new repo needs Lukas to create it (one tap: github.com/new) before an agent can push.
+
 ## 2026-08-06 — A heartbeat commit that runs CI turns any GitHub outage into mail
 `publish-status.sh` pushes a STATUS.md-only commit every 30 minutes, and `tests.yml`
 triggered on every push, so the repo ran ~46 CI runs a day that could only ever repeat the

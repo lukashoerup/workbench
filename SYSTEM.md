@@ -76,6 +76,7 @@ taste), or when the machine's behaviour changes.
 |---|---|
 | `workbench` | This repo: machine tooling, STATUS.md, setup scripts, and cross-project knowledge in `context/` (STACK / PATTERNS / LEARNINGS). |
 | `erhvervsklubben` | Active project: members-site rebuild (React + Supabase). |
+| `reenactment` (private) | AI re-enactment video for true-crime podcasts (Danske Drabssager test for Bull House Media): Gemini/Veo pipeline, AI review loop, learnings, episode cost. |
 
 ## Rules for any Claude reading this
 
