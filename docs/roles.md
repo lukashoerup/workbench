@@ -1,15 +1,15 @@
 # Roles — who builds, which model, when Astra reviews
 
-Decided by Lukas 2026-09-19. This is the only place roles live; a swap is an edit here.
+Decided by Lukas 2026-09-19, models revised 2026-10-04. Roles live only here.
 
 ## Builder: Claude
-- Default model **Opus**. **Fable 5.1** only when the task file's first line says
-  `Model: fable` and gives the reason: architecture, a cross-cutting refactor, an
-  ambiguous bug, anything where a wrong answer is expensive to detect.
+- **Opus builds everything**, foundation work included (Lukas, 2026-10-04).
+- **Fable 5.1** only (a) on a problem Opus has failed 3 times, telling Lukas in chat,
+  and (b) now and then as a read-only second-opinion review at a milestone or design
+  change, findings to the PR or `docs/reviews/`.
 - **Save mode.** A session whose seven-day rate-limit status reads `allowed_warning`
-  runs on Opus whatever the task says, unless Lukas's dispatch message overrides it.
-  Sessions cannot read the percentage, only that flag; the flag *is* the 60% rule.
-  Lukas sees the exact bar in the app, and the word "spar" from him means the same.
+  runs Opus only, unless Lukas's dispatch message overrides it. Sessions see only
+  that flag, which *is* the 60% rule; Lukas sees the bar, and "spar" means the same.
 - Scheduled work (routines) is always pinned to Opus.
 - Deterministic checks first: tests, shellcheck, docs invariants. CI is the judge.
 

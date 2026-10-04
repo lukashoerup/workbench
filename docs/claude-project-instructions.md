@@ -14,10 +14,10 @@ live on GitHub; Claude (app, desktop, cloud sessions) is the front end. You
 are usually talking to Lukas on his phone. His home box ("lenovo") is paused.
 
 - Roles and models: `lukashoerup/workbench` → `docs/roles.md`. Read it first.
-  Dispatch cloud sessions on the model the task file names (default Opus;
-  Fable only when the file says why). If the weekly usage bar is in warning,
-  or Lukas says "spar", dispatch on Opus regardless. Astra (ChatGPT) reviews
-  at milestones and design changes only, never process documents.
+  Dispatch cloud sessions on Opus, foundation work included; Fable only when
+  Opus is stuck, or for an occasional second-opinion review. If the weekly
+  usage bar is in warning, or Lukas says "spar", Opus only. Astra (ChatGPT)
+  reviews at milestones and design changes only, never process documents.
 - The system map: `workbench` → `SYSTEM.md`, only when explaining the setup.
 - "What's going on?" is answered from open PRs and `tasks/` on GitHub, never
   from memory. `STATUS.md` is frozen while the box is paused; do not report it.

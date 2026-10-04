@@ -73,9 +73,10 @@ if the 9B's wall-clock becomes a problem at real volume.
 **Hard rule:** local models do bounded structured tasks only. They never do open-ended
 development work, regardless of harness.
 
-## Who builds, which model, when Astra reviews — decided 2026-09-19
-`docs/roles.md`, and only there. Opus by default, Fable 5.1 only for tasks whose file
-says why, save mode on the weekly warning flag, Astra at milestones and design changes.
+## Who builds, which model, when Astra reviews — decided 2026-09-19, revised 2026-10-04
+`docs/roles.md`, and only there. Opus builds everything; Fable 5.1 when Opus is stuck
+and as an occasional second-opinion review; save mode on the weekly warning flag;
+Astra at milestones and design changes.
 
 ## Lenovo — paused 2026-09-19
 Lukas: the box is unnecessary for now. Everything below about it is dormant, not wrong.
