@@ -76,6 +76,7 @@ taste), or when the machine's behaviour changes.
 |---|---|
 | `workbench` | This repo: machine tooling, STATUS.md, setup scripts, and cross-project knowledge in `context/` (STACK / PATTERNS / LEARNINGS). |
 | `erhvervsklubben` | Active project: members-site rebuild (React + Supabase). |
+| `gridmaster` | Active project (private, started 2026-10-04): renewable-energy tycoon game for Steam, working title. |
 
 ## Rules for any Claude reading this
 
