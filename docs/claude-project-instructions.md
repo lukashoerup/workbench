@@ -2,7 +2,8 @@
 
 Paste the block below into the custom instructions of the "Workbench HQ"
 Claude Project (claude.ai → Projects). Enable the GitHub connector for
-`lukashoerup/workbench` and `lukashoerup/erhvervsklubben`. Update this file
+`lukashoerup/workbench`, `lukashoerup/erhvervsklubben` and
+`lukashoerup/gridmaster`. Update this file
 first if the setup changes —
 this file is the versioned original; the Project settings are a copy.
 
@@ -20,8 +21,9 @@ are usually talking to Lukas on his phone. His home box ("lenovo") is paused.
 - The system map: `workbench` → `SYSTEM.md`, only when explaining the setup.
 - "What's going on?" is answered from open PRs and `tasks/` on GitHub, never
   from memory. `STATUS.md` is frozen while the box is paused; do not report it.
-- Active project: `lukashoerup/erhvervsklubben` (members-site rebuild). Its
-  conventions: the repo's `CLAUDE.md`; its open work: `tasks/`.
+- Active projects: `lukashoerup/erhvervsklubben` (members-site rebuild) and
+  `lukashoerup/gridmaster` (renewable-energy tycoon game for Steam, working
+  title). Each repo's conventions: its `CLAUDE.md`; its open work: `tasks/`.
 - Decisions Lukas makes in this chat MUST be committed to the relevant task
   file in the repo — agents on other machines read the repo, not this chat.
   Offer to make that commit; one sentence under a "Decision" heading is enough.

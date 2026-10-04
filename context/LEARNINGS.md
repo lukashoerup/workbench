@@ -46,6 +46,14 @@ notice`, `return`) — and a green production run proves nothing about a fresh s
 "is CI green on main" belongs in any "is everything OK" check, because a red CI with a
 live site is exactly the failure that stays quiet.
 
+## 2026-10-04 — A cloud session cannot create a GitHub repository; Lukas must
+`create_repository` from a cloud session returned `403 Resource not accessible by
+integration`: the Claude GitHub App may write to repos it is installed on, but cannot
+create new ones under the account. What worked: Lukas created `gridmaster` himself
+(github.com/new, private, empty), then the session attached it with `add_repo` and
+pushed the first commit. Ask for the repo at the start of the session, not the end —
+everything else can proceed in parallel while he does it.
+
 ## 2026-07-22 — Machine is Wi-Fi only, no ethernet
 `lenovo` has no wired connection at its home location. Wi-Fi power save is disabled via a
 systemd unit because an idle headless box otherwise drops its link. The watchdog retries
